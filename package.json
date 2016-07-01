@@ -8,6 +8,7 @@
     "test": "karma start build/karma.conf.js"
   },
   "dependencies": {
+    "clean-webpack-plugin": "^0.1.9",
     "swiper": "^3.3.1",
     "vue": "^1.0.0",
     "vue-resource": "^0.7.0",

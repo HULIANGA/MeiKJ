@@ -1,6 +1,6 @@
 var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var HtmlWebpackPlugin = require('html-webpack-plugin')
+var ExtractTextPlugin = require("extract-text-webpack-plugin");//提取css到单独文件
+var HtmlWebpackPlugin = require('html-webpack-plugin');//自动生成html
 module.exports = {
   debug: true,
   entry: {//入口js
@@ -28,7 +28,7 @@ module.exports = {
   output: {
     path: './dist',//输出文件目录
     publicPath: 'http://localhost:8080/dist/',//使用绝对地址磁能进入debug模式
-    filename: 'js/[name].js'//js输出的路径和名称
+    filename: 'js/[name].[hash].js'//js输出的路径和名称
   },
   externals: {//不打包在一起的js。需要在页面上用script标签引入
 
@@ -40,35 +40,36 @@ module.exports = {
     }
   },
   plugins: [
-    new ExtractTextPlugin("css/[name].css"),//css单独输出到./dist下
+    new ExtractTextPlugin("css/[name].[hash].css"),//css单独输出到dist下
     new HtmlWebpackPlugin({
+      template: 'src/html/index.html',
       filename: 'html/index.html',
-      template: 'html/index.html',
+      //chunks这个参数告诉插件要引用entry里面的哪几个入口
       chunks: ['index']
     }),
     new HtmlWebpackPlugin({
+      template: 'src/html/login.html',
       filename: 'html/login.html',
-      template: 'html/login.html',
       chunks: ['login']
     }),
     new HtmlWebpackPlugin({
+      template: 'src/html/regist.html',
       filename: 'html/regist.html',
-      template: 'html/regist.html',
       chunks: ['regist']
     }),
     new HtmlWebpackPlugin({
+      template: 'src/html/findpwd.html',
       filename: 'html/findpwd.html',
-      template: 'html/findpwd.html',
       chunks: ['findpwd']
     }),
     new HtmlWebpackPlugin({
+      template: 'src/html/mycoupon.html',
       filename: 'html/mycoupon.html',
-      template: 'html/mycoupon.html',
       chunks: ['mycoupon']
     }),
     new HtmlWebpackPlugin({
+      template: 'src/html/myorder.html',
       filename: 'html/myorder.html',
-      template: 'html/myorder.html',
       chunks: ['myorder']
     })
   ],
