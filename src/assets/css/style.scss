@@ -1,19 +1,101 @@
-*{outline: none;}
-html {font: normal 10px/1.5 黑体,Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei;}
-html,body{width: 100%;padding: 0;margin: 0;overflow-x: hidden;}
-body{font: normal 10px/1.5 黑体,Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei;color:#333;background:#FFFFFF;overflow-x:hidden;overflow-y:hidden;-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-text-size-adjust:none;-moz-user-select:none;}
-section,footer,nav,em,mark,p,span,ul,li,ol,h1,h2,h3,h4,input,textarea{margin:0;padding:0;font-weight:normal;list-style:none;font-style:normal}
-input,textarea {border:none;outline:none;color: #333333;}
-a {text-decoration: none;}
-select {outline:none; border-width: 1px; border-radius: 3px; padding: 2px 5px; border-color: #ccc;}
-button,input,textarea,select {font-family:黑体,Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei;}
-input[type="text"],input[type="password"]{-webkit-appearance: none;}
-button,a.btn {border: 0 none; border-radius: 3px; color: #fff; font-size: 16px; line-height: 32px;  margin: 0; text-align: center;}
-a.btn {display: inline-block;}
-.pull-l {float:left;}
-.pull-r {float: right;}
-.clearfix{zoom: 1;}
-.clearfix:after {content: "";display: table;clear: both;}
+* {
+  outline: none;
+}
+html {
+  font: normal 10px/1.5 黑体,Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei;
+}
+body,
+html {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+body {
+  font: normal 10px/1.5 黑体,Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei;
+  color: #333;
+  background: #FFFFFF;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-text-size-adjust: none;
+  -moz-user-select: none;
+}
+em,
+footer,
+h1,
+h2,
+h3,
+h4,
+input,
+li,
+mark,
+nav,
+ol,
+p,
+section,
+span,
+textarea,
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  list-style: none;
+  font-style: normal;
+}
+input,
+textarea {
+  border: none;
+  outline: none;
+  color: #333333;
+}
+a {
+  text-decoration: none;
+}
+select {
+  outline: none;
+  border-width: 1px;
+  border-radius: 3px;
+  padding: 2px 5px;
+  border-color: #ccc;
+}
+button,
+input,
+select,
+textarea {
+  font-family: 黑体,Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei;
+}
+input[type="password"],
+input[type="text"] {
+  -webkit-appearance: none;
+}
+a.btn,
+button {
+  border: 0 none;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 32px;
+  margin: 0;
+  text-align: center;
+}
+a.btn {
+  display: inline-block;
+}
+.pull-l {
+  float: left;
+}
+.pull-r {
+  float: right;
+}
+.clearfix {
+  zoom: 1;
+}
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 img {
   width: 100%;
   border: none;
@@ -29,14 +111,14 @@ img {
   background-color: #ff6251;
 }
 .btn-reserve {
- position:fixed;
- bottom: 0;
- width: 100%;
- border-radius: 0;
- background-color: rgba(255,113,98,.9);
- font-size: 1.8rem;
- height: 42px;
- line-height: 42px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border-radius: 0;
+  background-color: rgba(255,113,98,.9);
+  font-size: 1.8rem;
+  height: 42px;
+  line-height: 42px;
 }
 .item-title {
   font-size: 1.6rem;
@@ -60,7 +142,7 @@ img {
   border-bottom: 1px solid #eaeaea;
   margin-top: 25px;
 }
-.input-item>input {
+.input-item > input {
   height: 36px;
   line-height: 36px;
   width: 100%;
@@ -69,19 +151,19 @@ img {
   box-sizing: border-box;
 }
 .user-phone {
-  background-image: url(../assets/img/username.png);
+  background-image: url("../assets/img/username.png");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: 15px auto;
 }
 .user-pwd {
-  background-image: url(../assets/img/userpwd.png);
+  background-image: url("../assets/img/userpwd.png");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: 15px auto;
 }
 .user-code {
-  background-image: url(../assets/img/user-code.png);
+  background-image: url("../assets/img/user-code.png");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: 15px auto;
@@ -91,13 +173,13 @@ img {
   margin: 0 auto;
   padding-top: 20px;
 }
-.regist-link>a{
+.regist-link > a {
   font-size: 1.4rem;
 }
-.input-code{
+.input-code {
   position: relative;
 }
-.input-code>input {
+.input-code > input {
   padding-right: 30%;
 }
 .input-code .btn-code {
