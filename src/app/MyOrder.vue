@@ -54,7 +54,6 @@ export default {
     }
   },
   ready () {
-    let self = this
   },
   methods: {
     handleLink (active) {

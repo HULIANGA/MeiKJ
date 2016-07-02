@@ -5,27 +5,27 @@
   <div class="hair-dresser-detail">
     <div class="detail-header clearfix">
       <div class="detail-header-item">
-        <div class="detail-img"><img :src="hairDresser.dresserUrl"></div>
+        <div class="detail-img"><img :src="'http://meimeidou.qiniudn.com/'+hairDresser.logo"></div>
       </div>
       <div class="detail-header-item">
-        <p class="detail-header-name">{{ hairDresser.dresserName}} <span>{{hairDresser.level}}</span></p>
+        <p class="detail-header-name">{{ hairDresser.stageName}} <span>{{hairDresser.positionName}}</span></p>
         <p class="detail-header-order">订单数：{{ hairDresser.orderNum}}</p>
-        <p class="detail-header-star" v-if="hairDresser.starNum == 5">
+        <p class="detail-header-star" v-if="hairDresser.star == 5">
           <img src="../assets/img/five-star.png">
         </p>
-        <p class="detail-header-star" v-if="hairDresser.starNum == 4">
+        <p class="detail-header-star" v-if="hairDresser.star == 4">
           <img src="../assets/img/four-star.png">
         </p>
-        <p class="detail-header-star" v-if="hairDresser.starNum == 3">
+        <p class="detail-header-star" v-if="hairDresser.star == 3">
           <img src="../assets/img/three-star.png">
         </p>
-        <p class="detail-header-star" v-if="hairDresser.starNum == 2">
+        <p class="detail-header-star" v-if="hairDresser.star == 2">
           <img src="../assets/img/two-star.png">
         </p>
-        <p class="detail-header-star" v-if="hairDresser.starNum == 1">
+        <p class="detail-header-star" v-if="hairDresser.star == 1">
           <img src="../assets/img/one-star.png">
         </p>
-        <p class="detail-header-star" v-if="hairDresser.starNum == 0">
+        <p class="detail-header-star" v-if="hairDresser.star == 0">
           <img src="../assets/img/zero-star.png">
         </p>
       </div>
@@ -36,9 +36,7 @@
     <div class="introduction">
       <h3 class="item-title"><i></i>个人简介</h3>
       <div class="intro-info">
-        徐凯，法国HCF高级发型师协会中国区主席，荣获中国
-        巴黎欧莱雅色彩成就奖，并加入巴黎欧莱雅专业美发创
-        艺小组，国内顶尖创意造型师。
+        {{hairDresser.introduction}}
       </div>
     </div>
     <!-- evaluation -->
@@ -57,8 +55,26 @@
       return {
         hairDresser: window.hairDresser,
         evaluation: window.evaluation,
-        serviceItem: window.serviceItem
+        serviceItem: window.serviceItem,
+        barberId: ''
       }
+    },
+    ready () {
+      let self = this
+      let _barberId = window.location.search.substr(1).split('=')[1]
+      self.barberId = _barberId
+      self.$http.post('/api/barber/detail', {barberId: self.barberId}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          self.$set('hairDresser', res.result)
+        }
+      })
+      self.$http.get('/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 1}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          console.log(res.result.result)
+        }
+      })
     },
     components: {
       Evaluation,

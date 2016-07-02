@@ -15,6 +15,17 @@ export default {
       items: window.hairDresser
     }
   },
+  ready () {
+    let self = this
+    self.$http.get('/api/barber/list').then((response) => {
+      let res = response.data
+      if (res.code === 0) {
+        self.$set('items', res.result.result)
+      }
+    }, (response) => {
+      console.log(response.data)
+    })
+  },
   components: {
     HairDresser
   }

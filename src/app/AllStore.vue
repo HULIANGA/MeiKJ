@@ -15,6 +15,17 @@ export default {
       items: window.storeList
     }
   },
+  ready () {
+    let self = this
+    self.$http.get('/api/shop/list').then((response) => {
+      let res = response.data
+      if (res.code === 0) {
+        self.$set('items', res.result.result)
+      }
+    }, (response) => {
+      console.log(response.data)
+    })
+  },
   components: {
     Store
   }

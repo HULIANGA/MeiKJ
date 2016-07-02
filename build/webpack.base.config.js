@@ -71,6 +71,21 @@ module.exports = {
       template: 'src/html/myorder.html',
       filename: 'html/myorder.html',
       chunks: ['myorder']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/alldressers.html',
+      filename: 'html/alldressers.html',
+      chunks: ['hairdresser']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/allStore.html',
+      filename: 'html/allstore.html',
+      chunks: ['allStore']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/hairDresserDetail.html',
+      filename: 'html/barberDetail.html',
+      chunks: ['hairDresserDetail']
     })
   ],
   module: {

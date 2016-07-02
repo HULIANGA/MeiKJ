@@ -1,24 +1,24 @@
 <template>
-  <div class="hair-dresser-item" v-for="item in items">
+  <div class="hair-dresser-item" v-for="item in items" @click.prevent="detail(item)">
     <div >
-      <div class="hair-dresser-img"><img :src="item.dresserUrl"></div>
+      <div class="hair-dresser-img"><img :src="'http://meimeidou.qiniudn.com/'+item.logo"></div>
     </div>
     <div class="hair-dresser-text">
-        <p class="hair-dresser-store">{{item.storeName}}</p>
-        <p class="hair-dresser-name">{{ item.dresserName }}<span class="hair-dresser-level">{{item.level}}</span></p>
+        <p class="hair-dresser-store">{{item.shopName}}</p>
+        <p class="hair-dresser-name">{{ item.stageName }}<span class="hair-dresser-level">{{item.positionName}}</span></p>
         <p class="hair-dresser-star" >
-          <img src="../assets/img/five-star.png" v-if="item.starNum == 5">
-          <img src="../assets/img/four-star.png" v-if="item.starNum == 4">
-          <img src="../assets/img/three-star.png" v-if="item.starNum == 3">
-          <img src="../assets/img/two-star.png" v-if="item.starNum == 2">
-          <img src="../assets/img/one-star.png" v-if="item.starNum == 1">
-          <img src="../assets/img/zero-star.png" v-if="item.starNum == 0">
+          <img src="../assets/img/five-star.png" v-if="item.star == 5">
+          <img src="../assets/img/four-star.png" v-if="item.star == 4">
+          <img src="../assets/img/three-star.png" v-if="item.star == 3">
+          <img src="../assets/img/two-star.png" v-if="item.star == 2">
+          <img src="../assets/img/one-star.png" v-if="item.star == 1">
+          <img src="../assets/img/zero-star.png" v-if="item.star == 0">
         </p>
     </div>
     <div class="hair-dresser-ft">
-      <p class="hair-dresser-project">洗剪吹<span>&yen;99</span></p>
+      <p class="hair-dresser-project">洗剪吹<span>&yen;{{item.basePrice}}</span></p>
       <p class="hair-dresser-order">已接单{{item.orderNum}}</p>
-      <p class="hair-dresser-comment"><a>点评({{item.comment}})</a></p>
+      <p class="hair-dresser-comment"><a>点评({{item.commentNum}})</a></p>
     </div>
   </div>
 </template>
@@ -26,6 +26,12 @@
 export default {
   props: {
     items: Array
+  },
+  methods: {
+    detail (item) {
+      let barberId = item.id
+      window.location.href = location.origin + '/dist/html/barberDetail.html?id=' + barberId
+    }
   }
 }
 </script>
