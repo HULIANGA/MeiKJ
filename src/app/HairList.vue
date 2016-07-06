@@ -4,9 +4,9 @@
 
 <template>
   <div class="hair-filter">
-    <a class="active">人气</a>
-    <a>男发</a>
-    <a>女发</a>
+    <a class="active">男士</a>
+    <a>女士</a>
+    <a>儿童</a>
     <a>明星</a>
   </div>
   <div class="all-hair">
@@ -20,6 +20,15 @@ export default {
     return {
       hairItems: window.hairItems
     }
+  },
+  ready () {
+    let self = this
+    self.$http.get('/api/hairstyle/list', {pageNo: 1, pageSize: 16, hairstyleClassId: 3}).then((response) => {
+      let res = response.data
+      if (res.code === 0) {
+        self.$set('hairItems', res.result.result)
+      }
+    })
   },
   components: {
     FashionHair

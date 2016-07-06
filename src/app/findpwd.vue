@@ -23,6 +23,7 @@
 </template>
 <script>
 import utils from '../libs/utils'
+import toast from '../libs/toast'
 export default {
   data () {
     return {
@@ -36,11 +37,11 @@ export default {
     getVerifyCode () {
       let self = this
       if (self.phone === '') {
-        alert('请输入手机号')
+        toast('请输入手机号')
         return
       }
       if (!utils.getCheck.checkPhone(self.phone)) {
-        alert('请输入正确的手机号')
+        toast('请输入正确的手机号')
       }
       self.$http.post('/api/customer/verifyCode', {mobile: self.phone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
         console.log(response.data)
@@ -51,15 +52,15 @@ export default {
     findPwd () {
       let self = this
       if (self.phone === '') {
-        alert('请输入手机号')
+        toast('请输入手机号')
         return
       }
       if (self.verifyCode === '') {
-        alert('请输入验证码')
+        toast('请输入验证码')
         return
       }
       if (self.password === '') {
-        alert('请输入新密码')
+        toast('请输入新密码')
         return
       }
       self.$http.post('/api/customer/resetPwd', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {

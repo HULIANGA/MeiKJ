@@ -23,7 +23,8 @@ module.exports = {
     selectitem: './src/entrys/selectitem.js',
     order: './src/entrys/order.js',
     reservetime: './src/entrys/reservetime.js',
-    comment: './src/entrys/comment.js'
+    comment: './src/entrys/comment.js',
+    hair: './src/entrys/hair.js'
   },
   output: {
     path: './dist',//输出文件目录
@@ -78,14 +79,29 @@ module.exports = {
       chunks: ['hairdresser']
     }),
     new HtmlWebpackPlugin({
+      template: 'src/html/hairDresserDetail.html',
+      filename: 'html/barberDetail.html',
+      chunks: ['hairDresserDetail']
+    }),
+    new HtmlWebpackPlugin({
       template: 'src/html/allStore.html',
       filename: 'html/allstore.html',
       chunks: ['allStore']
     }),
     new HtmlWebpackPlugin({
-      template: 'src/html/hairDresserDetail.html',
-      filename: 'html/barberDetail.html',
-      chunks: ['hairDresserDetail']
+      template: 'src/html/storeDetail.html',
+      filename: 'html/storedetail.html',
+      chunks: ['storeDetail']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/hairlist.html',
+      filename: 'html/hairlist.html',
+      chunks: ['hairList']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/hair.html',
+      filename: 'html/hair.html',
+      chunks: ['hair']
     })
   ],
   module: {

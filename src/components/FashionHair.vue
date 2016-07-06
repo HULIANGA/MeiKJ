@@ -1,15 +1,28 @@
 <template>
   <div class="hair-list">
-    <div class="hair-item" v-for="item in hairitems">
+    <div class="hair-item" v-for="item in hairitems" @click.prevent="detail(item)">
       <a>
-        <img :src="item.hairUrl">
+        <img :src="'http://meimeidou.qiniudn.com/'+item.coverImg">
       </a>
       <div class="hair-like">
-        {{ item.likeNum }}
+        {{ item.praiseNum }}
       </div>
     </div>
   </div>
 </template>
+<script>
+export default {
+  props: {
+    hairitems: Array
+  },
+  methods: {
+    detail (item) {
+      let hairId = item.id
+      window.location.href = location.origin + '/dist/html/hair.html?id=' + hairId
+    }
+  }
+}
+</script>
 <style>
   .hair-list {
     position: relative;
@@ -50,10 +63,3 @@
     font-size: 1.2rem;
   }
 </style>
-<script>
-export default {
-  props: {
-    hairitems: Array
-  }
-}
-</script>

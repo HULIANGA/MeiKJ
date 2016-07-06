@@ -1,7 +1,6 @@
 <style lang="sass">
 @import '../assets/css/style.scss'
 </style>
-
 <template>
   <div class="login-page">
     <img src="../assets/img/login-header.jpg">
@@ -19,6 +18,7 @@
   <loading :show="loading.show" :show-text="loading.showText"></loading>
 </template>
 <script>
+import toast from '../libs/toast'
 import loading from '../components/loading'
 import utils from '../libs/utils'
 
@@ -39,15 +39,15 @@ export default {
     login () {
       let self = this
       if (self.phone === '') {
-        alert('请输入手机号')
+        toast('请输入手机号')
         return
       }
       if (self.password === '') {
-        alert('请输入密码')
+        toast('请输入密码')
         return false
       }
       if (!utils.getCheck.checkPhone(self.phone)) {
-        alert('请输入正确的手机号')
+        toast('请输入正确的手机号')
         return
       }
       self.$http.post('/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {

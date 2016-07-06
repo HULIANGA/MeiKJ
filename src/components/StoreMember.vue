@@ -2,7 +2,7 @@
 <div class="store-member">
   <h3 class="item-title"><i></i>发型师<span>({{storemember.totalCount}})</span></h3>
   <div class="s-member-list">
-    <div class="s-member-item" v-for="item in storemember.members">
+    <div class="s-member-item" v-for="item in storemember.result">
       <div class="s-member-img">
         <img :src="item.mUrl">
       </div>

@@ -5,12 +5,12 @@
   <div class="store-detail">
     <div class="store-info">
       <div class="store-info-img">
-        <img :src="storeDetail.storeUrl">
-        <p class="store-info-name">{{ storeDetail.storeName}}</p>
+        <img :src="'http://meimeidou.qiniudn.com/'+storeDetail.logo">
+        <p class="store-info-name">{{ storeDetail.name}}</p>
       </div>
       <div class="store-info-text">
-        <p class="store-phone">{{storeDetail.storePhone}} <span>已接单<strong>{{storeDetail.orderNum}}</strong></span></p>
-        <p class="store-address">{{storeDetail.storeAddress}}<span>{{storeDetail.storeDistance}}</span></p>
+        <p class="store-phone">{{storeDetail.phone}} <span>已接单<strong>{{storeDetail.orderNum}}</strong></span></p>
+        <p class="store-address">{{storeDetail.address}}<span>{{storeDetail.storeDistance}}</span></p>
       </div>
     </div>
 
@@ -30,8 +30,28 @@
       return {
         storeDetail: window.storeDetail,
         serviceitem: window.serviceItem,
-        storeMember: window.storeMember
+        storeMember: window.storeMember,
+        storeId: ''
       }
+    },
+    ready () {
+      let self = this
+      let _storeId = window.location.search.substr(1).split('=')[1]
+      self.storeId = _storeId
+      self.$http.post('/api/shop/detail', {shopId: self.storeId}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          self.$set('storeDetail', res.result)
+        }
+      }, (response) => {
+        console.log(response.data)
+      })
+      self.$http.get('/api/shop/barberList', {shopId: self.storeId, pageNo: 1, pageSize: 4}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          self.$set('storeMember', res.result)
+        }
+      })
     },
     components: {
       ServiceItem,

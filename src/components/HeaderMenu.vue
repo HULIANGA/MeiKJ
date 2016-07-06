@@ -24,6 +24,7 @@
     height: 100%;
     padding-top: 3rem;
     text-align: center;
+    color: #fff;
     box-sizing: border-box;
   }
   .header-menu>ul>li:nth-child(1)>a {
@@ -55,17 +56,29 @@
   <div class="header-menu">
     <ul>
       <li>
-        <a>门店</a>
+        <a :href="storeUrl">门店</a>
       </li>
       <li>
-        <a>发型师</a>
+        <a :href="barberUrl">发型师</a>
       </li>
       <li>
-        <a>发型</a>
+        <a :href="hairUrl">发型</a>
       </li>
       <li>
-        <a>优惠专区</a>
+        <a :href="couponUrl">优惠专区</a>
       </li>
     </ul>
   </div>
 </template>
+<script>
+export default {
+  data () {
+    return {
+      storeUrl: 'allstore.html',
+      barberUrl: 'alldressers.html',
+      hairUrl: 'hairlist.html',
+      couponUrl: 'couponStore.html'
+    }
+  }
+}
+</script>

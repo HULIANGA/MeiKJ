@@ -18,37 +18,39 @@
       <button class="btn btn-confirm" @click.prevent="register">注册</button>
 
     </div>
-    <p class="clearfix regist-link"><a class="pull-r">已有账号，去登录</a></p>
+    <p class="clearfix regist-link"><a class="pull-r" :href="url">已有账号，去登录</a></p>
   </div>
 </template>
 <script>
 import utils from '../libs/utils'
+import toast from '../libs/toast'
 
 export default {
   data () {
     return {
       phone: '',
       verifyCode: '',
-      password: ''
+      password: '',
+      url: 'login.html'
     }
   },
   methods: {
     register () {
       let self = this
       if (self.phone === '') {
-        alert('请输入手机号')
+        toast('请输入手机号')
         return
       }
       if (self.verifyCode === '') {
-        alert('请输入验证码')
+        toast('请输入验证码')
         return
       }
       if (self.password === '') {
-        alert('请输入密码')
+        toast('请输入密码')
         return
       }
       if (!utils.getCheck.checkPhone(self.phone)) {
-        alert('请输入正确的手机号')
+        toast('请输入正确的手机号')
         return
       }
       self.$http.post('/api/customer/register', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {
@@ -64,11 +66,11 @@ export default {
     getVerifyCode () {
       let self = this
       if (self.phone === '') {
-        alert('请输入手机号')
+        toast('请输入手机号')
         return
       }
       if (!utils.getCheck.checkPhone(self.phone)) {
-        alert('请输入正确的手机号')
+        toast('请输入正确的手机号')
         return
       }
       self.$http.post('/api/customer/verifyCode', {mobile: self.phone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
