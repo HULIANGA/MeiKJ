@@ -15,14 +15,27 @@
   import Swiper from 'swiper'
   export default {
     props: {
-      items: Array
+      dataUrl: String
+    },
+    data () {
+      return {
+        items: [],
+        hairId: ''
+      }
     },
     ready () {
-      this.$nextTick(() => {
-        /* eslint-disable no-new */
-        new Swiper('.swiper-container', {
-          autoplay: 5000
-        })
+      let self = this
+      let _hairId = window.location.search.substr(1).split('=')[1]
+      self.hairId = _hairId
+      self.$http.post(self.dataUrl, {hairstyleId: self.hairId}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          self.$set('items', res.result.photoList)
+          self.$nextTick(() => {
+            /* eslint-disable no-new */
+            new Swiper('.swiper-container')
+          })
+        }
       })
     }
   }
