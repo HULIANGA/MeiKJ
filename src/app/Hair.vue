@@ -3,7 +3,7 @@
 </style>
 <template>
   <div class="hair-detail">
-    <swiper-hair :items="imgItems"></swiper-hair>
+    <swiper-hair :items="hairDetail.photoList"></swiper-hair>
   </div>
 </template>
 <script>
@@ -11,7 +11,7 @@ import SwiperHair from '../components/SwiperHair'
 export default {
   data () {
     return {
-      imgItems: [],
+      hairDetail: {},
       hairId: '',
       token: ''
     }
@@ -22,10 +22,10 @@ export default {
     self.hairId = _hairId
     let _token = localStorage.token
     self.token = _token
-    self.$http.post('/api/hairstyle/t/detail', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+    self.$http.post('/api/hairstyle/detail', {hairstyleId: self.hairId}).then((response) => {
       let res = response.data
       if (res.code === 0) {
-        self.$set('imgItems', res.result)
+        self.$set('hairDetail', res.result)
       }
     })
   },

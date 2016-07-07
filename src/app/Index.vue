@@ -19,9 +19,20 @@ import BottomMenu from '../components/BottomMenu'
 export default {
   data () {
     return {
-      items: window.ImageData,
+      items: null,
       hairItems: window.hairItems
     }
+  },
+  ready () {
+    let self = this
+    self.$http.get('/api/banner/list').then((response) => {
+      let res = response.data
+      if (res.code === 0) {
+        self.$set('items', res.result)
+      }
+    }, (response) => {
+      console.log(response.data)
+    })
   },
   components: {
     HeaderMenu,

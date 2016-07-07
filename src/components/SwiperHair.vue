@@ -5,7 +5,7 @@
   <div class="swiper-container">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="item in items">
-        <img :src="item.coverImg">
+        <img :src="'http://meimeidou.qiniudn.com/'+item.path">
       </div>
     </div>
   </div>
@@ -18,10 +18,11 @@
       items: Array
     },
     ready () {
-      let self = this
-      self.$nextTick(() => {
+      this.$nextTick(() => {
         /* eslint-disable no-new */
-        new Swiper('.swiper-container', {})
+        new Swiper('.swiper-container', {
+          autoplay: 5000
+        })
       })
     }
   }

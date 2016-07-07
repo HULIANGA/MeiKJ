@@ -20,7 +20,7 @@
   <div class="swiper-container swiper_box">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="item in items">
-        <img :src="item.pictureFull_url">
+        <a :href="item.url"><img :src="'http://meimeidou.qiniudn.com/'+item.imgUrl"></a>
       </div>
     </div>
     <div class="swiper-pagination swiper-pagination-white"></div>
@@ -28,19 +28,14 @@
 </template>
 
 <script>
-  import $ from 'jquery'
   import Swiper from 'swiper'
   export default {
     ready: function () {
-      $('.swiper_box').each(function (index) {
-        var $this = $(this)
-        var swiperClass = 'swiper_box' + index
-        var paginationClass = 'swiper-pagination' + index
-        $this.addClass(swiperClass)
-        $('.swiper-pagination').eq(index).addClass(paginationClass)
+      let self = this
+      self.$nextTick(() => {
         /* eslint-disable no-new */
-        new Swiper('.' + swiperClass, {
-          pagination: '.' + paginationClass,
+        new Swiper(self.$el, {
+          pagination: '.swiper-pagination',
           speed: 1000,
           autoplay: 2500,
           loop: true,
