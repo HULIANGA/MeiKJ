@@ -4,8 +4,7 @@
 <template>
   <div id="app">
     <header-menu></header-menu>
-    <swiper-image :items="items"></swiper-image>
-
+    <swiper-image :datahref="dataHref"></swiper-image>
     <fashion-hair :hairitems="hairItems"></fashion-hair>
     <bottom-menu></bottom-menu>
   </div>
@@ -19,9 +18,11 @@ import BottomMenu from '../components/BottomMenu'
 export default {
   data () {
     return {
-      items: window.ImageData,
+      dataHref: '/json/swiper.json',
       hairItems: window.hairItems
     }
+  },
+  ready: function () {
   },
   components: {
     HeaderMenu,

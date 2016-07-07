@@ -8,6 +8,10 @@ config.devServer = {
     '/api/*': {
       target: 'http://139.196.87.99',
       secure: false
+    },
+    '/json/*': {
+      target: 'http://company1.bigaka.com:9001/test1/',
+      secure: false
     }
   }
 }

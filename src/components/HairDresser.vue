@@ -39,7 +39,7 @@ export default {
 .hair-dresser-item {
   position: relative;
   padding: 10px 5px;
-  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
   display: -webkit-box;
   display: flex;
   display: -webkit-flex;

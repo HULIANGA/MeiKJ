@@ -1,14 +1,14 @@
 <style>
   @import '../assets/css/swiper.scss';
-    .swiper_box .swiper-pagination-white .swiper-pagination-bullet {
+  .swiper-box .swiper-pagination-white .swiper-pagination-bullet {
     background-color:#000;
   }
-  .swiper_box .swiper-pagination-white .swiper-pagination-bullet-active {
+  .swiper-box .swiper-pagination-white .swiper-pagination-bullet-active {
     background-color:#008757;
   }
 </style>
 <style scoped>
-  .swiper_box {
+  .swiper-box {
     width: 100%;
     margin: 0;
     z-index: 2;
@@ -17,7 +17,7 @@
 </style>
 
 <template>
-  <div class="swiper-container swiper_box">
+  <div class="swiper-container swiper-box">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="item in items">
         <img :src="item.pictureFull_url">
@@ -28,28 +28,34 @@
 </template>
 
 <script>
-  import $ from 'jquery'
   import Swiper from 'swiper'
+  import $ from 'jquery'
   export default {
+    data () {
+      return {
+        items: null
+      }
+    },
     ready: function () {
-      $('.swiper_box').each(function (index) {
-        var $this = $(this)
-        var swiperClass = 'swiper_box' + index
-        var paginationClass = 'swiper-pagination' + index
-        $this.addClass(swiperClass)
-        $('.swiper-pagination').eq(index).addClass(paginationClass)
-        /* eslint-disable no-new */
-        new Swiper('.' + swiperClass, {
-          pagination: '.' + paginationClass,
-          speed: 1000,
-          autoplay: 2500,
-          loop: true,
-          autoplayDisableOnInteraction: false
+      this.$http.get(this.datahref).then(function (response) {
+        this.items = response.data
+        this.$nextTick(function () {
+          /* eslint-disable no-new */
+          new Swiper('.swiper-box', {
+            pagination: '.swiper-pagination',
+            speed: 1000,
+            autoplay: 2500,
+            loop: true,
+            autoplayDisableOnInteraction: false,
+            observer: true
+          })
         })
+      }).catch(function (response) {
+        console.log(response.data)
       })
     },
     props: {
-      items: Array
+      datahref: String
     }
   }
 </script>
