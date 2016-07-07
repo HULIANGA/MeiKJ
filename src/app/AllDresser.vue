@@ -1,18 +1,21 @@
 <style lang="sass">
-@import '../assets/css/style.scss'
+@import "../assets/css/style.scss";
+@import "../assets/css/flex.scss"
 </style>
 <template>
 <div class="all-dressers">
+  <head-filter></head-filter>
   <hair-dresser :items="items"></hair-dresser>
 </div>
 </template>
 <script>
 import HairDresser from '../components/HairDresser'
+import HeadFilter from '../components/HeadFilter'
 
 export default {
   data () {
     return {
-      items: window.hairDresser
+      items: null
     }
   },
   ready () {
@@ -27,7 +30,8 @@ export default {
     })
   },
   components: {
-    HairDresser
+    HairDresser,
+    HeadFilter
   }
 }
 </script>
