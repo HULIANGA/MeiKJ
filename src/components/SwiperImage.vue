@@ -29,7 +29,6 @@
 
 <script>
   import Swiper from 'swiper'
-  import $ from 'jquery'
   export default {
     data () {
       return {
@@ -46,8 +45,7 @@
             speed: 1000,
             autoplay: 2500,
             loop: true,
-            autoplayDisableOnInteraction: false,
-            observer: true
+            autoplayDisableOnInteraction: false
           })
         })
       }).catch(function (response) {

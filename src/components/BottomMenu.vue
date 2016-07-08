@@ -19,61 +19,58 @@
     background-color: #3f3c39;
   }
   .bottom-menu footer {
-    display: -webkit-box;
     display: flex;
-    display: -webkit-flex;
     height: 100%;
   }
   footer>a {
-    -webkit-box-flex:1;
-    flex: 1;
-    -webkit-flex:1;
-    display: -webkit-box;
+    flex-grow: 1;
     display: flex;
-    display: -webkit-flex;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     color: #fff;
     justify-content: center;
-    -webkit-justify-content:center;
     align-items: flex-end;
-    -webkit-align-items:flex-end;
+    padding: 3px 0;
   }
   footer>a:nth-child(1) {
     background-image: url(../assets/img/index-icon.png);
     background-repeat: no-repeat;
-    background-position: center 5px;
+    background-position: center 6px;
     background-size: 24px auto;
   }
   footer>a:nth-child(2) {
     background-image: url(../assets/img/mall-icon.png);
     background-repeat: no-repeat;
-    background-position: center 5px;
+    background-position: center 6px;
     background-size: 28px auto;
+  }
+  footer>a.reserve{
+    font-size: 1.4rem;
+    padding-bottom: 2px;
   }
   footer>a.reserve>span{
     position: absolute;
-    width: 64px;
-    height: 64px;
-    top: -32px;
+    width: 56px;
+    height: 56px;
+    top: -28px;
     left: 50%;
-    margin-left: -32px;
+    margin-left: -28px;
     background-image: url(../assets/img/reserve-icon.png);
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 40px;
+    background-size: 50px;
     background-color: #3f3c39;
     border-radius: 50%;
   }
   footer>a:nth-child(4) {
     background-image: url(../assets/img/order-icon.png);
     background-repeat: no-repeat;
-    background-position: center 5px;
+    background-position: center 6px;
     background-size: 20px auto;
   }
   footer>a:nth-child(5) {
     background-image: url(../assets/img/center-icon.png);
     background-repeat: no-repeat;
-    background-position: center 5px;
+    background-position: center 6px;
     background-size: 22px auto;
   }
   footer>a.current {

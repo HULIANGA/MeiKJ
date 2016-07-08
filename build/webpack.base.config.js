@@ -32,7 +32,6 @@ module.exports = {
     filename: 'js/[name].[hash].js'//js输出的路径和名称
   },
   externals: {//不打包在一起的js。需要在页面上用script标签引入
-
   },
   resolve: {
     extensions: ['', '.js', '.vue'],
