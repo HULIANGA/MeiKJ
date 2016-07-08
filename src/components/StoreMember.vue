@@ -2,7 +2,7 @@
 <div class="store-member">
   <h3 class="item-title"><i></i>发型师<span>({{storemember.totalCount}})</span></h3>
   <div class="s-member-list">
-    <div class="s-member-item" v-for="item in storemember.result">
+    <div class="s-member-item" v-for="item in storemember.result" @click.prevent="detail(item.id)">
       <div class="s-member-img">
         <img :src="'http://meimeidou.qiniudn.com/'+item.logo">
       </div>
@@ -44,6 +44,9 @@ export default {
       console.log('ooo')
       let storeId = utils.getUrlParam('id')
       window.location.href = location.origin + '/dist/html/shopbarber.html?id=' + storeId
+    },
+    detail (id) {
+      window.location.href = location.origin + '/dist/html/barberDetail.html?id=' + id
     }
   }
 }

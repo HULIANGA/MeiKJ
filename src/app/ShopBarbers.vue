@@ -25,6 +25,8 @@ export default {
       if (res.code === 0) {
         self.$set('items', res.result.result)
       }
+    }, (response) => {
+      console.log(response.data)
     })
   },
   components: {
