@@ -24,7 +24,8 @@ module.exports = {
     order: './src/entrys/order.js',
     reservetime: './src/entrys/reservetime.js',
     comment: './src/entrys/comment.js',
-    hair: './src/entrys/hair.js'
+    hair: './src/entrys/hair.js',
+    shopbarber: './src/entrys/shopbarber.js'
   },
   output: {
     path: './dist',//输出文件目录
@@ -102,6 +103,11 @@ module.exports = {
       template: 'src/html/hair.html',
       filename: 'html/hair.html',
       chunks: ['hair']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/shopbarber.html',
+      filename: 'html/shopbarber.html',
+      chunks: ['shopbarber']
     })
   ],
   module: {

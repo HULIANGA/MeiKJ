@@ -4,39 +4,47 @@
   <div class="s-member-list">
     <div class="s-member-item" v-for="item in storemember.result">
       <div class="s-member-img">
-        <img :src="item.mUrl">
+        <img :src="'http://meimeidou.qiniudn.com/'+item.logo">
       </div>
-      <p class="s-member-name">{{item.mName}}</p>
-      <p class="s-member-level">{{item.mLevel}}</p>
-      <p class="s-member-star" v-if="item.mStar == 5">
+      <p class="s-member-name">{{item.stageName}}</p>
+      <p class="s-member-level">{{item.positionName}}</p>
+      <p class="s-member-star" v-if="item.star == 5">
         <img src="../assets/img/five-star.png">
       </p>
-      <p class="s-member-star" v-if="item.mStar == 4">
+      <p class="s-member-star" v-if="item.star == 4">
         <img src="../assets/img/four-star.png">
       </p>
-      <p class="s-member-star" v-if="item.mStar == 3">
+      <p class="s-member-star" v-if="item.star == 3">
         <img src="../assets/img/three-star.png">
       </p>
-      <p class="s-member-star" v-if="item.mStar == 2">
+      <p class="s-member-star" v-if="item.star == 2">
         <img src="../assets/img/two-star.png">
       </p>
-      <p class="s-member-star" v-if="item.mStar == 1">
+      <p class="s-member-star" v-if="item.star == 1">
         <img src="../assets/img/one-star.png">
       </p>
-      <p class="s-member-star" v-if="item.mStar == 0">
+      <p class="s-member-star" v-if="item.star == 0">
         <img src="../assets/img/zero-star.png">
       </p>
     </div>
   </div>
-  <p class="s-member-more">
-    <a>查看更多</a>
+  <p class="s-member-more" v-if="storemember.totalCount > 4">
+    <a @click.prevent="showMore">查看更多</a>
   </p>
 </div>
 </template>
 <script>
+import utils from '../libs/utils'
 export default {
   props: {
     storemember: Object
+  },
+  methods: {
+    showMore () {
+      console.log('ooo')
+      let storeId = utils.getUrlParam('id')
+      window.location.href = location.origin + '/dist/html/shopbarber.html?id=' + storeId
+    }
   }
 }
 </script>
@@ -52,9 +60,7 @@ export default {
   display: -webkit-flex;
 }
 .s-member-list .s-member-item {
-  -webkit-box-flex:1;
-  flex:1;
-  -webkit-flex:1;
+  width: 25%;
   padding: 5px;
 }
 .s-member-item .s-member-img {
@@ -77,7 +83,7 @@ export default {
 }
 .s-member-more {
   text-align: right;
-  padding-right: 15px;
+  padding: 0 15px 10px 0;
 }
 .s-member-more>a::after {
   content: '';

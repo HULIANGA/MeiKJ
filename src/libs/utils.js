@@ -35,6 +35,18 @@ let getCheck = {
     }
   }
 }
+const getUrlParam = function (param) {
+  let query = window.location.search.substr(1)
+  let vars = query.split('&')
+  for (let i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=')
+    if (pair[0] === param) {
+      return pair[1]
+    }
+  }
+  return false
+}
 exports.fmtDate = fmtDate
 exports.convertToWeek = convertToWeek
 exports.getCheck = getCheck
+exports.getUrlParam = getUrlParam

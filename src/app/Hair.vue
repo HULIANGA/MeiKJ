@@ -95,7 +95,7 @@ export default {
           self.$http.post('/api/collect/t/cancel', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
-              self.$set('isCollect', true)
+              self.$set('isCollect', false)
               toast('取消收藏')
             }
           })
@@ -178,6 +178,9 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px;
+}
+.collect.active {
+  background-image: url(../assets/img/heart.png);
 }
 .hairstyle-reserve {
   height: 50px;

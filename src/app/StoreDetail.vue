@@ -24,19 +24,19 @@
 <script>
   import ServiceItem from '../components/ServiceItem'
   import StoreMember from '../components/StoreMember'
-
+  import utils from '../libs/utils'
   export default {
     data () {
       return {
-        storeDetail: window.storeDetail,
+        storeDetail: {},
         serviceitem: window.serviceItem,
-        storeMember: window.storeMember,
+        storeMember: {},
         storeId: ''
       }
     },
     ready () {
       let self = this
-      let _storeId = window.location.search.substr(1).split('=')[1]
+      let _storeId = utils.getUrlParam('id')
       self.storeId = _storeId
       self.$http.post('/api/shop/detail', {shopId: self.storeId}).then((response) => {
         let res = response.data

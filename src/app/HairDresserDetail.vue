@@ -50,6 +50,7 @@
 <script>
   import Evaluation from '../components/Evaluation'
   import ServiceItem from '../components/ServiceItem'
+  import utils from '../libs/utils'
   export default {
     data () {
       return {
@@ -61,7 +62,7 @@
     },
     ready () {
       let self = this
-      let _barberId = window.location.search.substr(1).split('=')[1]
+      let _barberId = utils.getUrlParam('id')
       self.barberId = _barberId
       self.$http.post('/api/barber/detail', {barberId: self.barberId}).then((response) => {
         let res = response.data
