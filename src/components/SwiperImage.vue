@@ -20,7 +20,7 @@
   <div class="swiper-container swiper-box">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="item in items">
-        <img :src="item.pictureFull_url">
+        <a :href="item.url"><img :src="'http://meimeidou.qiniudn.com/'+item.imgUrl"></a>
       </div>
     </div>
     <div class="swiper-pagination swiper-pagination-white"></div>
@@ -36,6 +36,7 @@
       }
     },
     ready: function () {
+<<<<<<< HEAD
       this.$http.get(this.datahref).then(function (response) {
         this.items = response.data
         this.$nextTick(function () {
@@ -46,8 +47,25 @@
             autoplay: 2500,
             loop: true,
             autoplayDisableOnInteraction: false
+=======
+      let self = this
+      self.$http.get(this.datahref).then(function (response) {
+        let res = response.data
+        if (res.code === 0) {
+          self.items = res.result
+          self.$nextTick(function () {
+            /* eslint-disable no-new */
+            new Swiper('.swiper-box', {
+              pagination: '.swiper-pagination',
+              speed: 1000,
+              autoplay: 2500,
+              loop: true,
+              autoplayDisableOnInteraction: false,
+              observer: true
+            })
+>>>>>>> 81b8bd60356751eab20668dd3d8ca9b316bf0f42
           })
-        })
+        }
       }).catch(function (response) {
         console.log(response.data)
       })
