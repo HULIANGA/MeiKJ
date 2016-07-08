@@ -1,28 +1,21 @@
 <style scoped>
   .header-menu {
-    height: 50px;
-    padding: 0.5rem 1.5rem;
-    background-color:#5a5b5d;
+    padding: 0.7rem 2rem;
+    background-color:#696c6d;
     color:#fff;
-    font-size:1.4rem;
+    font-size:1.2rem;
+    position: relative;
   }
   .header-menu>ul {
-    display: -webkit-box;
     display: flex;
-    display: -webkit-flex;
-    height: 100%;
   }
   .header-menu>ul>li {
-    -webkit-box-flex:1;
-    flex: 1;
-    -webkit-flex:1;
+    flex-grow: 1;
     width: 25%;
-    height: 100%;
   }
   .header-menu>ul>li>a {
     display: block;
-    height: 100%;
-    padding-top: 3rem;
+    padding-top: 2.5rem;
     text-align: center;
     color: #fff;
     box-sizing: border-box;
@@ -51,6 +44,33 @@
     background-size: auto 24px;
     background-position: center 3px;
   }
+  .change-city{
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 4rem;
+    text-align: center;
+    height: 4rem;
+  }
+  .change-city:before{
+    content: '';
+    display: block;
+    position: absolute;
+    border-width: 2rem;
+    border-color: #3e4040 #3e4040 transparent transparent;
+    border-style: solid;
+  }
+  .change-city span{
+    position: absolute;
+    right: 2px;
+    top: 2px
+  }
+  .change-city img{
+    position: absolute;
+    width: 10px;
+    bottom: 20px;
+    right: 5px;
+  }
 </style>
 <template>
   <div class="header-menu">
@@ -68,6 +88,10 @@
         <a :href="couponUrl">优惠专区</a>
       </li>
     </ul>
+    <div class="change-city" @click="showCity">
+      <span>{{localcity}}</span>
+      <img src="../assets/img/arrow-down-white.png" alt="arrow" />
+    </div>
   </div>
 </template>
 <script>
@@ -79,6 +103,14 @@ export default {
       hairUrl: 'hairlist.html',
       couponUrl: 'couponStore.html'
     }
+  },
+  methods: {
+    showCity: function () {
+      window.location.hash = 'showFirst'
+    }
+  },
+  props: {
+    localcity: String
   }
 }
 </script>

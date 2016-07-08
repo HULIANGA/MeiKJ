@@ -1,6 +1,5 @@
 <style lang="sass">
-@import "../assets/css/style.scss";
-@import "../assets/css/flex.scss"
+@import "../assets/css/style.scss"
 </style>
 <template>
 <div class="all-dressers">

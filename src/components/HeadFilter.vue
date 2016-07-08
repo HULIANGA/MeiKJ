@@ -44,8 +44,8 @@ export default {
 }
 </script>
 
-<style lang="sass">
-@import "../assets/css/flex.scss"
+<style>
+@import "../assets/css/flex.scss";
 </style>
 <style scoped>
 .head-filter{
