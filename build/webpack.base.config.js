@@ -43,8 +43,8 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin("css/[name].[hash].css"),//css单独输出到dist下
     new HtmlWebpackPlugin({
-      template: 'src/html/index.html',
-      filename: 'html/index.html',
+      template: 'src/html/main.html',
+      filename: 'html/main.html',
       //chunks这个参数告诉插件要引用entry里面的哪几个入口
       chunks: ['index']
     }),
