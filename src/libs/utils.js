@@ -33,6 +33,14 @@ let getCheck = {
     } else {
       return false
     }
+  },
+  checkEmail: function (val) {
+    let filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
+    if (filter.test(val)) {
+      return true
+    } else {
+      return false
+    }
   }
 }
 const getUrlParam = function (param) {

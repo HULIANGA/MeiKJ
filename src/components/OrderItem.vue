@@ -1,27 +1,33 @@
 <template>
   <div class="order-item" v-for="item in items">
-    <p class="order-paytime" v-if="item.orderType == 1">剩余支付时间：</p>
-    <p class="orderno">订单编号：B121211414112 <span>金额：99元</span></p>
-    <p>预约门店：{{item.orderStore}}</p>
-    <p>预约时间：{{item.reserveTime}}</p>
-    <p class="clearfix"><span class="pull-l">预约项目：{{item.reserveItem}}</span><span class="pull-r">预约发型师：{{item.reservePerson}}</span></p>
+    <p class="order-paytime" v-if="item.processState == 1">剩余支付时间：</p>
+    <p class="orderno">订单编号：{{item.id}} <span>金额：{{item.price}}元</span></p>
+    <p>预约门店：{{item.shopName}}</p>
+    <p>预约时间：{{item.time}}</p>
+    <p class="clearfix"><span class="pull-l">预约项目：{{item.reserveItem}}</span><span class="pull-r">预约发型师：{{item.barberName}}</span></p>
     <div class="order-control">
       <div>
-        <template v-if="item.orderType == 1 || item.orderType == 2">
+        <template v-if="item.processState == 1 || item.processState == 2">
           <button class="btn btn-default">取消订单</button>
         </template>
       </div>
-      <div v-if="item.orderType == 1">
+      <div v-if="item.processState == 1">
           <button class="btn btn-primary">去付款</button>
       </div>
-      <div v-if="item.orderType == 2">
+      <div v-if="item.processState == 2">
         <button class="btn btn-primary">确认服务</button>
       </div>
-      <div class="control-right" v-if="item.orderType == 3">
+      <div class="control-right" v-if="item.processState == 3">
         <button class="btn btn-primary">去评价</button>
       </div>
-      <div class="control-right" v-if="item.orderType == 4">
+      <div class="control-right" v-if="item.processState == 4">
+        <button class="btn btn-primary">查看评价</button>
+      </div>
+      <div class="control-right" v-if="item.processState == 5">
         <span class="order-status">待退款</span>
+      </div>
+      <div class="control-right" v-if="item.processState == 6">
+        <span class="order-status">已退款</span>
       </div>
     </div>
   </div>

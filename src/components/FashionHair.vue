@@ -17,7 +17,12 @@ export default {
   },
   methods: {
     detail (item) {
-      let hairId = item.id
+      let hairId
+      if (item.hairstyleId) {
+        hairId = item.hairstyleId
+      } else {
+        hairId = item.id
+      }
       window.location.href = location.origin + '/dist/html/hair.html?id=' + hairId
     }
   }

@@ -18,7 +18,7 @@
 
     <store-member :storemember="storeMember"></store-member>
 
-    <button class="btn btn-reserve">预约</button>
+    <button class="btn btn-reserve" @click.prevent="">预约</button>
   </div>
 </template>
 <script>

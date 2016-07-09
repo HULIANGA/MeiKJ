@@ -25,7 +25,9 @@ module.exports = {
     reservetime: './src/entrys/reservetime.js',
     comment: './src/entrys/comment.js',
     hair: './src/entrys/hair.js',
-    shopbarber: './src/entrys/shopbarber.js'
+    shopbarber: './src/entrys/shopbarber.js',
+    collection: './src/entrys/collection.js',
+    resetpwd: './src/entrys/resetpwd.js'
   },
   output: {
     path: './dist',//输出文件目录
@@ -107,6 +109,26 @@ module.exports = {
       template: 'src/html/shopbarber.html',
       filename: 'html/shopbarber.html',
       chunks: ['shopbarber']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/usercenter.html',
+      filename: 'html/usercenter.html',
+      chunks: ['usercenter']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/personalData.html',
+      filename: 'html/personalData.html',
+      chunks: ['personalData']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/collection.html',
+      filename: 'html/collection.html',
+      chunks: ['collection']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/resetpwd.html',
+      filename: 'html/resetpwd.html',
+      chunks: ['resetpwd']
     })
   ],
   module: {

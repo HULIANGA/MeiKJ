@@ -47,17 +47,63 @@ import OrderItem from '../components/OrderItem'
 export default {
   data () {
     return {
-      waitPay: window.waitPay,
-      waitService: window.waitService,
-      orderDone: window.orderDone,
-      orderCanceled: window.orderCanceled
+      waitPay: [],
+      waitService: [],
+      orderDone: [],
+      orderCanceled: [],
+      state: 1,
+      token: ''
     }
   },
   ready () {
+    let self = this
+    self.token = localStorage.getItem('token')
+    self.getOrder(1, 1, 10)
   },
   methods: {
     handleLink (active) {
       console.log(active)
+      let self = this
+      let state
+      let pageNo = 1
+      let pageSize = 10
+      if (active === 0) {
+        self.state = 1
+        state = self.state
+      }
+      if (active === 1) {
+        self.state = 2
+        state = self.state
+      }
+      if (active === 2) {
+        self.state = 3
+        state = self.state
+      }
+      if (active === 3) {
+        self.state = 9
+        state = self.state
+      }
+      self.getOrder(state, pageNo, pageSize)
+    },
+    getOrder (state, pageNo, pageSize) {
+      let self = this
+      self.$http.get('/api/order/t/list', {state: state, pageNo: pageNo, pageSize: pageSize}, {headers: {token: self.token}}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          if (state === 1) {
+            self.$set('waitPay', res.result.result)
+          }
+          if (state === 2) {
+            self.$set('waitService', res.result.result)
+          }
+          if (state === 3) {
+            self.$set('orderDone', res.result.result)
+          }
+          if (state === 9) {
+            self.$set('orderCanceled', res.result.result)
+          }
+        }
+      })
     }
   },
   components: {

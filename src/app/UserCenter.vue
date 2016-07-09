@@ -7,12 +7,12 @@
     <div class="user-center-avatar">
       <img src="../assets/img/center-avatar.png">
     </div>
-    <p>用户昵称</p>
-    <p>13333333333</p>
+    <p>{{userInfo.nickName}}</p>
+    <p>{{userInfo.mobile}}</p>
   </div>
   <div class="user-center-bd">
     <div class="center-item">
-      <a class="center-item-link">
+      <a class="center-item-link" :href="userCenter.orderUrl">
         <div class="ct-link-hd">
           <img src="../assets/img/center-order.png">
         </div>
@@ -22,7 +22,7 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link">
+      <a class="center-item-link" :href="userCenter.couponUrl">
         <div class="ct-link-hd">
           <img src="../assets/img/center-coupon.png">
         </div>
@@ -32,7 +32,7 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link">
+      <a class="center-item-link" :href="userCenter.collectionUrl">
         <div class="ct-link-hd">
           <img src="../assets/img/center-favorite.png">
         </div>
@@ -42,7 +42,7 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link">
+      <a class="center-item-link" :href="userCenter.personalUrl">
         <div class="ct-link-hd">
           <img src="../assets/img/center.png">
         </div>
@@ -52,7 +52,7 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link">
+      <a class="center-item-link" :href="userCenter.resetUrl">
         <div class="ct-link-hd">
           <img src="../assets/img/center-pwd.png">
         </div>
@@ -83,7 +83,7 @@
     </div>
   </div>
   <div class="user-center-ft">
-    <button class="btn btn-logout">退出登录</button>
+    <button class="btn btn-logout" @click.prevent="logout">退出登录</button>
   </div>
 </div>
 <bottom-menu></bottom-menu>
@@ -91,6 +91,30 @@
 <script>
   import BottomMenu from '../components/BottomMenu'
   export default {
+    data () {
+      return {
+        userInfo: {},
+        userCenter: {orderUrl: 'myorder.html', personalUrl: 'personalData.html', collectionUrl: 'collection.html', resetUrl: 'resetpwd.html', couponUrl: 'mycoupon.html'},
+        token: ''
+      }
+    },
+    ready () {
+      let self = this
+      self.token = localStorage.token
+      self.$http.post('/api/customer/t/detail', { }, {headers: {token: self.token}}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          self.$set('userInfo', res.result)
+        }
+      })
+    },
+    methods: {
+      logout () {
+        localStorage.setItem('token', '')
+        self.token = localStorage.getItem('token')
+        window.location.href = location.origin + '/dist/html/'
+      }
+    },
     components: {
       BottomMenu
     }
@@ -139,6 +163,7 @@
     display: -webkit-flex;
     padding: 15px 15px;
     position: relative;
+    color: #fff;
   }
   .center-item-link::before {
     content: "";
@@ -155,7 +180,7 @@
     -webkit-transform: scaleY(0.5);
   }
   .ct-link-hd>img {
-    width: 24px;
+    width: 20px;
     height: auto;
     vertical-align: middle;
   }

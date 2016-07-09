@@ -8,23 +8,13 @@
       </div>
       <p class="s-member-name">{{item.stageName}}</p>
       <p class="s-member-level">{{item.positionName}}</p>
-      <p class="s-member-star" v-if="item.star == 5">
-        <img src="../assets/img/five-star.png">
-      </p>
-      <p class="s-member-star" v-if="item.star == 4">
-        <img src="../assets/img/four-star.png">
-      </p>
-      <p class="s-member-star" v-if="item.star == 3">
-        <img src="../assets/img/three-star.png">
-      </p>
-      <p class="s-member-star" v-if="item.star == 2">
-        <img src="../assets/img/two-star.png">
-      </p>
-      <p class="s-member-star" v-if="item.star == 1">
-        <img src="../assets/img/one-star.png">
-      </p>
-      <p class="s-member-star" v-if="item.star == 0">
-        <img src="../assets/img/zero-star.png">
+      <p class="s-member-star">
+        <img src="../assets/img/five-star.png" v-if="item.star == 5">
+        <img src="../assets/img/four-star.png" v-if="item.star == 4">
+        <img src="../assets/img/three-star.png" v-if="item.star == 3">
+        <img src="../assets/img/two-star.png" v-if="item.star == 2">
+        <img src="../assets/img/one-star.png" v-if="item.star == 1">
+        <img src="../assets/img/zero-star.png" v-if="item.star == 0">
       </p>
     </div>
   </div>

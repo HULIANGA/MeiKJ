@@ -5,10 +5,29 @@
       <a>商城</a>
       <a class="reserve"><span></span>预约</a>
       <a>订单</a>
-      <a>我的</a>
+      <a @click.prevent="goCenter">我的</a>
     </footer>
   </div>
 </template>
+<script>
+export default {
+  data () {
+    return {
+      token: ''
+    }
+  },
+  methods: {
+    goCenter () {
+      let token = localStorage.token
+      if (token) {
+        window.location.href = location.origin + '/dist/html/usercenter.html'
+      } else {
+        window.location.href = location.origin + '/dist/html/login.html'
+      }
+    }
+  }
+}
+</script>
 <style scoped>
   .bottom-menu {
     position: fixed;
