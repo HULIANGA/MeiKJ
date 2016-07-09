@@ -26,7 +26,7 @@ module.exports = {
     hair: './src/entrys/hair.js',
     shopbarber: './src/entrys/shopbarber.js',
     collection: './src/entrys/collection.js',
-    resetpwd: './src/entrys/resetpwd.js'
+    resetpwd: './src/entrys/resetpwd.js',
     apointment: './src/entrys/apointment.js'
   },
   output: {
