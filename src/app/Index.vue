@@ -20,7 +20,7 @@ import CitySelect from '../components/CitySelect'
 export default {
   data () {
     return {
-      dataHref: '/json/swiper.json',
+      dataHref: '/api/banner/list',
       hairItems: window.hairItems,
       localCity: '定位中'
     }
