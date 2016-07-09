@@ -111,7 +111,6 @@ module.exports = {
       chunks: ['shopbarber']
     }),
     new HtmlWebpackPlugin({
-<<<<<<< HEAD
       template: 'src/html/usercenter.html',
       filename: 'html/usercenter.html',
       chunks: ['usercenter']
@@ -130,9 +129,6 @@ module.exports = {
       template: 'src/html/resetpwd.html',
       filename: 'html/resetpwd.html',
       chunks: ['resetpwd']
-      template: 'src/html/apointment.html',
-      filename: 'html/apointment.html',
-      chunks: ['apointment']
     }),
     new HtmlWebpackPlugin({
       template: 'src/html/apointment.html',
