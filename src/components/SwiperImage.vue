@@ -20,7 +20,7 @@
   <div class="swiper-container swiper-box">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="item in items">
-        <img :src="item.pictureFull_url">
+        <img :src="'http://meimeidou.qiniudn.com/' + item.imgUrl">
       </div>
     </div>
     <div class="swiper-pagination swiper-pagination-white"></div>
@@ -37,17 +37,20 @@
     },
     ready: function () {
       this.$http.get(this.datahref).then(function (response) {
-        this.items = response.data
-        this.$nextTick(function () {
-          /* eslint-disable no-new */
-          new Swiper('.swiper-box', {
-            pagination: '.swiper-pagination',
-            speed: 1000,
-            autoplay: 2500,
-            loop: true,
-            autoplayDisableOnInteraction: false
+        var res = response.data
+        if (res.code === 0) {
+          this.items = res.result
+          this.$nextTick(function () {
+            /* eslint-disable no-new */
+            new Swiper('.swiper-box', {
+              pagination: '.swiper-pagination',
+              speed: 1000,
+              autoplay: 2500,
+              loop: true,
+              autoplayDisableOnInteraction: false
+            })
           })
-        })
+        }
       }).catch(function (response) {
         console.log(response.data)
       })

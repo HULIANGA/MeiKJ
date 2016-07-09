@@ -20,7 +20,6 @@ module.exports = {
     usercenter: './src/entrys/usercenter.js',
     selectstore: './src/entrys/selectstore.js',
     selectperson: './src/entrys/selectperson.js',
-    selectitem: './src/entrys/selectitem.js',
     order: './src/entrys/order.js',
     reservetime: './src/entrys/reservetime.js',
     comment: './src/entrys/comment.js',
@@ -28,6 +27,7 @@ module.exports = {
     shopbarber: './src/entrys/shopbarber.js',
     collection: './src/entrys/collection.js',
     resetpwd: './src/entrys/resetpwd.js'
+    apointment: './src/entrys/apointment.js'
   },
   output: {
     path: './dist',//输出文件目录
@@ -45,8 +45,8 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin("css/[name].[hash].css"),//css单独输出到dist下
     new HtmlWebpackPlugin({
-      template: 'src/html/index.html',
-      filename: 'html/index.html',
+      template: 'src/html/main.html',
+      filename: 'html/main.html',
       //chunks这个参数告诉插件要引用entry里面的哪几个入口
       chunks: ['index']
     }),
@@ -111,6 +111,7 @@ module.exports = {
       chunks: ['shopbarber']
     }),
     new HtmlWebpackPlugin({
+<<<<<<< HEAD
       template: 'src/html/usercenter.html',
       filename: 'html/usercenter.html',
       chunks: ['usercenter']
@@ -129,6 +130,14 @@ module.exports = {
       template: 'src/html/resetpwd.html',
       filename: 'html/resetpwd.html',
       chunks: ['resetpwd']
+      template: 'src/html/apointment.html',
+      filename: 'html/apointment.html',
+      chunks: ['apointment']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/apointment.html',
+      filename: 'html/apointment.html',
+      chunks: ['apointment']
     })
   ],
   module: {
