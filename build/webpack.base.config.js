@@ -20,12 +20,12 @@ module.exports = {
     usercenter: './src/entrys/usercenter.js',
     selectstore: './src/entrys/selectstore.js',
     selectperson: './src/entrys/selectperson.js',
-    selectitem: './src/entrys/selectitem.js',
     order: './src/entrys/order.js',
     reservetime: './src/entrys/reservetime.js',
     comment: './src/entrys/comment.js',
     hair: './src/entrys/hair.js',
-    shopbarber: './src/entrys/shopbarber.js'
+    shopbarber: './src/entrys/shopbarber.js',
+    apointment: './src/entrys/apointment.js'
   },
   output: {
     path: './dist',//输出文件目录
@@ -107,6 +107,11 @@ module.exports = {
       template: 'src/html/shopbarber.html',
       filename: 'html/shopbarber.html',
       chunks: ['shopbarber']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/apointment.html',
+      filename: 'html/apointment.html',
+      chunks: ['apointment']
     })
   ],
   module: {
