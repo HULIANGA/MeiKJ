@@ -1,24 +1,21 @@
-<style lang="sass">
-  @import '../assets/css/style.scss'
-</style>
 <template>
 <div class="order">
   <div class="order-reserve-detail">
     <div class="reserve-detail-item">
       <img src="../assets/img/order-store.png">
-      预约门店：<span>张江店</span>
+      预约门店：<span>{{order.shopName}}</span>
     </div>
     <div class="reserve-detail-item">
       <img src="../assets/img/order-hair.png">
-      预约发型师：<span>张江店</span>
+      预约发型师：<span>{{order.barberName}}</span>
     </div>
     <div class="reserve-detail-item">
       <img src="../assets/img/order-project.png">
-      预约项目：<span>洗剪吹</span>
+      预约项目：<span>{{order.productNames}}</span>
     </div>
     <div class="reserve-detail-item">
       <img src="../assets/img/order-time.png">
-      预约时间：<span>2016:04.23  18:00</span>
+      预约时间：<span>{{order.timeString}}</span>
     </div>
   </div>
   <div class="user-info">
@@ -88,15 +85,40 @@
       <p>实付金额：99元<span>(优惠：0元)</span></p>
     </div>
     <div class="o-submit-right">
-      <button class="btn btn-submit">提交</button>
+      <button class="btn btn-submit" @click.prevent.stop="submit()">提交</button>
     </div>
   </div>
 </div>
 </template>
-<script></script>
-<style>
-body {
-  background-color: #eaeaea;
+<script>
+  export default {
+    data () {
+      return {
+        isWeixin: /MicroMessenger/i.test(navigator.userAgent)
+      }
+    },
+    methods: {
+      submit: function () {
+        this.order.orderSubmit.payType = 1
+        this.order.orderSubmit.customerName = '胡靓'
+        this.order.orderSubmit.customerPhone = '15800985626'
+        this.order.orderSubmit.price = 20.00
+        this.order.orderSubmit.realPrice = 19.00
+        this.order.orderSubmit.memo = '我是备注'
+        console.log(this.order.orderSubmit)
+        this.$http.post('/api/order/t/save', this.order.orderSubmit, {headers: {token: '1e1ce7b155d900beaa8000'}}).then(function (response) {
+
+        })
+      }
+    },
+    props: {
+      order: Object
+    }
+  }
+</script>
+<style scoped>
+.order{
+  padding-bottom: 50px;
 }
 .order-reserve-detail {
   background-image: url(../assets/img/order-back.png);

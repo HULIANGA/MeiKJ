@@ -53,7 +53,7 @@ export default {
 .time-item.active {
   border-color: #ff6251;
   border-width: 2px;
-  background-image: url(../assets/img/check-time.png);
+  background-image: url(../assets/img/select-icon.png);
   background-repeat: no-repeat;
   background-position: right -1px;
   background-size: 24px;

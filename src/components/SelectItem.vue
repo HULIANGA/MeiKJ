@@ -1,13 +1,11 @@
-<style lang="sass">
-  @import '../assets/css/style.scss'
-</style>
 <template>
 <div class="select-item">
-  <div class="select-notice">
-    <img src="../assets/img/notice.png">尊敬的用户 您选择的项目需要大约3个小时
+  <div v-if="maxHours" class="select-notice">
+    <img src="../assets/img/notice.png">尊敬的用户 您选择的项目需要大约{{maxHours}}个小时
   </div>
+  <div v-if="maxHours" class="notice-placeholder"></div>
   <div class="project-list">
-    <div class="project-item" v-for="item in items">
+    <div class="project-item" v-for="(projectIndex, item) in items">
       <div class="project-item-title">
         {{item.name}}
       </div>
@@ -18,45 +16,83 @@
           </div>
           <div class="p-item-bd">
             <span>&yen;{{sub.price}}</span>
-            <input type="checkbox" @click.stop="selectCheckbox('project'+sub.projectId, 'product'+sub.productId)" class="product-check">
+            <input type="checkbox" @click.stop="selectCheckbox('project'+sub.projectId, 'product'+sub.productId)" :data-hours="item.hours" :data-name="sub.name" :data-price="sub.price" class="product-check">
           </div>
         </div>
       </div>
     </div>
   </div>
-  <button class="btn btn-reserve">已选好</button>
+  <button class="btn btn-reserve" @click="next()">已选好</button>
 </div>
 </template>
 <script>
+import toast from '../libs/toast'
 export default {
   data () {
     return {
-      selectedItem: []
+      selectedItem: [], // 选中的产品取耗时最长的
+      costHours: [] // 所有勾选的产品的等待时间数组
+    }
+  },
+  computed: {
+    maxHours: function () {
+      if (this.costHours.length === 0) {
+        return null
+      }else {
+        return Math.max.apply(null, this.costHours)
+      }
     }
   },
   ready: function () {
   },
   methods: {
+    next: function () {
+      if (document.querySelectorAll('.product-check:checked').length > 0) {
+        this.$dispatch('next', {'fromStep': 'service', 'maxHours': this.maxHours, 'productItems': this.selectedItem})
+      }else {
+        toast('请至少选择一个产品')
+      }
+    },
     selectProduct: function (projectClass, productClass) {
       if (document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked) {
         document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked = false
       }else {
-        for (var index in document.getElementsByClassName(projectClass)) {
+        for (let index in document.getElementsByClassName(projectClass)) {
           if (document.getElementsByClassName(projectClass).hasOwnProperty(index)) {
             document.getElementsByClassName(projectClass)[index].getElementsByClassName('product-check')[0].checked = false
           }
         }
         document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked = true
       }
+      this.getSelectItemHours()
     },
     selectCheckbox: function (projectClass, productClass) {
       if (document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked) {
-        for (var index in document.getElementsByClassName(projectClass)) {
+        for (let index in document.getElementsByClassName(projectClass)) {
           if (document.getElementsByClassName(projectClass).hasOwnProperty(index)) {
             document.getElementsByClassName(projectClass)[index].getElementsByClassName('product-check')[0].checked = false
           }
         }
         document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked = true
+      }else {
+
+      }
+      this.getSelectItemHours()
+    },
+    // 获取选中产品需要的时间
+    getSelectItemHours: function () {
+      this.costHours = []
+      this.selectedItem = []
+      for (let index in document.getElementsByClassName('product-check')) {
+        if (document.getElementsByClassName('product-check').hasOwnProperty(index)) {
+          if (document.getElementsByClassName('product-check')[index].checked === true) {
+            this.costHours.push(document.getElementsByClassName('product-check')[index].getAttribute('data-hours'))
+            this.selectedItem.push({
+              'productName': document.getElementsByClassName('product-check')[index].getAttribute('data-name'),
+              'price': document.getElementsByClassName('product-check')[index].getAttribute('data-price')
+            })
+          }
+        }
       }
     }
   },
@@ -65,17 +101,21 @@ export default {
   }
 }
 </script>
-<style>
-body {
-  background-color: #eaeaea;
-}
+<style scoped>
 .select-notice {
   font-size: 1.2rem;
   background-color: #fff;
-  height: 30px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  border-bottom: 1px solid #eaeaea;
+}
+.notice-placeholder{
+  height: 49px;
 }
 .select-notice>img {
   width: 12px;
@@ -83,11 +123,11 @@ body {
   margin-right: 8px;
 }
 .project-item {
-  margin-top: 15px;
+  margin-bottom: 15px;
   background-color: #fff;
 }
 .project-item-title {
-  line-height: 30px;
+  line-height: 34px;
   display: flex;
   padding: 0 15px;
   border-bottom: 1px solid #eaeaea;

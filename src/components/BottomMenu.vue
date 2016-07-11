@@ -3,7 +3,7 @@
     <footer>
       <a class="current">首页</a>
       <a>商城</a>
-      <a class="reserve"><span></span>预约</a>
+      <a @click.prevent="goOrder" class="reserve"><span></span>预约</a>
       <a>订单</a>
       <a @click.prevent="goCenter">我的</a>
     </footer>
@@ -23,6 +23,14 @@ export default {
         window.location.href = location.origin + '/dist/html/usercenter.html'
       } else {
         window.location.href = location.origin + '/dist/html/login.html'
+      }
+    },
+    goOrder () {
+      let token = localStorage.token
+      if (token) {
+        window.location.href = 'apointment.html'
+      }else {
+        window.location.href = 'login.html'
       }
     }
   }

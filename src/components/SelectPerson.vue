@@ -1,0 +1,48 @@
+<template>
+  <div class="all-dressers">
+    <person-one v-for="item in items" @click="selectPerson(item)" :item="item" :class="item.id === personId ? 'active' : ''"></person-one>
+    <button class="btn btn-reserve" @click="next()">已选好</button>
+  </div>
+</template>
+<script>
+import PersonOne from '../components/PersonOne'
+import toast from '../libs/toast'
+
+export default {
+  data () {
+    return {
+      personId: null,
+      personName: null
+    }
+  },
+  methods: {
+    next: function () {
+      if (this.personId) {
+        this.$dispatch('next', {'fromStep': 'person', 'personId': this.personId, 'personName': this.personName})
+      }else {
+        toast('请选择发型师')
+      }
+    },
+    selectPerson: function (personItem) {
+      if (personItem.id === this.personId) {
+        this.personId = null
+        this.personName = null
+      }else {
+        this.personId = personItem.id
+        this.personName = personItem.realName
+      }
+    }
+  },
+  components: {
+    PersonOne
+  },
+  props: {
+    items: Array
+  }
+}
+</script>
+<style scoped>
+.all-dressers{
+  padding-bottom: 50px;
+}
+</style>
