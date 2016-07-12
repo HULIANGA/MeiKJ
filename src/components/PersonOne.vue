@@ -1,11 +1,10 @@
 <template>
   <div class="hair-dresser-item">
-    <div >
-      <div class="hair-dresser-img"><img :src="'http://meimeidou.qiniudn.com/'+item.logo"></div>
+    <div class="hair-dresser-img">
+      <div><img :src="'http://meimeidou.qiniudn.com/'+item.logo"></div>
     </div>
     <div class="hair-dresser-text">
-        <p class="hair-dresser-store">{{item.shopName}}</p>
-        <p class="hair-dresser-name">{{item.stageName }}<span class="hair-dresser-level">{{item.positionName}}</span></p>
+        <p class="hair-dresser-name">{{item.stageName }}</p>
         <p class="hair-dresser-star" >
           <img src="../assets/img/five-star.png" v-if="item.star == 5">
           <img src="../assets/img/four-star.png" v-if="item.star == 4">
@@ -16,10 +15,9 @@
         </p>
     </div>
     <div class="hair-dresser-ft">
-      <p class="hair-dresser-project">洗剪吹<span>&yen;{{item.basePrice}}</span></p>
       <p class="hair-dresser-order">已接单{{item.orderNum}}</p>
-      <p class="hair-dresser-comment"><a>点评({{item.commentNum}})</a></p>
     </div>
+    <div class="hair-dresser-level"><p>{{item.positionName}}</p></div>
   </div>
 </template>
 <script>
@@ -33,29 +31,71 @@ export default {
 .hair-dresser-item {
   position: relative;
   padding: 10px 5px;
-  border-bottom: 1px solid #eaeaea;
+  border: 1px solid #ffffff;
+  border-bottom-color: #eaeaea;
   display: flex;
   background-color: #ffffff;
+  box-sizing: border-box;
 }
 .hair-dresser-item.active{
-  border: 1px solid red;
+  border: 3px solid #FF6251;
+  padding: 8px 3px;
 }
-.hair-dresser-item>div {
-  flex: 1;
+.hair-dresser-item.active .hair-dresser-level {
+  right: -2px;
+  top: 8px;
 }
 .hair-dresser-item .hair-dresser-img {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+}
+.hair-dresser-item .hair-dresser-img>div {
   width: 80px;
   height: 80px;
   border-radius: 50%;
   overflow: hidden;
 }
-.hair-dresser-item .hair-dresser-text,.hair-dresser-ft {
+.hair-dresser-item .hair-dresser-text {
+  flex-grow: 1;
+  padding-left: 20px;
+}
+.hair-dresser-item .hair-dresser-text,.hair-dresser-item .hair-dresser-ft {
   position: relative;
   font-size: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-.hair-dresser-text>p{
-  margin-bottom: 5px;
+.hair-dresser-item .hair-dresser-ft {
+  justify-content: flex-end;
+}
+.hair-dresser-level {
+  position: absolute;
+  right: 0px;
+  top: 10px;
+  height: 26px;
+  background-color: #FF6251;
+  color: #ffffff;
+  line-height: 26px;
+  font-size: 1.2rem;
+  width: 60px;
+  text-align: right;
+  padding-right: 8px;
+  padding-left: 15px;
+  box-sizing: border-box;
+  border-top-left-radius: 13px;
+  border-bottom-left-radius: 13px;
+}
+.hair-dresser-level>p {
+  background-image: url(../assets/img/position-icon.png);
+  background-repeat: no-repeat;
+  background-size: auto 14px;
+  background-position: left center;
+}
+.hair-dresser-text>p {
   line-height: 24px;
+  font-size: 1.6rem;
 }
 .hair-dresser-store {
   padding-left: 24px;
@@ -67,16 +107,10 @@ export default {
 .hair-dresser-star>img {
   height: 16px;
   width: auto;
-  position: relative;
-  top: -4px;
-}
-.hair-dresser-name .hair-dresser-level {
-  font-size: 1.3rem;
-  color: #a7a7a7;
-  margin-left: 5px;
+  vertical-align: top;
+  margin-top: 4px;
 }
 .hair-dresser-ft>p {
-  margin-bottom: 5px;
   text-align: center;
   line-height: 24px;
 }
@@ -85,18 +119,7 @@ export default {
 }
 .hair-dresser-ft .hair-dresser-order {
   color:#a7a7a7;
-}
-.hair-dresser-comment>a {
-  display: block;
-}
-.hair-dresser-comment>a::after {
-  content: '';
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-width: 1px 1px 0 0;
-  border-style: solid;
-  border-color: #333;
-  transform: rotate(45deg);
+  font-size: 1.2rem;
+  padding-right: 10px;
 }
 </style>

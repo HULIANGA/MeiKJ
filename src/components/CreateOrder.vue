@@ -3,19 +3,23 @@
   <div class="order-reserve-detail">
     <div class="reserve-detail-item">
       <img src="../assets/img/order-store.png">
-      预约门店：<span>{{order.shopName}}</span>
+      <span>预约门店：<span>
+      <span class="value">{{order.shopName}}</span>
     </div>
     <div class="reserve-detail-item">
       <img src="../assets/img/order-hair.png">
-      预约发型师：<span>{{order.barberName}}</span>
+      <span>预约发型师：</span>
+      <span class="value">{{order.barberName}}</span>
     </div>
     <div class="reserve-detail-item">
       <img src="../assets/img/order-project.png">
-      预约项目：<span>{{order.productNames}}</span>
+      <span>预约项目：</span>
+      <span class="value">{{order.productNames}}</span>
     </div>
     <div class="reserve-detail-item">
       <img src="../assets/img/order-time.png">
-      预约时间：<span>{{order.timeString}}</span>
+      <span>预约时间：</span>
+      <span class="value">{{order.timeString}}</span>
     </div>
   </div>
   <div class="user-info">
@@ -42,14 +46,14 @@
         <label>优惠券</label>
       </div>
       <div class="user-info-bd">
-        <p class="u-info-text">0张可用</p>
+        <p class="u-info-text"><span>0张可用</span></p>
       </div>
     </a>
   </div>
   <!-- pay  -->
   <div class="order-pay">
     <div class="order-pay-title">付款方式</div>
-    <label class="o-pay-item">
+    <div class="o-pay-item">
       <div class="o-pay-hd">
         <img src="../assets/img/wechat-pay.png">
       </div>
@@ -59,8 +63,8 @@
       <div class="o-pay-ft">
         <input type="radio" name="pay">
       </div>
-    </label>
-    <label class="o-pay-item">
+    </div>
+    <div class="o-pay-item">
       <div class="o-pay-hd">
         <img src="../assets/img/alipay.png">
       </div>
@@ -70,7 +74,7 @@
       <div class="o-pay-ft">
         <input type="radio" name="pay">
       </div>
-    </label>
+    </div>
   </div>
   <!-- remark -->
   <div class="order-remark">
@@ -82,7 +86,10 @@
   </div>
   <div class="order-submit">
     <div class="o-submit-left">
-      <p>实付金额：99元<span>(优惠：0元)</span></p>
+      <p>
+        <span class="real-price">实付金额：99元</span>
+        <span class="cut-price">(优惠：0元)</span>
+      </p>
     </div>
     <div class="o-submit-right">
       <button class="btn btn-submit" @click.prevent.stop="submit()">提交</button>
@@ -124,51 +131,44 @@
   background-image: url(../assets/img/order-back.png);
   background-repeat: no-repeat;
   background-position: left bottom;
-  background-size: contain;
+  background-size: 100% 5px;
   background-color: #fff;
-  padding: 15px 0;
+  padding: 10px 0 20px;
 }
 .reserve-detail-item {
-  display: -webkit-box;
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  -webkit-align-items:center;
-  font-size: 1.5rem;
-  height: 36px;
-  padding-left: 20px;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  padding: 0 15px;
+}
+.order-reserve-detail .reserve-detail-item:last-child {
+  margin-bottom: 0;
 }
 .reserve-detail-item img {
-  width: 20px;
+  width: 18px;
   height: auto;
   margin-right: 8px;
 }
-.reserve-detail-item>span {
+.reserve-detail-item>span.value {
   color: #fd6f60;
 }
 .user-info {
   background-color: #fff;
   margin-top: 15px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 .user-info-item {
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   padding: 10px 15px;
   border-bottom: 1px solid #eaeaea;
   align-items: center;
 }
-.user-info-item .user-info-bd {
-  -webkit-box-flex:1;
-  flex: 1;
-  -webkit-flex:1;
+.user-info-item .user-info-hd {
+  padding-right: 10px;
+  flex-grow: 0;
+  line-height: 24px;
 }
-.user-info-hd>label{
-  display: block;
-  width: 105px;
-  word-wrap: break-word;
-  word-break: break-all;
+.user-info-item .user-info-bd {
+  flex-grow: 1;
 }
 .user-info-bd>input {
   height: 24px;
@@ -178,12 +178,10 @@
 .user-coupon {
   background-color: #fff;
   margin-top: 15px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 .u-info-text {
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   justify-content: flex-end;
   align-items: center;
   color: #8d8d8d;
@@ -191,58 +189,46 @@
 .u-info-text::after {
   content: '';
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-width: 2px 2px 0 0;
   border-style: solid;
   border-color: #8d8d8d;
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
 }
 .order-pay {
   margin-top: 15px;
   background-color: #fff;
 }
 .order-pay-title {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   border-bottom: 1px solid #eaeaea;
-  padding: 10px 15px;
+  padding: 8px 15px;
 }
 .o-pay-item {
-  display: -webkit-box;
-  display: flex;
-  display: -webkit-flex;
   padding: 10px 20px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  display: flex;
   align-items: center;
   position: relative;
+  border-bottom: 1px solid #eaeaea;
 }
-.o-pay-item::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 1px;
-  border-top: 1px solid #eaeaea;
-  color: #eaeaea;
-  transform-origin: 0 0;
-  -webkit-transform-origin:0 0;
-  transform: scaleY(0.5);
-  -webkit-transform: scaleY(0.5);
+.o-pay-hd {
+  display: flex;
+  align-items: center;
 }
 .o-pay-hd>img {
-  width: 24px;
+  width: 18px;
   height: auto;
   margin-right: 8px;
 }
 .o-pay-bd {
-  -webkit-box-flex:1;
   flex: 1;
-  -webkit-flex:1;
 }
 .o-pay-ft {
   text-align: right;
+  display: flex;
+  align-items: center;
 }
 .o-pay-ft input[type=radio] {
   -webkit-appearance:none;
@@ -271,58 +257,54 @@
   background-color: #fff;
 }
 .order-remark-item {
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   padding: 10px 15px;
 }
 .o-remark-bd {
-  -webkit-box-flex:1;
   flex: 1;
-  -webkit-flex:1;
 }
 .o-remark-bd textarea {
   display: block;
   border: 1px solid #eaeaea;
   border-radius: 3px;
   resize: none;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   width: 100%;
   line-height: 24px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 .order-submit {
   position: fixed;
   bottom:0;
   left: 0;
   width: 100%;
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   height: 50px;
   box-sizing: border-box;
 }
 .o-submit-left {
-  -webkit-box-flex:3;
-  flex: 3;
-  -webkit-flex:3;
   background-color: #40403f;
   color: #fff;
   font-size: 1.6rem;
   height: 100%;
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   align-items: center;
-  padding-left: 10px;
+  padding-left: 15px;
+  flex-grow: 1;
 }
-.o-submit-left span {
+.o-submit-left .cut-price {
   color: #fd6f60;
+  font-size: 1.4rem;
+  display: inline-block;
+}
+.o-submit-left .real-price {
+  margin-right: 10px;
 }
 .o-submit-right {
-  -webkit-box-flex:1;
-  flex: 1;
-  -webkit-flex:1;
   height: 100%;
+  width: 70px;
+  flex-grow: 0;
 }
 .btn-submit {
   height: 50px;
@@ -330,5 +312,6 @@
   width: 100%;
   background-color: #fd6f60;
   border-radius: 0;
+  padding: 0;
 }
 </style>

@@ -29,7 +29,7 @@ export default {
         this.personName = null
       }else {
         this.personId = personItem.id
-        this.personName = personItem.realName
+        this.personName = personItem.stageName
       }
     }
   },

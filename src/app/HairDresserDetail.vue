@@ -44,7 +44,7 @@
       <h3 class="item-title"><i></i>相关评价</h3>
       <evaluation :evaluation="evaluation"></evaluation>
     </div>
-    <button class="btn btn-reserve">预约</button>
+    <button class="btn btn-reserve" @click.prevent="goApointment()">预约</button>
   </div>
 </template>
 <script>
@@ -76,6 +76,15 @@
           console.log(res.result.result)
         }
       })
+    },
+    methods: {
+      goApointment: function () {
+        window.location.href =
+        'apointment.html?personId=' + this.hairDresser.id +
+        '&personName=' + this.hairDresser.stageName +
+        '&shopId=' + this.hairDresser.shopId +
+        '&shopName=' + this.hairDresser.shopName
+      }
     },
     components: {
       Evaluation,

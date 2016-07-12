@@ -24,13 +24,13 @@ export default function (options) {
   let message, position, duration, className, iconClass
   if (typeof options === 'string') {
     message = options
-    duration = 3000
+    duration = 1500
     position = 'middle'
     className = ''
     iconClass = ''
   } else {
     message = options.message
-    duration = options.duration || 3000
+    duration = options.duration || 1500
     position = options.position || 'middle'
     className = options.className || ''
     iconClass = options.iconClass || ''

@@ -18,7 +18,7 @@
 
     <store-member :storemember="storeMember"></store-member>
 
-    <button class="btn btn-reserve" @click.prevent="">预约</button>
+    <button class="btn btn-reserve" @click.prevent="goApointment()">预约</button>
   </div>
 </template>
 <script>
@@ -52,6 +52,11 @@
           self.$set('storeMember', res.result)
         }
       })
+    },
+    methods: {
+      goApointment: function () {
+        window.location.href = 'apointment.html?shopId=' + this.storeDetail.id + '&shopName=' + this.storeDetail.name
+      }
     },
     components: {
       ServiceItem,

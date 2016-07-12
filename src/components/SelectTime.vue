@@ -1,9 +1,7 @@
 <template>
   <div class="choose-time">
-    <div class="c-time-header">
-      <header-date></header-date>
-    </div>
-    <time-item :timelist="timeList"></time-item>
+    <header-date></header-date>
+    <time-item :costhours="hours"></time-item>
     <button class="btn btn-reserve" @click="next()">已选好</button>
   </div>
 </template>
@@ -14,13 +12,19 @@ import TimeItem from '../components/TimeItem'
 export default {
   data () {
     return {
-      items: null,
-      timeList: window.timeList
     }
   },
   methods: {
     next: function () {
       this.$dispatch('next', {'fromStep': 'time'})
+    }
+  },
+  events: {
+    'select-date': function (date) {
+      this.$broadcast('get-time-list', {
+        shopId: this.shopid,
+        date: date
+      })
     }
   },
   created () {
@@ -31,6 +35,10 @@ export default {
   components: {
     HeaderDate,
     TimeItem
+  },
+  props: {
+    hours: Number,
+    shopid: Number
   }
 }
 </script>

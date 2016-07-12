@@ -5,13 +5,13 @@
   <div class="swiper-container">
     <div class="swiper-wrapper">
       <div class="swiper-slide">
-        <div :class="['date-item', index === currentIndex ? 'active' : '']" v-for="(index, dateItem) in dateItems" v-if="index < 5">
+        <div :class="['date-item', index === currentIndex ? 'active' : '']" :data-time="dateItem.time" @click="selectDay(index, dateItem.time)" v-for="(index, dateItem) in dateItems" v-if="index < 5">
           <p>{{dateItem.dayStr}}</p>
           <p>{{dateItem.dateStr}}</p>
         </div>
       </div>
       <div class="swiper-slide">
-        <div class="date-item" v-for="(index, dateItem) in dateItems" v-if="index >= 5">
+        <div :class="['date-item', index === currentIndex ? 'active' : '']" data-time="dateItem.time" @click="selectDay(index, dateItem.time)" v-for="(index, dateItem) in dateItems" v-if="index >= 5">
           <p>{{dateItem.dayStr}}</p>
           <p>{{dateItem.dateStr}}</p>
         </div>
@@ -54,16 +54,27 @@ export default {
       return dateItems
     }
   },
-  ready () {
-    /* eslint-disable no-new */
-    this.$nextTick(function () {
-      new Swiper('.swiper-container', {
-        prevButton: '.swiper-button-prev',
-        nextButton: '.swiper-button-next'
+  events: {
+    'time-show': function () {
+      /* eslint-disable no-new */
+      this.$nextTick(function () {
+        new Swiper('.swiper-container', {
+          prevButton: '.swiper-button-prev',
+          nextButton: '.swiper-button-next'
+        })
       })
-    })
+    }
+  },
+  ready () {
+
   },
   methods: {
+    selectDay: function (index, time) {
+      if (this.currentIndex !== index) {
+        this.currentIndex = index
+        this.$dispatch('select-date', time)
+      }
+    }
   }
 }
 </script>
@@ -71,10 +82,13 @@ export default {
 .swiper-button-prev {
   width: 15px;
   left: 0;
-  background-size: 10px;
+  background-size: 8px;
+}
+.swiper-button-next.swiper-button-disabled, .swiper-button-prev.swiper-button-disabled {
+  display: none;
 }
 .swiper-button-next {
-  background-size: 10px auto;
+  background-size: 8px auto;
   width: 15px;
   right: 0;
 }
@@ -90,7 +104,7 @@ export default {
   box-sizing: border-box;
 }
 .date-item {
-  padding: 5px 20px;
+  padding: 5px 0;
   height: 100%;
   width: 20%;
   box-sizing: border-box;
