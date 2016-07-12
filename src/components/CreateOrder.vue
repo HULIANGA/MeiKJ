@@ -61,7 +61,7 @@
         <p>微信支付</p>
       </div>
       <div class="o-pay-ft">
-        <input type="radio" name="pay">
+        <input type="radio" name="pay" value='2'>
       </div>
     </div>
     <div class="o-pay-item">
@@ -72,7 +72,7 @@
         <p>支付宝</p>
       </div>
       <div class="o-pay-ft">
-        <input type="radio" name="pay">
+        <input type="radio" name="pay" value="1">
       </div>
     </div>
   </div>
