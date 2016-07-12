@@ -24,7 +24,7 @@ export default {
       storeItem: null, // 门店数据
       timeItem: null, // 时间数据
       personItem: null, // 发型师数据
-      currentStep: 'order', // 当前显示步骤。service选项目；store选门店；time选时间；person选发型师；order下单
+      currentStep: 'service', // 当前显示步骤。service选项目；store选门店；time选时间；person选发型师；order下单
       orderInfo: { // 订单初始化数据，包括显示的数据和提交的数据
         shopName: null, // 门店名称
         barberName: null, // 发型师名称
