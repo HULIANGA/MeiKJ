@@ -1,8 +1,8 @@
 <template>
 <div class="store-member">
-  <h3 class="item-title"><i></i>发型师<span>({{storemember.totalCount}})</span></h3>
+  <h3 class="item-title"><i></i>发型师<span>({{totalCount}})</span></h3>
   <div class="s-member-list">
-    <div class="s-member-item" v-for="item in storemember.result" @click.prevent="detail(item.id)">
+    <div class="s-member-item" v-for="(index, item) in storemember" v-if="index < 4" @click.prevent="detail(item.id)">
       <div class="s-member-img">
         <img :src="'http://meimeidou.qiniudn.com/'+item.logo">
       </div>
@@ -18,7 +18,7 @@
       </p>
     </div>
   </div>
-  <p class="s-member-more" v-if="storemember.totalCount > 4">
+  <p class="s-member-more" v-if="totalCount > 4">
     <a @click.prevent="showMore">查看更多</a>
   </p>
 </div>
@@ -27,48 +27,66 @@
 import utils from '../libs/utils'
 export default {
   props: {
-    storemember: Object
+    storemember: Array
+  },
+  computed: {
+    totalCount: function () {
+      return this.storemember.length
+    }
   },
   methods: {
     showMore () {
-      console.log('ooo')
       let storeId = utils.getUrlParam('id')
-      window.location.href = location.origin + '/dist/html/shopbarber.html?id=' + storeId
+      window.location.href = 'shopbarber.html?id=' + storeId
     },
     detail (id) {
-      window.location.href = location.origin + '/dist/html/barberDetail.html?id=' + id
+      window.location.href = 'barberDetail.html?id=' + id
     }
   }
 }
 </script>
-<style>
+<style scoped>
 .store-member {
   background-color: #fff;
   font-size: 1.6rem;
   margin-top: 15px;
+  padding-top: 5px;
+}
+.store-member .item-title {
+  font-size: 1.4rem;
+  line-height: 26px;
+}
+.store-member .item-title i {
+  float: left;
+  width: 15px;
+  height: 26px;
+  background-color: #ff6251;
+  margin-right: 15px;
+}
+.store-member .item-title span {
+  margin-left: 10px;
 }
 .store-member .s-member-list  {
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
+  padding-top: 13px;
+  margin: 0 15px;
 }
 .s-member-list .s-member-item {
   width: 25%;
   padding: 5px;
+  font-size: 1.3rem;
 }
 .s-member-item .s-member-img {
-  width: 60px;
-  height: 60px;
+  width: 90%;
   border-radius: 50%;
   overflow: hidden;
-    margin: 0 auto;
+  margin: 0 auto 10px;
 }
 .s-member-item>p {
   text-align: center;
-  margin-top: 5px;
 }
 .s-member-star {
-  height: 16px;
+  margin-top: 5px;
 }
 .s-member-star>img {
   width: 60%;
@@ -77,6 +95,7 @@ export default {
 .s-member-more {
   text-align: right;
   padding: 0 15px 10px 0;
+  font-size: 1.3rem;
 }
 .s-member-more>a::after {
   content: '';

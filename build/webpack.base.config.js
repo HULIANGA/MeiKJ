@@ -4,15 +4,15 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');//自动生成html
 module.exports = {
   debug: true,
   entry: {//入口js
-    index: './src/entrys/main.js',
+    main: './src/entrys/main.js',
+    login: './src/entrys/login.js',
+    regist: './src/entrys/regist.js',
+    findPwd: './src/entrys/findPwd.js',
+    allStore: './src/entrys/allStore.js',
+    storeDetail: './src/entrys/storeDetail.js',
     hairList: './src/entrys/hairList.js',
     hairdresser: './src/entrys/hairdresser.js',
     hairDresserDetail: './src/entrys/hairDresserDetail.js',
-    allStore: './src/entrys/allStore.js',
-    storeDetail: './src/entrys/storeDetail.js',
-    login: './src/entrys/login.js',
-    regist: './src/entrys/regist.js',
-    findpwd: './src/entrys/findpwd.js',
     couponstore: './src/entrys/couponstore.js',
     mycoupon: './src/entrys/mycoupon.js',
     personalData: './src/entrys/personalData.js',
@@ -44,7 +44,7 @@ module.exports = {
       template: 'src/html/main.html',
       filename: 'html/main.html',
       //chunks这个参数告诉插件要引用entry里面的哪几个入口
-      chunks: ['index']
+      chunks: ['main']
     }),
     new HtmlWebpackPlugin({
       template: 'src/html/login.html',
@@ -59,7 +59,17 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'src/html/findpwd.html',
       filename: 'html/findpwd.html',
-      chunks: ['findpwd']
+      chunks: ['findPwd']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/allstore.html',
+      filename: 'html/allstore.html',
+      chunks: ['allStore']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/storedetail.html',
+      filename: 'html/storedetail.html',
+      chunks: ['storeDetail']
     }),
     new HtmlWebpackPlugin({
       template: 'src/html/mycoupon.html',
@@ -80,16 +90,6 @@ module.exports = {
       template: 'src/html/hairDresserDetail.html',
       filename: 'html/barberDetail.html',
       chunks: ['hairDresserDetail']
-    }),
-    new HtmlWebpackPlugin({
-      template: 'src/html/allStore.html',
-      filename: 'html/allstore.html',
-      chunks: ['allStore']
-    }),
-    new HtmlWebpackPlugin({
-      template: 'src/html/storeDetail.html',
-      filename: 'html/storedetail.html',
-      chunks: ['storeDetail']
     }),
     new HtmlWebpackPlugin({
       template: 'src/html/hairlist.html',
@@ -130,6 +130,11 @@ module.exports = {
       template: 'src/html/apointment.html',
       filename: 'html/apointment.html',
       chunks: ['apointment']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/couponStore.html',
+      filename: 'html/couponStore.html',
+      chunks: ['couponstore']
     })
   ],
   module: {

@@ -16,22 +16,26 @@
         <input class="user-pwd" type="password" placeholder="请设置密码" v-model="password">
       </div>
       <button class="btn btn-confirm" @click.prevent="register">注册</button>
-
     </div>
-    <p class="clearfix regist-link"><a class="pull-r" :href="url">已有账号，去登录</a></p>
+    <p class="clearfix regist-link"><a class="pull-r" :href="login">已有账号，去登录</a></p>
   </div>
+  <loading :show="loading.show" :show-text="loading.showText"></loading>
 </template>
 <script>
 import utils from '../libs/utils'
 import toast from '../libs/toast'
+import Loading from '../components/Loading'
 
 export default {
   data () {
     return {
+      login: 'login.html',
       phone: '',
       verifyCode: '',
       password: '',
-      url: 'login.html'
+      loading: {
+        show: false
+      }
     }
   },
   methods: {
@@ -53,14 +57,17 @@ export default {
         toast('请输入正确的手机号')
         return
       }
+      self.loading.show = true
       self.$http.post('/api/customer/register', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {
-        console.log(response.data)
         let res = response.data
         if (res.code === 0) {
-          window.location.href = location.origin + '/dist/html/'
+          window.location.href = 'main.html'
+        }else {
+          self.loading.show = false
         }
       }, (response) => {
-        console.log(response.data)
+        toast('注册失败')
+        self.loading.show = false
       })
     },
     getVerifyCode () {
@@ -79,11 +86,22 @@ export default {
         console.log(response.data)
       })
     }
+  },
+  components: {
+    Loading
   }
 }
 </script>
 <style>
 .regist-body {
-  padding: 0 15%;
+  padding: 0 12%;
+}
+.regist-link {
+  padding: 20px 8%;
+}
+.regist-link > a {
+  font-size: 1.4rem;
+  padding: 5px;
+  color: #333;
 }
 </style>

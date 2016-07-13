@@ -25,7 +25,7 @@ export default {
       localCity: '定位中'
     }
   },
-  ready: function () {
+  created: function () {
     // 百度地图api放在最后加载，判断api加载完成后获取城市
     var getCityInterval = setInterval(() => {
       if (typeof (window.BMap) !== 'undefined') {

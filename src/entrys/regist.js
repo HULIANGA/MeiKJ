@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Regist from '../app/regist'
+import Regist from '../app/Regist'
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
 Vue.http.options.emulateJSON = true

@@ -2,7 +2,7 @@
   outline: none;
 }
 html {
-  font: normal 10px/1.5 黑体,Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei;
+  font: normal 10px/1.5 sans-serif;
 }
 body,
 html {
@@ -12,7 +12,7 @@ html {
   overflow-x: hidden;
 }
 body {
-  font: normal 10px/1.5 黑体,Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei;
+  font: normal 10px/1.5 sans-serif;
   color: #333;
   background: #FFFFFF;
   overflow-x: hidden;
@@ -64,7 +64,7 @@ button,
 input,
 select,
 textarea {
-  font-family: 黑体,Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei;
+  font-family: sans-serif;
 }
 input[type="password"],
 input[type="text"] {
@@ -79,6 +79,7 @@ button {
   line-height: 32px;
   margin: 0;
   text-align: center;
+  padding: 0;
 }
 a.btn {
   display: inline-block;
@@ -121,21 +122,6 @@ img {
   line-height: 50px;
   padding: 0;
 }
-.item-title {
-  font-size: 1.6rem;
-  height: 32px;
-  line-height: 32px;
-}
-.item-title i {
-  float: left;
-  width: 15px;
-  height: 32px;
-  background-color: #ff6251;
-  margin-right: 10px;
-}
-.item-title span {
-  margin-left: 5px;
-}
 /* login regist find pwd */
 .input-item {
   height: 36px;
@@ -147,7 +133,7 @@ img {
   height: 36px;
   line-height: 36px;
   width: 100%;
-  padding-left: 10%;
+  padding: 0 30px;
   font-size: 1.6rem;
   box-sizing: border-box;
 }
@@ -155,27 +141,19 @@ img {
   background-image: url("../assets/img/username.png");
   background-repeat: no-repeat;
   background-position: left center;
-  background-size: 15px auto;
+  background-size: 18px auto;
 }
 .user-pwd {
   background-image: url("../assets/img/userpwd.png");
   background-repeat: no-repeat;
   background-position: left center;
-  background-size: 15px auto;
+  background-size: 16px auto;
 }
 .user-code {
   background-image: url("../assets/img/user-code.png");
   background-repeat: no-repeat;
   background-position: left center;
-  background-size: 15px auto;
-}
-.regist-link {
-  width: 80%;
-  margin: 0 auto;
-  padding-top: 20px;
-}
-.regist-link > a {
-  font-size: 1.4rem;
+  background-size: 14px auto;
 }
 .input-code {
   position: relative;
@@ -187,6 +165,7 @@ img {
   position: absolute;
   top: 6px;
   right: 0;
+  padding: 0 10px;
 }
 .btn-code {
   background-color: #ff6251;

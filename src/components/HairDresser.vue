@@ -40,51 +40,54 @@ export default {
   position: relative;
   padding: 10px 5px;
   border-bottom: 1px solid #eaeaea;
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
-}
-.hair-dresser-item>div {
-  -webkit-box-flex:1;
-  flex: 1;
-  -webkit-flex:1;
+  background: #ffffff;
 }
 .hair-dresser-item .hair-dresser-img {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  padding: 0 10px;
   border-radius: 50%;
+  margin-right: 10px;
   overflow: hidden;
 }
-.hair-dresser-item .hair-dresser-text,.hair-dresser-ft {
+.hair-dresser-item .hair-dresser-text,.hair-dresser-item .hair-dresser-ft {
   position: relative;
   font-size: 1.4rem;
 }
-.hair-dresser-text>p{
-  margin-bottom: 5px;
-  line-height: 24px;
+.hair-dresser-item .hair-dresser-text {
+  flex-grow: 1;
 }
-.hair-dresser-store {
-  padding-left: 24px;
+.hair-dresser-item .hair-dresser-ft {
+  padding-right: 10px;
+  flex-shrink: 0;
+}
+.hair-dresser-text>p{
+  line-height: 22px;
+  padding: 3px 0;
+}
+.hair-dresser-text>p.hair-dresser-store {
+  padding-left: 20px;
   background-image: url(../assets/img/order-store.png);
   background-repeat: no-repeat;
-  background-position: left center;
-  background-size: 18px;
+  background-position: left 7px;
+  background-size: 14px;
 }
 .hair-dresser-star>img {
-  height: 16px;
+  height: 14px;
   width: auto;
   position: relative;
   top: -4px;
 }
 .hair-dresser-name .hair-dresser-level {
-  font-size: 1.3rem;
-  color: #a7a7a7;
+  font-size: 1.2rem;
+  color: #ff6251;
   margin-left: 5px;
 }
 .hair-dresser-ft>p {
-  margin-bottom: 5px;
-  text-align: center;
-  line-height: 24px;
+  text-align: right;
+  line-height: 22px;
+  padding: 3px 0;
+  font-size: 1.2rem;
 }
 .hair-dresser-ft .hair-dresser-project {
   color: #ff6251;
@@ -98,12 +101,13 @@ export default {
 .hair-dresser-comment>a::after {
   content: '';
   display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-width: 1px 1px 0 0;
+  width: 6px;
+  height: 6px;
+  border-width: 1px;
   border-style: solid;
-  border-color: #333;
+  border-color: #333333 #333333 transparent transparent;
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
+  float: right;
+  margin-top: 7px;
 }
 </style>
