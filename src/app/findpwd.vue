@@ -18,19 +18,25 @@
       <button class="btn btn-confirm" @click.prevent="findPwd">确认提交</button>
 
     </div>
-    <p class="clearfix regist-link"><a class="pull-r" :href="url">想起密码，去登录</a></p>
+    <p class="clearfix regist-link"><a class="pull-r" :href="login">想起密码，去登录</a></p>
   </div>
+  <loading :show="loading.show" :show-text="loading.showText"></loading>
 </template>
 <script>
 import utils from '../libs/utils'
 import toast from '../libs/toast'
+import Loading from '../components/Loading'
+
 export default {
   data () {
     return {
       phone: '',
       verifyCode: '',
       password: '',
-      url: 'login.html'
+      login: 'login.html',
+      loading: {
+        show: false
+      }
     }
   },
   methods: {
@@ -63,17 +69,35 @@ export default {
         toast('请输入新密码')
         return
       }
+      self.loading.show = true
       self.$http.post('/api/customer/resetPwd', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {
-        console.log(response.data)
+        let res = response.data
+        if (res.code === 0) {
+          window.location.href = 'main.html'
+        }else {
+          self.loading.show = false
+        }
       }, (response) => {
-        console.log(response.data)
+        toast('重置密码失败')
+        self.loading.show = false
       })
     }
+  },
+  components: {
+    Loading
   }
 }
 </script>
 <style>
 .regist-body {
-  padding: 0 15%;
+  padding: 0 12%;
+}
+.regist-link {
+  padding: 20px 8%;
+}
+.regist-link > a {
+  font-size: 1.4rem;
+  padding: 5px;
+  color: #333;
 }
 </style>

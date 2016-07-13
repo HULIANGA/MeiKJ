@@ -24,39 +24,41 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .store-item {
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
-  padding: 12px 0;
+  padding: 10px 2px;
   font-size: 1.4rem;
-  border-bottom: 1px solid #eaeaea;
+  border: 1px solid #ffffff;
+  background-color: #ffffff;
+  position: relative;
+  border-bottom-color: #eaeaea
+}
+.store-item.active{
+  border-color: #FF6251;
+  border-width: 3px;
+  padding: 8px 0;
+  background-image: url(../assets/img/select-icon.png);
+  background-repeat: no-repeat;
+  background-size: 30px auto;
+  background-position: right top;
 }
 .store-item .store-img {
-  -webkit-box-flex:1;
-  flex: 1;
-  -webkit-flex :1;
-  display: -webkit-box;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 120px;
   display: flex;
-  display: -webkit-flex;
   justify-content: center;
-  align-items: center;
-  -webkit-justify-content:center;
-  -webkit-align-items:center;
+  align-items: flex-start;
 }
 .store-item .store-text {
   position: relative;
-  -webkit-box-flex:2;
-  flex: 2;
-  -webkit-flex:2;
+  flex-grow: 1;
   color: #a7a7a7;
-  padding-right: 15px;
+  padding: 0 10px;
 }
 .store-img>span {
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   width: 100px;
   height: 100px;
   overflow: hidden;
@@ -64,25 +66,28 @@ export default {
 }
 .store-text>p {
   margin-bottom: 5px;
-  line-height: 24px;
+  line-height: 22px;
 }
 .store-text .store-name {
   font-size: 1.6rem;
-  color: #333;
+  color: #333333;
+  margin-bottom: 10px;
 }
 .store-text .store-address {
   background-image: url(../assets/img/address-icon.png);
   background-repeat: no-repeat;
-  background-position: left 4px;
-  background-size: 16px auto;
-  padding-left: 20px;
+  background-position: left 2px;
+  background-size: 15px auto;
+  padding-left: 22px;
+  font-size: 1.3rem;
 }
 .store-text .store-phone {
   background-image: url(../assets/img/phone-icon.png);
   background-repeat: no-repeat;
-  background-position: left 4px;
+  background-position: left 3px;
   background-size: 16px auto;
-  padding-left: 20px;
+  padding-left: 22px;
+  font-size: 1.3rem;
 }
 .store-distance {
   position: absolute;

@@ -2,9 +2,9 @@
   <div class="bottom-menu">
     <footer>
       <a class="current">首页</a>
-      <a>商城</a>
-      <a @click.prevent="goOrder" class="reserve"><span></span>预约</a>
-      <a>订单</a>
+      <a href="http://m.bigaka.com">商城</a>
+      <a @click.prevent="goApointment" class="reserve"><span></span>预约</a>
+      <a @click.prevent="goOrder">订单</a>
       <a @click.prevent="goCenter">我的</a>
     </footer>
   </div>
@@ -13,21 +13,26 @@
 export default {
   data () {
     return {
-      token: ''
+      token: localStorage.token
     }
   },
   methods: {
-    goCenter () {
-      let token = localStorage.token
-      if (token) {
-        window.location.href = location.origin + '/dist/html/usercenter.html'
+    goCenter: function () {
+      if (this.token) {
+        window.location.href = 'usercenter.html'
       } else {
-        window.location.href = location.origin + '/dist/html/login.html'
+        window.location.href = 'login.html'
       }
     },
-    goOrder () {
-      let token = localStorage.token
-      if (token) {
+    goOrder: function () {
+      if (this.token) {
+        window.location.href = 'myOrder.html'
+      }else {
+        window.location.href = 'login.html'
+      }
+    },
+    goApointment: function () {
+      if (this.token) {
         window.location.href = 'apointment.html'
       }else {
         window.location.href = 'login.html'

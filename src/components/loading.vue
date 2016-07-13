@@ -1,7 +1,7 @@
 <template>
   <div v-show="show" id="wxloading" class="loading">
     <div class="loading-inner">
-      <i class="loading-icon"></i>{{showText}}...
+      <i class="loading-icon"></i>{{text}}
     </div>
   </div>
 </template>
@@ -10,43 +10,53 @@ export default {
   props: {
     show: Boolean,
     showText: String
+  },
+  computed: {
+    text: function () {
+      if (this.showText) {
+        return this.showText
+      }else {
+        return 'loading'
+      }
+    }
   }
 }
 </script>
-<style>
+<style scoped>
 .loading {
   position: fixed;
+  width: 100%;
+  height: 100%;
   top: 0;
-  right: 0;
   left: 0;
-  bottom: 0;
   background-color: rgba(0,0,0,0);
-  z-index: 9999;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .loading .loading-inner {
-  text-align: center;
   background-color: rgba(0,0,0,.5);
   color: #fff;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  margin-left: -70px;
-  margin-top: -40px;
   border-radius: 6px;
   font-size: 1.4rem;
-  padding: 58px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 46px 13px 10px;
+  position: relative;
 }
 .loading .loading-icon {
-  position: absolute;
-  top: 15px;
-  left: 50%;
-  margin-left: -16px;
   width: 24px;
   height: 24px;
   border: 2px solid #fff;
   border-radius: 50%;
   animation: gif 1s infinite linear;
-  -webkit-animation: gif 1s infinite linear;
+  position: absolute;
+  left: 50%;
+  margin-left: -13px;
+  top: 13px;
   clip: rect(0 auto 12px 0);
 }
 @keyframes gif {
@@ -55,14 +65,6 @@ export default {
   }
   100% {
     transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes gif{
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
   }
 }
 </style>

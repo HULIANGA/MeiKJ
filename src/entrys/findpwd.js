@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import FindPwd from '../app/findpwd'
+import FindPwd from '../app/FindPwd'
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
 Vue.http.options.emulateJSON = true
