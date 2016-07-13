@@ -9,7 +9,7 @@
           <div class="no-data">暂无订单</div>
         </template>
         <template v-if="waitPay">
-          <order-item :items="waitPay"></order-item>
+          <order-item :items="waitPay" v-on:detail-msg="showDetailModal"></order-item>
         </template>
       </Tab>
       <Tab header="待服务">
@@ -17,7 +17,7 @@
           <div class="no-data">暂无订单</div>
         </template>
         <template v-if="waitService">
-          <order-item :items="waitService"></order-item>
+          <order-item :items="waitService" v-on:detail-msg="showDetailModal"></order-item>
         </template>
       </Tab>
       <Tab header="已完成">
@@ -25,7 +25,7 @@
           <div class="no-data">暂无订单</div>
         </template>
         <template v-if="orderDone">
-          <order-item :items="orderDone"></order-item>
+          <order-item :items="orderDone" v-on:detail-msg="showDetailModal"></order-item>
         </template>
       </Tab>
       <Tab header="已取消">
@@ -33,10 +33,30 @@
           <div class="no-data">暂无订单</div>
         </template>
         <template v-if="orderCanceled">
-          <order-item :items="orderCanceled"></order-item>
+          <order-item :items="orderCanceled" v-on:detail-msg="showDetailModal"></order-item>
         </template>
       </Tab>
     </tab-set>
+    <!-- 详情modal -->
+    <detail-modal :show.sync="showDetail">
+      <div slot="detail-modal-header" class="detail-modal-header">
+        <h4 class="detail-modal-title">
+          订单编号：{{orderDetail.id}}<span>金额：{{orderDetail.price}}元</span>
+        </h4>
+      </div>
+      <div slot="detail-modal-body" class="detail-modal-body">
+        <div class="order-detail-list">
+          <h5><i></i>预约门店</h5>
+          <p>{{orderDetail.shopName}}</p>
+          <h5><i></i>预约发型师</h5>
+          <p>{{orderDetail.barberName}}</p>
+          <h5><i></i>预约项目</h5>
+          <p><span v-for="pro in orderDetail.productList">{{pro.productName}}</span></p>
+          <h5><i></i>预约时间</h5>
+          <p>{{orderDetail.time}}</p>
+        </div>
+      </div>
+    </detail-modal>
   </div>
 </template>
 <script>
@@ -44,6 +64,7 @@
 import Tab from '../components/Tab'
 import TabSet from '../components/TabSet'
 import OrderItem from '../components/OrderItem'
+import DetailModal from '../components/DetailModal'
 export default {
   data () {
     return {
@@ -51,6 +72,8 @@ export default {
       waitService: [],
       orderDone: [],
       orderCanceled: [],
+      orderDetail: {},
+      showDetail: false,
       state: 1,
       token: ''
     }
@@ -80,7 +103,7 @@ export default {
         state = self.state
       }
       if (active === 3) {
-        self.state = 9
+        self.state = 4
         state = self.state
       }
       self.getOrder(state, pageNo, pageSize)
@@ -99,9 +122,19 @@ export default {
           if (state === 3) {
             self.$set('orderDone', res.result.result)
           }
-          if (state === 9) {
+          if (state === 4) {
             self.$set('orderCanceled', res.result.result)
           }
+        }
+      })
+    },
+    showDetailModal (orderId) {
+      let self = this
+      self.$http.get('/api/order/t/detail', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          self.$set('orderDetail', res.result)
+          self.showDetail = true
         }
       })
     }
@@ -109,7 +142,8 @@ export default {
   components: {
     Tab,
     TabSet,
-    OrderItem
+    OrderItem,
+    DetailModal
   }
 }
 </script>
@@ -126,5 +160,32 @@ body {
   text-align: center;
   padding: 80px 0;
   font-size: 1.6rem;
+}
+.order-list .detail-modal .detail-modal-title span {
+  margin-left: 4px;
+}
+.order-list .detail-modal h5 {
+    font-weight: normal;
+    font-size: 1.5rem;
+    margin: 15px auto;
+    display: -webkit-box;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+}
+.order-list .detail-modal i {
+  display: inline-block;
+  width: 5px;
+  height: 8px;
+  background-color: #ff6251;
+  margin-right: 10px;
+}
+.order-list .order-detail-list {
+  padding: 0 15px;
+}
+.order-list .order-detail-list p {
+  font-size: 1.4rem;
+  padding-left: 11px;
+  color: #8f8e8e;
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
-  <div class="order-item" v-for="item in items">
+  <div class="order-item" v-for="item in items" @click.prevent="detailModal(item)">
     <p class="order-paytime" v-if="item.processState == 1">剩余支付时间：</p>
     <p class="orderno">订单编号：{{item.id}} <span>金额：{{item.price}}元</span></p>
     <p>预约门店：{{item.shopName}}</p>
     <p>预约时间：{{item.time}}</p>
-    <p class="clearfix"><span class="pull-l">预约项目：{{item.reserveItem}}</span><span class="pull-r">预约发型师：{{item.barberName}}</span></p>
+    <p class="clearfix"><span class="pull-l">预约项目：</span><span class="pull-r">预约发型师：{{item.barberName}}</span></p>
     <div class="order-control">
       <div>
         <template v-if="item.processState == 1 || item.processState == 2">
@@ -44,6 +44,11 @@ export default {
     confirmText: {
       type: String,
       default: ''
+    }
+  },
+  methods: {
+    detailModal (item) {
+      this.$emit('detail-msg', item.id)
     }
   }
 }

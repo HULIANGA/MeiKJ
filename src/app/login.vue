@@ -55,7 +55,7 @@ export default {
         if (response.data.code === 0) {
           localStorage.loginname = response.data.result.id
           localStorage.token = response.data.result.token
-          window.location.href = location.origin + '/dist/html/'
+          window.location.href = location.origin + '/dist/html/main.html'
         }
       }, (response) => {
 

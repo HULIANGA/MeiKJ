@@ -54,9 +54,9 @@
   export default {
     data () {
       return {
-        hairDresser: window.hairDresser,
+        hairDresser: {},
         evaluation: window.evaluation,
-        serviceItem: window.serviceItem,
+        serviceItem: [],
         barberId: ''
       }
     },
@@ -73,7 +73,7 @@
       self.$http.get('/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 1}).then((response) => {
         let res = response.data
         if (res.code === 0) {
-          console.log(res.result.result)
+          self.$set('evaluation', res.result.result)
         }
       })
     },
