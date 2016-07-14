@@ -57,13 +57,9 @@ export default {
           localStorage.loginname = response.data.result.id
           localStorage.loginphone = this.phone
           localStorage.token = response.data.result.token
-<<<<<<< HEAD
-          window.location.href = location.origin + '/dist/html/main.html'
-=======
           window.location.href = 'main.html'
         }else {
           self.loading.show = false
->>>>>>> a4a274479e1f75e36153890100b4b444162b59ec
         }
       }, (response) => {
         toast('登录失败')
