@@ -5,34 +5,34 @@
   <div class="order-list">
     <tab-set :active="0" v-on:child-msg="handleLink">
       <Tab header="待付款">
-        <template v-if="waitPay == null">
-          <div class="no-data">暂无订单</div>
+        <template v-if="waitPay && waitPay.length === 0">
+          <no-result></no-result>
         </template>
-        <template v-if="waitPay">
+        <template v-if="waitPay && waitPay.length > 0">
           <order-item :items="waitPay" v-on:detail-msg="showDetailModal"></order-item>
         </template>
       </Tab>
       <Tab header="待服务">
-        <template v-if="waitService == null">
-          <div class="no-data">暂无订单</div>
+        <template v-if="waitService && waitService.length === 0">
+          <no-result></no-result>
         </template>
-        <template v-if="waitService">
+        <template v-if="waitService && waitService.length > 0">
           <order-item :items="waitService" v-on:detail-msg="showDetailModal"></order-item>
         </template>
       </Tab>
       <Tab header="已完成">
-        <template v-if="orderDone == null">
-          <div class="no-data">暂无订单</div>
+        <template v-if="orderDone && orderDone.length === 0">
+          <no-result></no-result>
         </template>
-        <template v-if="orderDone">
+        <template v-if="orderDone && orderDone.length > 0">
           <order-item :items="orderDone" v-on:detail-msg="showDetailModal"></order-item>
         </template>
       </Tab>
       <Tab header="已取消">
-        <template v-if="orderCanceled == null">
-          <div class="no-data">暂无订单</div>
+        <template v-if="orderCanceled && orderCanceled.length === 0">
+          <no-result></no-result>
         </template>
-        <template v-if="orderCanceled">
+        <template v-if="orderCanceled && orderCanceled.length > 0">
           <order-item :items="orderCanceled" v-on:detail-msg="showDetailModal"></order-item>
         </template>
       </Tab>
@@ -58,6 +58,7 @@
       </div>
     </detail-modal>
   </div>
+  <loading :show="loading.show"></loading>
 </template>
 <script>
 
@@ -65,20 +66,27 @@ import Tab from '../components/Tab'
 import TabSet from '../components/TabSet'
 import OrderItem from '../components/OrderItem'
 import DetailModal from '../components/DetailModal'
+import Loading from '../components/Loading'
+import NoResult from '../components/NoResult'
+
 export default {
   data () {
     return {
-      waitPay: [],
-      waitService: [],
-      orderDone: [],
-      orderCanceled: [],
+      loading: {
+        show: true
+      },
+      noresult: false,
+      waitPay: null,
+      waitService: null,
+      orderDone: null,
+      orderCanceled: null,
       orderDetail: {},
       showDetail: false,
       state: 1,
       token: ''
     }
   },
-  ready () {
+  created () {
     let self = this
     self.token = localStorage.getItem('token')
     self.getOrder(1, 1, 10)
@@ -110,7 +118,9 @@ export default {
     },
     getOrder (state, pageNo, pageSize) {
       let self = this
+      self.loading.show = true
       self.$http.get('/api/order/t/list', {state: state, pageNo: pageNo, pageSize: pageSize}, {headers: {token: self.token}}).then((response) => {
+        self.loading.show = false
         let res = response.data
         if (res.code === 0) {
           if (state === 1) {
@@ -126,6 +136,8 @@ export default {
             self.$set('orderCanceled', res.result.result)
           }
         }
+      }, (response) => {
+        self.loading.show = false
       })
     },
     showDetailModal (orderId) {
@@ -143,7 +155,9 @@ export default {
     Tab,
     TabSet,
     OrderItem,
-    DetailModal
+    DetailModal,
+    Loading,
+    NoResult
   }
 }
 </script>
@@ -165,13 +179,13 @@ body {
   margin-left: 4px;
 }
 .order-list .detail-modal h5 {
-    font-weight: normal;
-    font-size: 1.5rem;
-    margin: 15px auto;
-    display: -webkit-box;
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
+  font-weight: normal;
+  font-size: 1.5rem;
+  margin: 15px auto;
+  display: -webkit-box;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
 }
 .order-list .detail-modal h5 i {
   display: inline-block;

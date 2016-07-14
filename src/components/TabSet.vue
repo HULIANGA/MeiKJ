@@ -40,29 +40,24 @@
 </script>
 <style scoped>
   .tab-list {
-    display: -webkit-box;
     display: flex;
-    display: -webkit-flex;
     width:100%;
     height:40px;
+    border-bottom: 1px solid #eaeaea;
+    padding: 0 15px;
+    box-sizing: border-box;
   }
   .tab-list>li {
-    -webkit-box-flex:1;
     flex: 1;
-    -webkit-flex:1;
     position: relative;
   }
   .tab-list>li>a {
-    display: -webkit-box;
     display: flex;
-    display: -webkit-flex;
     color: #333;
     height: 40px;
     justify-content: center;
-    -webkit-justify-content:center;
     align-items: center;
-    -webkit-align-items:center;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   .tab-list>li.active>a {
     color:#ff7162;
