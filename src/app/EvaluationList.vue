@@ -3,7 +3,7 @@
 </style>
 <template>
 <div class="evaluation-list">
-  <evaluation :evaluations="evaluations"></evaluation>
+  <evaluation :evaluation ="evaluation" v-for="evaluation in evaluations"></evaluation>
 </div>
 </template>
 <script>
@@ -13,13 +13,16 @@ export default {
   data () {
     return {
       evaluations: [],
-      barberId: ''
+      barberId: '',
+      delCommentId: '',
+      token: ''
     }
   },
   ready () {
     let self = this
+    self.token = localStorage.getItem('token')
     self.barberId = utils.getUrlParam('id')
-    self.$http.get('/api/comment/list', {barberId: self.barberId, pageNo: 2, pageSize: 8}).then((response) => {
+    self.$http.get('/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 8}).then((response) => {
       let res = response.data
       if (res.code === 0) {
         self.$set('evaluations', res.result.result)

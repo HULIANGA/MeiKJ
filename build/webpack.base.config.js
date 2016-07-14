@@ -14,8 +14,6 @@ module.exports = {
     dresserDetail: './src/entrys/dresserDetail.js',
     hairList: './src/entrys/hairList.js',
     hairDetail: './src/entrys/hairDetail.js',
-
-
     couponstore: './src/entrys/couponstore.js',
     mycoupon: './src/entrys/mycoupon.js',
     personalData: './src/entrys/personalData.js',

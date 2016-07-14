@@ -40,10 +40,10 @@
       </div>
     </div>
     <!-- evaluation -->
-    <div v-if="evaluation" class="evaluation">
+    <div v-if="evaluations" class="evaluation">
       <h3 class="item-title"><i></i>相关评价</h3>
-      <evaluation :evaluations="evaluationList.result"></evaluation>
-      <div class="eva-footer" v-if="evaluationList.totalCount > 8">
+      <evaluation :evaluation ="evaluations[0]"></evaluation>
+      <div class="eva-footer">
         <a @click.prevent="goEvaList">查看更多</a>
       </div>
     </div>
@@ -56,6 +56,7 @@
   import ServiceItem from '../components/ServiceItem'
   import Loading from '../components/Loading'
   import utils from '../libs/utils'
+  import toast from '../libs/toast'
   export default {
     data () {
       return {
@@ -63,11 +64,7 @@
           show: true
         },
         hairDresser: {},
-<<<<<<< HEAD:src/app/HairDresserDetail.vue
-        evaluationList: {},
-=======
-        evaluation: null,
->>>>>>> f4b8702124b9bc345223232fee617221eb180ad0:src/app/DresserDetail.vue
+        evaluations: [],
         serviceItem: [],
         barberId: null
       }
@@ -76,6 +73,7 @@
       let self = this
       let _barberId = utils.getUrlParam('id')
       self.barberId = _barberId
+      self.token = localStorage.getItem('token')
       // 发型师信息
       self.$http.post('/api/barber/detail', {barberId: self.barberId}).then((response) => {
         self.loading.show = false
@@ -93,11 +91,7 @@
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {
-<<<<<<< HEAD:src/app/HairDresserDetail.vue
-          self.$set('evaluationList', res.result)
-=======
-          self.evaluation = res.result.result[0]
->>>>>>> f4b8702124b9bc345223232fee617221eb180ad0:src/app/DresserDetail.vue
+          self.$set('evaluations', res.result.result)
         }
       }, (response) => {
         self.loading.show = false
@@ -118,7 +112,8 @@
     components: {
       Evaluation,
       ServiceItem,
-      Loading
+      Loading,
+      toast
     }
   }
 </script>
@@ -166,13 +161,6 @@ body {
   width: auto;
   vertical-align: middle;
 }
-.item-title i {
-  float: left;
-  width: 15px;
-  height: 26px;
-  background-color: #ff6251;
-  margin-right: 15px;
-}
 .introduction {
   background-color: #fff;
   margin-top: 15px;
@@ -192,7 +180,6 @@ body {
   font-size: 1.4rem;
   padding-top: 5px;
 }
-<<<<<<< HEAD:src/app/HairDresserDetail.vue
 .eva-footer {
   text-align: right;
   padding-right: 15px;
@@ -209,7 +196,7 @@ body {
   transform: rotate(45deg);
   -webkit-transform:rotate(45deg);
   margin-left: 3px;
-=======
+}
 .item-title {
   font-size: 1.4rem;
   line-height: 26px;
@@ -223,6 +210,5 @@ body {
 }
 .item-title span {
   margin-left: 10px;
->>>>>>> f4b8702124b9bc345223232fee617221eb180ad0:src/app/DresserDetail.vue
 }
 </style>
