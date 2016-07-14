@@ -8,10 +8,13 @@
         <img :src="'http://meimeidou.qiniudn.com/'+item.path">
       </div>
     </div>
+    <div class="swiper-pagination swiper-pagination-white"></div>
   </div>
 </template>
 
 <script>
+  import Swiper from 'swiper'
+
   export default {
     props: {
       items: Array
@@ -22,7 +25,16 @@
     },
     events: {
       'init-swiper': function () {
-        console.log(2323232)
+        this.$nextTick(function () {
+          /* eslint-disable no-new */
+          new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            speed: 1000,
+            autoplay: 2500,
+            loop: true,
+            autoplayDisableOnInteraction: false
+          })
+        })
       }
     }
   }

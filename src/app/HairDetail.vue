@@ -2,11 +2,11 @@
   @import '../assets/css/style.scss'
 </style>
 <template>
-  <div v-show="hairData" class="hair-detail">
+  <div class="hair-detail">
     <div class="swiper-photo">
       <swiper-hair :items="hairData.photoList"></swiper-hair>
     </div>
-    <div class="hairstyle-intro">
+    <div v-if="hairData.introduction" class="hairstyle-intro">
       发型简介：{{hairData.introduction}}
     </div>
   </div>
@@ -18,17 +18,22 @@
       <button class="collect" v-bind:class="{'active':isCollect}" @click.prevent="collect()"></button>
     </div>
     <div class="hairstyle-litem">
-      <button class="hairstyle-reserve">立即预约</button>
+      <button class="hairstyle-reserve" @click="goApointment()">立即预约</button>
     </div>
   </div>
+  <loading :show="loading.show"></loading>
 </template>
 <script>
 import SwiperHair from '../components/SwiperHair'
+import Loading from '../components/Loading'
 import toast from '../libs/toast'
 
 export default {
   data () {
     return {
+      loading: {
+        show: true
+      },
       hairData: {},
       token: '',
       hairId: '',
@@ -43,142 +48,178 @@ export default {
     // 发型详情
     self.$http.post('/api/hairstyle/detail', {hairstyleId: self.hairId}).then((response) => {
       let res = response.data
+      self.loading.show = false
       if (res.code === 0) {
         self.$set('hairData', res.result)
         self.$broadcast('init-swiper')
       }
+    }, (response) => {
+      self.loading.show = false
     })
-    // self.$http.post('/api/hairstyle/t/collectAndPraise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
-    //   let res = response.data
-    //   if (res.code === 0) {
-    //     self.$set('isPraise', res.result.isPriase)
-    //     self.$set('isCollect', res.result.isCollect)
-    //   }
-    // })
+    self.$http.post('/api/hairstyle/t/collectAndPraise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+      let res = response.data
+      if (res.code === 0) {
+        self.$set('isPraise', res.result.isPriase)
+        self.$set('isCollect', res.result.isCollect)
+      }
+    })
   },
   methods: {
+    goApointment () {
+      window.location.href = 'apointment.html'
+    },
     praise () {
       let self = this
       if (self.token) {
+        self.loading.show = true
         if (!self.isPraise) {
           self.$http.post('/api/praise/t/praise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
               self.$set('isPraise', true)
+              self.loading.show = false
               toast('成功点赞')
+            }else {
+              self.loading.show = false
+              toast('点赞失败')
             }
+          }, (response) => {
+            self.loading.show = false
+            toast('点赞失败')
           })
         } else {
           self.$http.post('/api/praise/t/cancel', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
               self.$set('isPraise', false)
-              toast('取消点赞')
+              self.loading.show = false
+              toast('取消点赞成功')
+            }else {
+              self.loading.show = false
+              toast('取消点赞失败')
             }
+          }, (response) => {
+            self.loading.show = false
+            toast('取消点赞失败')
           })
         }
       } else {
-        window.location.href = location.origin + '/dist/html/login.html'
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html'
+        }, 1000)
       }
     },
     collect () {
       let self = this
       if (self.token) {
+        self.loading.show = true
         if (!self.isCollect) {
           self.$http.post('/api/collect/t/collect', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
               self.$set('isCollect', true)
+              self.loading.show = false
               toast('收藏成功')
+            }else {
+              self.loading.show = false
+              toast('收藏失败')
             }
+          }, (response) => {
+            self.loading.show = false
+            toast('收藏失败')
           })
         } else {
           self.$http.post('/api/collect/t/cancel', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
               self.$set('isCollect', false)
-              toast('取消收藏')
+              self.loading.show = false
+              toast('取消收藏成功')
+            }else {
+              self.loading.show = false
+              toast('取消收藏失败')
             }
+          }, (response) => {
+            self.loading.show = false
+            toast('取消收藏失败')
           })
         }
       } else {
-        window.location.href = location.origin + '/dist/html/login.html'
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html'
+        }, 1000)
       }
     }
   },
   components: {
-    SwiperHair
+    SwiperHair,
+    Loading
   }
 }
 </script>
 <style>
 .hair-detail {
-  padding:20px 10px 0;
+  padding:20px 15px 50px;
 }
 .hairstyle-intro {
   font-size: 1.4rem;
   line-height: 24px;
   margin-top: 15px;
+  padding: 0 10px;
 }
 .hairstyle-control {
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   height: 50px;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  box-shadow: 0 0 1px #eaeaea;
   background-color: #fff;
 }
 .hairstyle-control .hairstyle-item {
-  -webkit-box-flex:1;
-  flex: 1;
-  display: -webkit-box;
+  flex-grow: 1;
   display: flex;
-  display: -webkit-flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  border-top: 1px solid #eaeaea;
 }
 .hairstyle-control .hairstyle-litem {
-  -webkit-box-flex:2;
-  flex: 2;
+  flex-grow: 2;
 }
-.hairstyle-item:first-child::after {
+.hairstyle-item:nth-child(2)::before {
   content: '';
   position: absolute;
-  right: 0;
+  left: 0;
   top: 5px;
-  width: 2px;
+  width: 1px;
   height: 40px;
   background-color: #eaeaea;
 }
 .praise {
-  width: 36px;
-  height: 36px;
-  line-height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background-color: #adadad;
   background-image: url(../assets/img/praise-default.png);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 20px;
+  background-size: 16px;
 }
 .praise.active {
   background-image: url(../assets/img/praise.png);
 }
 .collect{
-  width: 36px;
-  height: 36px;
-  line-height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background-color: #adadad;
   background-image: url(../assets/img/heart-default.png);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 20px;
+  background-size: 18px;
 }
 .collect.active {
   background-image: url(../assets/img/heart.png);
