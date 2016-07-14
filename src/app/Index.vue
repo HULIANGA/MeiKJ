@@ -17,6 +17,7 @@ import SwiperImage from '../components/SwiperImage'
 import FashionHair from '../components/FashionHair'
 import BottomMenu from '../components/BottomMenu'
 import CitySelect from '../components/CitySelect'
+
 export default {
   data () {
     return {

@@ -28,7 +28,7 @@ export default {
   data () {
     return {
       regist: 'regist.html',
-      forgetPwd: 'findpwd.html',
+      forgetPwd: 'findPwd.html',
       loading: {
         show: false
       },

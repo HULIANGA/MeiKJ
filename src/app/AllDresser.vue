@@ -39,6 +39,9 @@ export default {
       let res = response.data
       if (res.code === 0) {
         self.$set('items', res.result.result)
+        if (!res.result.result || res.result.result.length === 0) {
+          self.noresult = true
+        }
       }else {
         self.noresult = true
       }

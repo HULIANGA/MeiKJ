@@ -3,30 +3,30 @@
     <div class="eva-header">
       <p class="eva-user-info">
         <span class="eva-img"><img :src="evaluation.userImg"></span>
-        {{evaluation.userName}}
-        <span class="eva-time">{{evaluation.evalTime}}</span>
+        {{evaluation.customerName}}
+        <span class="eva-time">{{evaluation.createTime}}</span>
       </p>
       <p class="eva-star" v-if="evaluation.starNum == 5">
         评分：<img src="../assets/img/five-star.png">
       </p>
-      <p class="eva-star" v-if="evaluation.starNum == 4">
+      <p class="eva-star" v-if="evaluation.star == 4">
         评分：<img src="../assets/img/four-star.png">
       </p>
-      <p class="eva-star" v-if="evaluation.starNum == 3">
+      <p class="eva-star" v-if="evaluation.star == 3">
         评分：<img src="../assets/img/three-star.png">
       </p>
-      <p class="eva-star" v-if="evaluation.starNum == 2">
+      <p class="eva-star" v-if="evaluation.star == 2">
         评分：<img src="../assets/img/two-star.png">
       </p>
-      <p class="eva-star" v-if="evaluation.starNum == 1">
+      <p class="eva-star" v-if="evaluation.star == 1">
         评分：<img src="../assets/img/one-star.png">
       </p>
-      <p class="eva-star" v-if="evaluation.starNum == 0">
+      <p class="eva-star" v-if="evaluation.star == 0">
         评分：<img src="../assets/img/zero-star.png">
       </p>
     </div>
     <div class="eva-body">
-      {{evaluation.info}}
+      {{evaluation.content}}
     </div>
     <div class="eva-footer">
       <a>查看更多</a>
@@ -40,9 +40,10 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .evaluation-info {
   padding:10px 15px 10px 25px;
+  font-size: 1.2rem;
 }
 .eva-header .eva-img {
   float: left;
@@ -73,10 +74,11 @@ export default {
 }
 .eva-body {
   padding-left: 32px;
-  line-height: 24px;
+  line-height: 20px;
 }
 .eva-footer {
   text-align: right;
+  margin-top: 15px;
 }
 .eva-footer>a::after{
   content: '';
