@@ -6,7 +6,7 @@
     <header-menu :localcity="localCity"></header-menu>
     <swiper-image :datahref="dataHref"></swiper-image>
     <fashion-hair :hairitems="hairItems"></fashion-hair>
-    <bottom-menu></bottom-menu>
+    <bottom-menu :active="'main'"></bottom-menu>
     <city-select :localcity="localCity"></city-select>
   </div>
 </template>

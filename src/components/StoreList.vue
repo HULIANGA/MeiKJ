@@ -19,7 +19,7 @@ export default {
   methods: {
     viewDetail (item) {
       let storeId = item.id
-      window.location.href = location.origin + '/dist/html/storedetail.html?id=' + storeId
+      window.location.href = location.origin + '/dist/html/storeDetail.html?id=' + storeId
     }
   }
 }

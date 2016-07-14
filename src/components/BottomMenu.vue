@@ -1,11 +1,11 @@
 <template>
   <div class="bottom-menu">
     <footer>
-      <a class="current">首页</a>
+      <a :class="active === 'main' ? 'current' : ''" @click.prevent="goMain">首页</a>
       <a href="http://m.bigaka.com">商城</a>
       <a @click.prevent="goApointment" class="reserve"><span></span>预约</a>
-      <a @click.prevent="goOrder">订单</a>
-      <a @click.prevent="goCenter">我的</a>
+      <a :class="active === 'order' ? 'current' : ''" @click.prevent="goOrder">订单</a>
+      <a :class="active === 'usercenter' ? 'current' : ''" @click.prevent="goCenter">我的</a>
     </footer>
   </div>
 </template>
@@ -16,26 +16,40 @@ export default {
       token: localStorage.token
     }
   },
+  props: {
+    active: String
+  },
   methods: {
+    goMain: function () {
+      if (this.active !== 'main') {
+        window.location.href = 'main.html'
+      }
+    },
     goCenter: function () {
-      if (this.token) {
-        window.location.href = 'usercenter.html'
-      } else {
-        window.location.href = 'login.html'
+      if (this.active !== 'usercenter') {
+        if (this.token) {
+          window.location.href = 'userCenter.html'
+        } else {
+          window.location.href = 'login.html'
+        }
       }
     },
     goOrder: function () {
-      if (this.token) {
-        window.location.href = 'myOrder.html'
-      }else {
-        window.location.href = 'login.html'
+      if (this.active !== 'order') {
+        if (this.token) {
+          window.location.href = 'myOrder.html'
+        }else {
+          window.location.href = 'login.html'
+        }
       }
     },
     goApointment: function () {
-      if (this.token) {
-        window.location.href = 'apointment.html'
-      }else {
-        window.location.href = 'login.html'
+      if (this.active !== 'apointment') {
+        if (this.token) {
+          window.location.href = 'apointment.html'
+        }else {
+          window.location.href = 'login.html'
+        }
       }
     }
   }
