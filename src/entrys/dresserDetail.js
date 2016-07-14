@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import HairDresserDetail from '../app/HairDresserDetail'
+import DresserDetail from '../app/DresserDetail'
 import VueResource from 'vue-resource'
 import utils from '../libs/utils'
 Vue.use(VueResource)
@@ -10,5 +10,5 @@ Vue.filter('datetime', function (value) {
 /* eslint-disable no-new */
 new Vue({
   el: 'body',
-  components: { HairDresserDetail }
+  components: { DresserDetail }
 })

@@ -1,13 +1,13 @@
 <style lang="sass">
-@import '../assets/css/style.scss'
+  @import '../assets/css/style.scss'
 </style>
 <template>
-  <div class="hair-detail">
+  <div v-show="hairData" class="hair-detail">
     <div class="swiper-photo">
-      <swiper-hair :data-url="dataUrl"></swiper-hair>
+      <swiper-hair :items="hairData.photoList"></swiper-hair>
     </div>
     <div class="hairstyle-intro">
-      发型简介：{{intro}}
+      发型简介：{{hairData.introduction}}
     </div>
   </div>
   <div class="hairstyle-control">
@@ -25,35 +25,36 @@
 <script>
 import SwiperHair from '../components/SwiperHair'
 import toast from '../libs/toast'
+
 export default {
   data () {
     return {
-      dataUrl: '/api/hairstyle/detail',
+      hairData: {},
       token: '',
       hairId: '',
-      intro: '',
       isPraise: false,
       isCollect: false
     }
   },
   ready () {
     let self = this
-    let _hairId = window.location.search.substr(1).split('=')[1]
-    self.hairId = _hairId
+    self.hairId = window.location.search.substr(1).split('=')[1]
     self.token = localStorage.token
+    // 发型详情
     self.$http.post('/api/hairstyle/detail', {hairstyleId: self.hairId}).then((response) => {
       let res = response.data
       if (res.code === 0) {
-        self.$set('intro', res.result.introduction)
+        self.$set('hairData', res.result)
+        self.$broadcast('init-swiper')
       }
     })
-    self.$http.post('/api/hairstyle/t/collectAndPraise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
-      let res = response.data
-      if (res.code === 0) {
-        self.$set('isPraise', res.result.isPriase)
-        self.$set('isCollect', res.result.isCollect)
-      }
-    })
+    // self.$http.post('/api/hairstyle/t/collectAndPraise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+    //   let res = response.data
+    //   if (res.code === 0) {
+    //     self.$set('isPraise', res.result.isPriase)
+    //     self.$set('isCollect', res.result.isCollect)
+    //   }
+    // })
   },
   methods: {
     praise () {

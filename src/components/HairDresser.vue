@@ -30,7 +30,7 @@ export default {
   methods: {
     detail (item) {
       let barberId = item.id
-      window.location.href = location.origin + '/dist/html/barberDetail.html?id=' + barberId
+      window.location.href = 'dresserDetail.html?id=' + barberId
     }
   }
 }

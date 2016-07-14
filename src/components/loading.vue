@@ -56,7 +56,7 @@ export default {
   position: absolute;
   left: 50%;
   margin-left: -13px;
-  top: 13px;
+  top: 15px;
   clip: rect(0 auto 12px 0);
 }
 @keyframes gif {

@@ -23,22 +23,17 @@ export default {
       } else {
         hairId = item.id
       }
-      window.location.href = location.origin + '/dist/html/hair.html?id=' + hairId
+      window.location.href = 'hairDetail.html?id=' + hairId
     }
   }
 }
 </script>
 <style>
   .hair-list {
-    position: relative;
-    display: -webkit-box;
-    display: flex;
-    display: -webkit-flex;
-    flex-wrap: wrap;
-    -webkit-flex-wrap:wrap;
   }
   .hair-item {
     position: relative;
+    display: inline-block;
     width: 50%;
     border-top: 1px solid #fff;
     box-sizing: border-box;
@@ -62,9 +57,10 @@ export default {
     line-height: 20px;
     background-image: url(../assets/img/good.png);
     background-repeat: no-repeat;
-    background-size: 12px auto;
-    background-position: 3px center;
-    padding: 0 5px 0 20px;
+    background-size: 10px auto;
+    background-position: 7px center;
+    padding: 0 7px 0 20px;
     font-size: 1.2rem;
+    border-radius: 2px
   }
 </style>

@@ -98,9 +98,9 @@
 export default {
   data () {
     return {
-      storeUrl: 'allstore.html',
-      barberUrl: 'alldressers.html',
-      hairUrl: 'hairlist.html',
+      storeUrl: 'allStore.html',
+      barberUrl: 'allDresser.html',
+      hairUrl: 'hairList.html',
       couponUrl: 'couponStore.html'
     }
   },

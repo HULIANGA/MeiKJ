@@ -10,16 +10,18 @@ module.exports = {
     findPwd: './src/entrys/findPwd.js',
     allStore: './src/entrys/allStore.js',
     storeDetail: './src/entrys/storeDetail.js',
+    allDresser: './src/entrys/allDresser.js',
+    dresserDetail: './src/entrys/dresserDetail.js',
     hairList: './src/entrys/hairList.js',
-    hairdresser: './src/entrys/hairdresser.js',
-    hairDresserDetail: './src/entrys/hairDresserDetail.js',
+    hairDetail: './src/entrys/hairDetail.js',
+
+
     couponstore: './src/entrys/couponstore.js',
     mycoupon: './src/entrys/mycoupon.js',
     personalData: './src/entrys/personalData.js',
     myorder: './src/entrys/myorder.js',
     usercenter: './src/entrys/usercenter.js',
     comment: './src/entrys/comment.js',
-    hair: './src/entrys/hair.js',
     shopbarber: './src/entrys/shopbarber.js',
     collection: './src/entrys/collection.js',
     resetpwd: './src/entrys/resetpwd.js',
@@ -58,20 +60,41 @@ module.exports = {
       chunks: ['regist']
     }),
     new HtmlWebpackPlugin({
-      template: 'src/html/findpwd.html',
-      filename: 'html/findpwd.html',
+      template: 'src/html/findPwd.html',
+      filename: 'html/findPwd.html',
       chunks: ['findPwd']
     }),
     new HtmlWebpackPlugin({
-      template: 'src/html/allstore.html',
-      filename: 'html/allstore.html',
+      template: 'src/html/allStore.html',
+      filename: 'html/allStore.html',
       chunks: ['allStore']
     }),
     new HtmlWebpackPlugin({
-      template: 'src/html/storedetail.html',
-      filename: 'html/storedetail.html',
+      template: 'src/html/storeDetail.html',
+      filename: 'html/storeDetail.html',
       chunks: ['storeDetail']
     }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/allDresser.html',
+      filename: 'html/allDresser.html',
+      chunks: ['allDresser']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/dresserDetail.html',
+      filename: 'html/dresserDetail.html',
+      chunks: ['dresserDetail']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/hairList.html',
+      filename: 'html/hairList.html',
+      chunks: ['hairList']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/hairDetail.html',
+      filename: 'html/hairDetail.html',
+      chunks: ['hairDetail']
+    }),
+
     new HtmlWebpackPlugin({
       template: 'src/html/mycoupon.html',
       filename: 'html/mycoupon.html',
@@ -82,26 +105,7 @@ module.exports = {
       filename: 'html/myorder.html',
       chunks: ['myorder']
     }),
-    new HtmlWebpackPlugin({
-      template: 'src/html/alldressers.html',
-      filename: 'html/alldressers.html',
-      chunks: ['hairdresser']
-    }),
-    new HtmlWebpackPlugin({
-      template: 'src/html/hairDresserDetail.html',
-      filename: 'html/barberDetail.html',
-      chunks: ['hairDresserDetail']
-    }),
-    new HtmlWebpackPlugin({
-      template: 'src/html/hairlist.html',
-      filename: 'html/hairlist.html',
-      chunks: ['hairList']
-    }),
-    new HtmlWebpackPlugin({
-      template: 'src/html/hair.html',
-      filename: 'html/hair.html',
-      chunks: ['hair']
-    }),
+
     new HtmlWebpackPlugin({
       template: 'src/html/shopbarber.html',
       filename: 'html/shopbarber.html',

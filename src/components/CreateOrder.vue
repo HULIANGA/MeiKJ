@@ -113,7 +113,7 @@
         this.order.orderSubmit.realPrice = 19.00
         this.order.orderSubmit.memo = '我是备注'
         console.log(this.order.orderSubmit)
-        this.$http.post('/api/order/t/save', this.order.orderSubmit, {headers: {token: '1e1ce7b155d900beaa8000'}}).then(function (response) {
+        this.$http.post('/api/order/t/save', this.order.orderSubmit, {headers: {token: localStorage.token}}).then(function (response) {
 
         })
       }

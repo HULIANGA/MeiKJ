@@ -6,6 +6,7 @@ config.devServer = {
   noInfo: true,
   proxy: {
     '/api/*': {
+      // target: 'http://company1.bigaka.com:9552',
       target: 'http://139.196.87.99',
       secure: false
     },

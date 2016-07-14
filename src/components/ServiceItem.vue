@@ -1,6 +1,6 @@
 <template>
   <div class="service-item">
-    <h3 class="item-title"><i></i>服务项目<span>({{serviceitem.totalCount}})</span></h3>
+    <h3 class="item-title"><i></i>服务项目<span>({{totalCount}})</span></h3>
     <div class="service-subitem" v-for="(index, item) in serviceitem">
       <div class="service-subitem-first">
         <span class="service-name"><i></i>{{item.name}}</span>
@@ -19,6 +19,9 @@ export default {
     serviceitem: Array
   },
   computed: {
+    totalCount: function () {
+      return this.serviceitem.length
+    },
     projectPrice: function () {
       var projectPrices = []
       for (let i = 0; i < this.serviceitem.length; i++) {
