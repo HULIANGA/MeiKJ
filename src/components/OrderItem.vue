@@ -58,44 +58,38 @@ export default {
   margin-top: 15px;
   background-color: #fff;
   font-size: 1.4rem;
-  padding: 5px 10px;
+  padding: 10px 15px;
   color: #8d8d8d;
 }
 .order-item>p {
-  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 1.2rem;
 }
 .order-item .orderno {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   color: #333;
 }
 .orderno>span {
   color: #ff7162;
   float: right;
+  font-size: 1.2rem;
 }
 .order-item .order-control {
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   margin-top: 10px;
-  margin-bottom: 5px;
 }
 .order-control>div {
-  -webkit-box-flex:1;
   flex:1;
-  -webkit-flex:1;
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   justify-content: center;
-  -webkit-justify-content:center;
 }
 .order-control>div.control-right {
   justify-content: flex-end;
-  -webkit-justify-content: flex-end;
 }
 .order-control button {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   width: 50%;
+  line-height: 25px
 }
 .order-control .btn-default {
   background-color: #424241;
