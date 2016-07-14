@@ -51,7 +51,7 @@
           <h5><i></i>预约发型师</h5>
           <p>{{orderDetail.barberName}}</p>
           <h5><i></i>预约项目</h5>
-          <p><span v-for="pro in orderDetail.productList">{{pro.productName}}</span></p>
+          <p><span v-for="(index,pro) in orderDetail.productList">{{pro.productName}}<i v-if="index != (orderDetail.productList.length-1)">、</i></span></p>
           <h5><i></i>预约时间</h5>
           <p>{{orderDetail.time}}</p>
         </div>
@@ -173,7 +173,7 @@ body {
     display: -webkit-flex;
     align-items: center;
 }
-.order-list .detail-modal i {
+.order-list .detail-modal h5 i {
   display: inline-block;
   width: 5px;
   height: 8px;

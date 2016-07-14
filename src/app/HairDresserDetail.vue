@@ -42,7 +42,10 @@
     <!-- evaluation -->
     <div class="evaluation">
       <h3 class="item-title"><i></i>相关评价</h3>
-      <evaluation :evaluation="evaluation"></evaluation>
+      <evaluation :evaluations="evaluationList.result"></evaluation>
+      <div class="eva-footer" v-if="evaluationList.totalCount > 8">
+        <a @click.prevent="goEvaList">查看更多</a>
+      </div>
     </div>
     <button class="btn btn-reserve" @click.prevent="goApointment()">预约</button>
   </div>
@@ -55,7 +58,7 @@
     data () {
       return {
         hairDresser: {},
-        evaluation: window.evaluation,
+        evaluationList: {},
         serviceItem: [],
         barberId: ''
       }
@@ -73,7 +76,7 @@
       self.$http.get('/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 1}).then((response) => {
         let res = response.data
         if (res.code === 0) {
-          self.$set('evaluation', res.result.result)
+          self.$set('evaluationList', res.result)
         }
       })
     },
@@ -84,6 +87,9 @@
         '&personName=' + this.hairDresser.stageName +
         '&shopId=' + this.hairDresser.shopId +
         '&shopName=' + this.hairDresser.shopName
+      },
+      goEvaList () {
+        window.location.href = 'evaluationList.html?id=' + this.barberId
       }
     },
     components: {
@@ -95,7 +101,7 @@
 <style>
 .hair-dresser-detail {
   background-color: #eaeaea;
-  padding-bottom: 42px;
+  padding-bottom: 50px;
 }
 .detail-header {
   background-image: url(../assets/img/detail-back.png);
@@ -132,6 +138,13 @@
   height: 16px;
   width: auto;
 }
+.item-title i {
+  float: left;
+  width: 15px;
+  height: 26px;
+  background-color: #ff6251;
+  margin-right: 15px;
+}
 .introduction {
   background-color: #fff;
   margin-top: 15px;
@@ -150,5 +163,22 @@
   margin-top: 15px;
   font-size: 1.4rem;
   padding-top: 5px;
+}
+.eva-footer {
+  text-align: right;
+  padding-right: 15px;
+}
+.eva-footer>a::after{
+  content: '';
+  display: inline-block;
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-width: 2px 2px 0 0;
+  border-style: solid;
+  border-color: #ff6251;
+  transform: rotate(45deg);
+  -webkit-transform:rotate(45deg);
+  margin-left: 3px;
 }
 </style>

@@ -23,7 +23,8 @@ module.exports = {
     shopbarber: './src/entrys/shopbarber.js',
     collection: './src/entrys/collection.js',
     resetpwd: './src/entrys/resetpwd.js',
-    apointment: './src/entrys/apointment.js'
+    apointment: './src/entrys/apointment.js',
+    evaluationList: './src/entrys/evaluationList.js'
   },
   output: {
     path: './dist',//输出文件目录
@@ -135,6 +136,11 @@ module.exports = {
       template: 'src/html/couponStore.html',
       filename: 'html/couponStore.html',
       chunks: ['couponstore']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/evaluationList.html',
+      filename: 'html/evaluationList.html',
+      chunks: ['evaluationList']
     })
   ],
   module: {

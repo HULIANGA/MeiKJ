@@ -1,42 +1,30 @@
 <template>
-  <div class="evaluation-info">
+  <div class="evaluation-info" v-for="evaluation in evaluations">
     <div class="eva-header">
       <p class="eva-user-info">
-        <span class="eva-img"><img :src="evaluation.userImg"></span>
-        {{evaluation.userName}}
-        <span class="eva-time">{{evaluation.evalTime}}</span>
+        <span class="eva-img"><img src="../assets/img/avatar.png"></span>
+        {{evaluation.customerName}}
+        <span class="eva-time">{{evaluation.createTime | datetime}}</span>
       </p>
-      <p class="eva-star" v-if="evaluation.starNum == 5">
-        评分：<img src="../assets/img/five-star.png">
-      </p>
-      <p class="eva-star" v-if="evaluation.starNum == 4">
-        评分：<img src="../assets/img/four-star.png">
-      </p>
-      <p class="eva-star" v-if="evaluation.starNum == 3">
-        评分：<img src="../assets/img/three-star.png">
-      </p>
-      <p class="eva-star" v-if="evaluation.starNum == 2">
-        评分：<img src="../assets/img/two-star.png">
-      </p>
-      <p class="eva-star" v-if="evaluation.starNum == 1">
-        评分：<img src="../assets/img/one-star.png">
-      </p>
-      <p class="eva-star" v-if="evaluation.starNum == 0">
-        评分：<img src="../assets/img/zero-star.png">
+      <p class="eva-star">
+        评分：<img src="../assets/img/five-star.png" v-if="evaluation.star == 5">
+        <img src="../assets/img/four-star.png" v-if="evaluation.star == 4">
+        <img src="../assets/img/three-star.png" v-if="evaluation.star == 3">
+        <img src="../assets/img/two-star.png" v-if="evaluation.star == 2">
+        <img src="../assets/img/one-star.png" v-if="evaluation.star == 1">
+        <img src="../assets/img/zero-star.png" v-if="evaluation.star == 0">
+        <button class="btn">删除</button>
       </p>
     </div>
     <div class="eva-body">
-      {{evaluation.info}}
-    </div>
-    <div class="eva-footer">
-      <a>查看更多</a>
+      {{evaluation.content}}
     </div>
   </div>
 </template>
 <script>
 export default {
   props: {
-    evaluation: Object
+    evaluations: Array
   }
 }
 </script>
@@ -61,6 +49,17 @@ export default {
 .eva-star {
   padding-left: 32px;
 }
+.eva-star button {
+  float: right;
+  background-color: #fff;
+  border: 1px solid #ff6251;
+  color: #ff6251;
+  font-size: 1.3rem;
+  padding: 2px 6px;
+  box-sizing: border-box;
+  height: 24px;
+  line-height: 20px;
+}
 .eva-user-info .eva-time {
   float: right;
   color: #767676;
@@ -74,21 +73,5 @@ export default {
 .eva-body {
   padding-left: 32px;
   line-height: 24px;
-}
-.eva-footer {
-  text-align: right;
-}
-.eva-footer>a::after{
-  content: '';
-  display: inline-block;
-  position: relative;
-  width: 8px;
-  height: 8px;
-  border-width: 2px 2px 0 0;
-  border-style: solid;
-  border-color: #ff6251;
-  transform: rotate(45deg);
-  -webkit-transform:rotate(45deg);
-  margin-left: 3px;
 }
 </style>

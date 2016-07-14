@@ -107,4 +107,33 @@ export default {
   height: 3px;
   width: 18px;
 }
+.detail-modal-transition {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+.detail-modal-enter {
+  animation-name: fadeInDown
+}
+.detail-modal-leave {
+  animation-name: fadeOutUp
+}
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0,-100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0,-100%,0);
+  }
+}
 </style>
