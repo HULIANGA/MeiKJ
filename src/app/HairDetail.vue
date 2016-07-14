@@ -41,7 +41,7 @@ export default {
       isCollect: false
     }
   },
-  ready () {
+  created () {
     let self = this
     self.hairId = window.location.search.substr(1).split('=')[1]
     self.token = localStorage.token

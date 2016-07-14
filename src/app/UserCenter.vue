@@ -86,7 +86,7 @@
     <button class="btn btn-logout" @click.prevent="logout">退出登录</button>
   </div>
 </div>
-<bottom-menu></bottom-menu>
+<bottom-menu :active="'usercenter'"></bottom-menu>
 </template>
 <script>
   import BottomMenu from '../components/BottomMenu'
@@ -94,13 +94,22 @@
     data () {
       return {
         userInfo: {},
-        userCenter: {orderUrl: 'myorder.html', personalUrl: 'personalData.html', collectionUrl: 'collection.html', resetUrl: 'resetpwd.html', couponUrl: 'mycoupon.html'},
+        userCenter: {
+          orderUrl: 'myOrder.html',
+          personalUrl: 'personalData.html',
+          collectionUrl: 'collection.html',
+          resetUrl: 'resetPwd.html',
+          couponUrl: 'myCoupon.html'
+        },
         token: ''
       }
     },
-    ready () {
+    created () {
       let self = this
       self.token = localStorage.token
+      if (!self.token) {
+        window.location.href = 'login.html'
+      }
       self.$http.post('/api/customer/t/detail', { }, {headers: {token: self.token}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
@@ -112,7 +121,7 @@
       logout () {
         localStorage.setItem('token', '')
         self.token = localStorage.getItem('token')
-        window.location.href = location.origin + '/dist/html/'
+        window.location.href = 'main.html'
       }
     },
     components: {
@@ -180,7 +189,7 @@
     -webkit-transform: scaleY(0.5);
   }
   .ct-link-hd>img {
-    width: 20px;
+    width: 16px;
     height: auto;
     vertical-align: middle;
   }
