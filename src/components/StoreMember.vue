@@ -40,7 +40,7 @@ export default {
       window.location.href = 'shopbarber.html?id=' + storeId
     },
     detail (id) {
-      window.location.href = 'barberDetail.html?id=' + id
+      window.location.href = 'dresserDetail.html?id=' + id
     }
   }
 }

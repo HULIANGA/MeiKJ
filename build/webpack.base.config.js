@@ -10,6 +10,7 @@ module.exports = {
     findPwd: './src/entrys/findPwd.js',
     allStore: './src/entrys/allStore.js',
     storeDetail: './src/entrys/storeDetail.js',
+    shopDresser: './src/entrys/shopDresser.js',
     allDresser: './src/entrys/allDresser.js',
     dresserDetail: './src/entrys/dresserDetail.js',
     hairList: './src/entrys/hairList.js',
@@ -22,7 +23,6 @@ module.exports = {
     myorder: './src/entrys/myorder.js',
     usercenter: './src/entrys/usercenter.js',
     comment: './src/entrys/comment.js',
-    shopbarber: './src/entrys/shopbarber.js',
     collection: './src/entrys/collection.js',
     resetpwd: './src/entrys/resetpwd.js',
     apointment: './src/entrys/apointment.js'
@@ -93,6 +93,11 @@ module.exports = {
       filename: 'html/hairDetail.html',
       chunks: ['hairDetail']
     }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/shopDresser.html',
+      filename: 'html/shopDresser.html',
+      chunks: ['shopDresser']
+    }),
 
     new HtmlWebpackPlugin({
       template: 'src/html/mycoupon.html',
@@ -105,11 +110,7 @@ module.exports = {
       chunks: ['myorder']
     }),
 
-    new HtmlWebpackPlugin({
-      template: 'src/html/shopbarber.html',
-      filename: 'html/shopbarber.html',
-      chunks: ['shopbarber']
-    }),
+
     new HtmlWebpackPlugin({
       template: 'src/html/usercenter.html',
       filename: 'html/usercenter.html',
