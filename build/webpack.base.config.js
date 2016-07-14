@@ -15,26 +15,16 @@ module.exports = {
     dresserDetail: './src/entrys/dresserDetail.js',
     hairList: './src/entrys/hairList.js',
     hairDetail: './src/entrys/hairDetail.js',
-<<<<<<< HEAD
-    couponstore: './src/entrys/couponstore.js',
-    mycoupon: './src/entrys/mycoupon.js',
-=======
     userCenter: './src/entrys/userCenter.js',
     myCoupon: './src/entrys/myCoupon.js',
     myOrder: './src/entrys/myOrder.js',
     couponStore: './src/entrys/couponStore.js',
->>>>>>> 229bf6c06b0cf4a5bf04fc3b45a9cfb245287f09
     personalData: './src/entrys/personalData.js',
     comment: './src/entrys/comment.js',
     collection: './src/entrys/collection.js',
-<<<<<<< HEAD
     resetpwd: './src/entrys/resetpwd.js',
     apointment: './src/entrys/apointment.js',
     evaluationList: './src/entrys/evaluationList.js'
-=======
-    resetPwd: './src/entrys/resetPwd.js',
-    apointment: './src/entrys/apointment.js'
->>>>>>> 229bf6c06b0cf4a5bf04fc3b45a9cfb245287f09
   },
   output: {
     path: './dist',//输出文件目录
@@ -145,16 +135,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'src/html/couponStore.html',
       filename: 'html/couponStore.html',
-<<<<<<< HEAD
-      chunks: ['couponstore']
+      chunks: ['couponStore']
     }),
     new HtmlWebpackPlugin({
       template: 'src/html/evaluationList.html',
       filename: 'html/evaluationList.html',
       chunks: ['evaluationList']
-=======
-      chunks: ['couponStore']
->>>>>>> 229bf6c06b0cf4a5bf04fc3b45a9cfb245287f09
     })
   ],
   module: {
