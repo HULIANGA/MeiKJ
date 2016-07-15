@@ -26,7 +26,7 @@
   import ServiceItem from '../components/ServiceItem'
   import StoreMember from '../components/StoreMember'
   import Loading from '../components/Loading'
-  import utils from '../libs/utils'
+  import utils from '../js/utils'
 
   export default {
     data () {

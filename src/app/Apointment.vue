@@ -12,8 +12,8 @@ import SelectStore from '../components/SelectStore'
 import SelectTime from '../components/SelectTime'
 import SelectPerson from '../components/SelectPerson'
 import CreateOrder from '../components/CreateOrder'
-import utils from '../libs/utils'
-import toast from '../libs/toast'
+import utils from '../js/utils'
+import toast from '../js/toast'
 
 export default {
   data: function () {

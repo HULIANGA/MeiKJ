@@ -34,7 +34,7 @@
 </template>
 <script>
 import Dialog from '../components/Dialog'
-import toast from '../libs/toast'
+import toast from '../js/toast'
 export default {
   props: {
     evaluation: Object

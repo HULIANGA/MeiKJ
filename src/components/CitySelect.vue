@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import cityJson from '../libs/area.js'
+
 export default {
   data: function () {
     return {
@@ -43,36 +45,32 @@ export default {
       }
     }
   },
-  computed: {},
-  ready: function () {
-    document.getElementsByClassName('first-city-list')
-    // 获取城市数据
-    this.$http.get('/static/area.json').then(function (response) {
-      this.cityData = response.data
-      var citys = response.data.row
-      var tempCityData = {
-        hotData: [],
-        firData: [],
-        secData: {}
-      }
-      for (var i = 0; i < citys.length; i++) {
-        var city = citys[i]
-        if (city.parent_id === '0') {// 一级城市，Array
-          tempCityData.firData.push(city)
-          if (city.area_id === '310000' || city.area_id === '110000' || city.area_id === '440000') {
-            tempCityData.hotData.push(city)
-          }
-        }else if (city.parent_id.slice(2, 6) === '0000' && city.area_id.slice(4, 6) === '00') {// 二级城市，JSON，key是parentid，value为parentid相同的city
-          if (tempCityData.secData[city.parent_id]) {
-            tempCityData.secData[city.parent_id].push(city)
-          }else {
-            tempCityData.secData[city.parent_id] = [city]
-          }
+  created: function () {
+    var citys = cityJson.data.row
+    var tempCityData = {
+      hotData: [],
+      firData: [],
+      secData: {}
+    }
+    for (var i = 0; i < citys.length; i++) {
+      var city = citys[i]
+      if (city.parent_id === '0') {// 一级城市，Array
+        tempCityData.firData.push(city)
+        if (city.area_id === '310000' || city.area_id === '110000' || city.area_id === '440000') {
+          tempCityData.hotData.push(city)
+        }
+      }else if (city.parent_id.slice(2, 6) === '0000' && city.area_id.slice(4, 6) === '00') {// 二级城市，JSON，key是parentid，value为parentid相同的city
+        if (tempCityData.secData[city.parent_id]) {
+          tempCityData.secData[city.parent_id].push(city)
+        }else {
+          tempCityData.secData[city.parent_id] = [city]
         }
       }
-      this.cityData = tempCityData
-      console.log(this.cityData.secData)
-    })
+    }
+    this.cityData = tempCityData
+  },
+  ready: function () {
+    document.getElementsByClassName('first-city-list')
     this.hashChange()
     // 绑定hashchange事件
     var self = this

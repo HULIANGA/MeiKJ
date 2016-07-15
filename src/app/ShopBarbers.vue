@@ -17,7 +17,7 @@
   import HairDresser from '../components/HairDresser'
   import Loading from '../components/Loading'
   import NoResult from '../components/NoResult'
-  import utils from '../libs/utils'
+  import utils from '../js/utils'
 
   export default {
     data () {

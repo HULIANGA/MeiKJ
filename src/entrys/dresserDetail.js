@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import DresserDetail from '../app/DresserDetail'
 import VueResource from 'vue-resource'
-import utils from '../libs/utils'
+import utils from '../js/utils'
 Vue.use(VueResource)
 Vue.http.options.emulateJSON = true
 Vue.filter('datetime', function (value) {

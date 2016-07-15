@@ -1,9 +1,17 @@
 var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");//提取css到单独文件
-var HtmlWebpackPlugin = require('html-webpack-plugin');//自动生成html
+var ExtractTextPlugin = require("extract-text-webpack-plugin"); //提取css到单独文件
+var HtmlWebpackPlugin = require('html-webpack-plugin'); //自动生成html
+var AddScriptPathPlugin = require('./addScriptPath');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
+var distPath = './dist'; //输出文件目录
+
+var resourcePath = 'http://localhost:8080/dist/'; //js和css的引用路径；开发debugger
+// var resourcePath = '../';//js和css的引用路径；生产
+
 module.exports = {
   debug: true,
-  entry: {//入口js
+  entry: { //入口js
     main: './src/entrys/main.js',
     login: './src/entrys/login.js',
     regist: './src/entrys/regist.js',
@@ -25,13 +33,16 @@ module.exports = {
     resetpwd: './src/entrys/resetpwd.js',
     apointment: './src/entrys/apointment.js',
     evaluationList: './src/entrys/evaluationList.js'
+      // base: './src/entrys/base.js'
   },
   output: {
-    path: './dist',//输出文件目录
-    publicPath: 'http://localhost:8080/dist/',//使用绝对地址磁能进入debug模式
-    filename: 'js/[name].[hash].js'//js输出的路径和名称
+    path: distPath, //输出文件目录
+    publicPath: resourcePath, //使用绝对地址才能进入debug模式
+    filename: 'js/[name].[hash].js' //js输出的路径和名称
   },
-  externals: {//不打包在一起的js。需要在页面上用script标签引入
+  externals: { //不打包在一起的js。需要在页面上用script标签引入
+    // 'vue': 'Vue',
+    // 'vue-resource': 'VueResource'
   },
   resolve: {
     extensions: ['', '.js', '.vue'],
@@ -40,7 +51,18 @@ module.exports = {
     }
   },
   plugins: [
-    new ExtractTextPlugin("css/[name].[hash].css"),//css单独输出到dist下
+    new ExtractTextPlugin("css/[name].[hash].css"), //css单独输出到dist下
+    new webpack.optimize.CommonsChunkPlugin('js/common.js'),
+    new AddScriptPathPlugin({
+      paths: [resourcePath + 'js/base', resourcePath + 'js/common'],
+    }),
+    new CopyWebpackPlugin([
+      // {output}/to/file.txt
+      {
+        from: './src/js/base.js',
+        to: 'js/base.js'
+      },
+    ]),
     new HtmlWebpackPlugin({
       template: 'src/html/main.html',
       filename: 'html/main.html',
@@ -144,27 +166,23 @@ module.exports = {
     })
   ],
   module: {
-    loaders: [
-      {
-        test: /\.vue$/,
-        loader: 'vue'
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel!eslint',
-        // make sure to exclude 3rd party code in node_modules
-        exclude: /(node_modules|service)/
-      },
-      {
-        // edit this for additional asset file types
-        test: /\.(png|jpg|gif)$/,
-        loader: 'url',
-        query: {
-          limit: 10000,//小于10k的图片转换为base64编码
-          name: 'img/[name].[ext]?[hash]'//大于10k图片输出目录和名称
-        }
+    loaders: [{
+      test: /\.vue$/,
+      loader: 'vue'
+    }, {
+      test: /\.js$/,
+      loader: 'babel!eslint',
+      // make sure to exclude 3rd party code in node_modules
+      exclude: /(node_modules|src\/libs)/
+    }, {
+      // edit this for additional asset file types
+      test: /\.(png|jpg|gif)$/,
+      loader: 'url',
+      query: {
+        limit: 10000, //小于10k的图片转换为base64编码
+        name: 'img/[name].[ext]?[hash]' //大于10k图片输出目录和名称
       }
-    ]
+    }]
   },
   // vue-loader config:
   // lint all JavaScript inside *.vue files with ESLint

@@ -26,7 +26,7 @@
 </div>
 </template>
 <script>
-import toast from '../libs/toast'
+import toast from '../js/toast'
 export default {
   data () {
     return {

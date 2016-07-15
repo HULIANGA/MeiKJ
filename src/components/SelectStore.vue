@@ -6,7 +6,7 @@
 </template>
 <script>
 import StoreOne from '../components/StoreOne'
-import toast from '../libs/toast'
+import toast from '../js/toast'
 
 export default {
   data () {

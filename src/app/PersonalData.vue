@@ -48,8 +48,8 @@
 <button class="btn btn-reserve" @click.prevent="save" v-else>保存</button>
 </template>
 <script>
-import utils from '../libs/utils'
-import toast from '../libs/toast'
+import utils from '../js/utils'
+import toast from '../js/toast'
 export default {
   data () {
     return {

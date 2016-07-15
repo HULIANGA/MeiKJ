@@ -55,8 +55,8 @@
   import Evaluation from '../components/Evaluation'
   import ServiceItem from '../components/ServiceItem'
   import Loading from '../components/Loading'
-  import utils from '../libs/utils'
-  import toast from '../libs/toast'
+  import utils from '../js/utils'
+  import toast from '../js/toast'
   export default {
     data () {
       return {
@@ -64,7 +64,7 @@
           show: true
         },
         hairDresser: {},
-        evaluations: [],
+        evaluations: null,
         serviceItem: [],
         barberId: null
       }
@@ -182,19 +182,19 @@ body {
 }
 .eva-footer {
   text-align: right;
-  padding-right: 15px;
+  padding: 0 15px 10px;
+  font-size: 1.2rem;
 }
 .eva-footer>a::after{
   content: '';
   display: inline-block;
   position: relative;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-width: 2px 2px 0 0;
   border-style: solid;
   border-color: #ff6251;
   transform: rotate(45deg);
-  -webkit-transform:rotate(45deg);
   margin-left: 3px;
 }
 .item-title {
