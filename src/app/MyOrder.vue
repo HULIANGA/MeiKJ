@@ -119,7 +119,7 @@ export default {
     getOrder (state, pageNo, pageSize) {
       let self = this
       self.loading.show = true
-      self.$http.get(ctx + '/api/order/t/list', {state: state, pageNo: pageNo, pageSize: pageSize}, {headers: {token: self.token}}).then((response) => {
+      self.$http.get(window.ctx + '/api/order/t/list', {state: state, pageNo: pageNo, pageSize: pageSize}, {headers: {token: self.token}}).then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {
@@ -142,7 +142,7 @@ export default {
     },
     showDetailModal (orderId) {
       let self = this
-      self.$http.get(ctx + '/api/order/t/detail', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
+      self.$http.get(window.ctx + '/api/order/t/detail', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           self.$set('orderDetail', res.result)

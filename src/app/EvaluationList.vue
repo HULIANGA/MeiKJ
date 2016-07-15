@@ -22,7 +22,7 @@ export default {
     let self = this
     self.token = localStorage.getItem('token')
     self.barberId = utils.getUrlParam('id')
-    self.$http.get(ctx + '/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 8}).then((response) => {
+    self.$http.get(window.ctx + '/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 8}).then((response) => {
       let res = response.data
       if (res.code === 0) {
         self.$set('evaluations', res.result.result)

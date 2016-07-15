@@ -46,7 +46,7 @@ export default {
     self.hairId = window.location.search.substr(1).split('=')[1]
     self.token = localStorage.token
     // 发型详情
-    self.$http.post(ctx + '/api/hairstyle/detail', {hairstyleId: self.hairId}).then((response) => {
+    self.$http.post(window.ctx + '/api/hairstyle/detail', {hairstyleId: self.hairId}).then((response) => {
       let res = response.data
       self.loading.show = false
       if (res.code === 0) {
@@ -56,7 +56,7 @@ export default {
     }, (response) => {
       self.loading.show = false
     })
-    self.$http.post(ctx + '/api/hairstyle/t/collectAndPraise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+    self.$http.post(window.ctx + '/api/hairstyle/t/collectAndPraise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
       let res = response.data
       if (res.code === 0) {
         self.$set('isPraise', res.result.isPriase)
@@ -73,7 +73,7 @@ export default {
       if (self.token) {
         self.loading.show = true
         if (!self.isPraise) {
-          self.$http.post(ctx + '/api/praise/t/praise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+          self.$http.post(window.ctx + '/api/praise/t/praise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
               self.$set('isPraise', true)
@@ -88,7 +88,7 @@ export default {
             toast('点赞失败')
           })
         } else {
-          self.$http.post(ctx + '/api/praise/t/cancel', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+          self.$http.post(window.ctx + '/api/praise/t/cancel', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
               self.$set('isPraise', false)
@@ -115,7 +115,7 @@ export default {
       if (self.token) {
         self.loading.show = true
         if (!self.isCollect) {
-          self.$http.post(ctx + '/api/collect/t/collect', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+          self.$http.post(window.ctx + '/api/collect/t/collect', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
               self.$set('isCollect', true)
@@ -130,7 +130,7 @@ export default {
             toast('收藏失败')
           })
         } else {
-          self.$http.post(ctx + '/api/collect/t/cancel', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+          self.$http.post(window.ctx + '/api/collect/t/cancel', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
               self.$set('isCollect', false)

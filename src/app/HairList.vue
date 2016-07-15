@@ -50,7 +50,7 @@ export default {
         self.currentClassId = id
       }
       self.searchPageParam.hairstyleClassId = self.currentClassId
-      self.$http.get(ctx + '/api/hairstyle/list', self.searchPageParam).then((response) => {
+      self.$http.get(window.ctx + '/api/hairstyle/list', self.searchPageParam).then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {

@@ -52,7 +52,7 @@ export default {
         toast('请输入正确的手机号')
       }
       self.disabled = true
-      self.$http.post(ctx + '/api/customer/verifyCode', {mobile: self.phone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/verifyCode', {mobile: self.phone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           toast('发送成功')
@@ -85,7 +85,7 @@ export default {
         return
       }
       self.loading.show = true
-      self.$http.post(ctx + '/api/customer/resetPwd', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/resetPwd', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           window.location.href = 'main.html'

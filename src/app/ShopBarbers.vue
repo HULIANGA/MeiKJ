@@ -34,7 +34,7 @@
       let self = this
       let _shopId = utils.getUrlParam('id')
       self.shopId = _shopId
-      self.$http.get(ctx + '/api/shop/barberList', {shopId: self.shopId, pageNo: 1}).then((response) => {
+      self.$http.get(window.ctx + '/api/shop/barberList', {shopId: self.shopId, pageNo: 1}).then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {

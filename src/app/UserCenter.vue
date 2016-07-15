@@ -110,7 +110,7 @@
       if (!self.token) {
         window.location.href = 'login.html'
       }
-      self.$http.post(ctx + '/api/customer/t/detail', { }, {headers: {token: self.token}}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/t/detail', { }, {headers: {token: self.token}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           self.$set('userInfo', res.result)

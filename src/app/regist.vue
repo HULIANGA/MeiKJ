@@ -104,7 +104,7 @@ export default {
         return
       }
       self.loading.show = true
-      self.$http.post(ctx + '/api/customer/register', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/register', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           self.loading.show = false
@@ -129,7 +129,7 @@ export default {
         return
       }
       self.disabled = true
-      self.$http.post(ctx + '/api/customer/verifyCode', {mobile: self.phone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/verifyCode', {mobile: self.phone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           toast('发送成功')

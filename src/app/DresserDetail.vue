@@ -76,7 +76,7 @@
       self.barberId = _barberId
       self.token = localStorage.getItem('token')
       // 发型师信息
-      self.$http.post(ctx + '/api/barber/detail', {barberId: self.barberId}).then((response) => {
+      self.$http.post(window.ctx + '/api/barber/detail', {barberId: self.barberId}).then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {
@@ -88,7 +88,7 @@
       // 发型师项目
 
       // 评论列表
-      self.$http.get(ctx + '/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 1}).then((response) => {
+      self.$http.get(window.ctx + '/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 1}).then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {

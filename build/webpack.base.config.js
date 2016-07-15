@@ -6,8 +6,8 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var distPath = './dist'; //输出文件目录
 
-// var resourcePath = 'http://localhost:8080/dist/'; //js和css的引用路径；开发debugger
-var resourcePath = '../';//js和css的引用路径；生产
+var resourcePath = 'http://localhost:8080/dist/'; //js和css的引用路径；开发debugger
+// var resourcePath = '../';//js和css的引用路径；生产
 
 module.exports = {
   debug: true,

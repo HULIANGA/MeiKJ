@@ -30,7 +30,7 @@ export default {
   },
   ready () {
     let self = this
-    self.$http(ctx + '/api/coupon/t/list', {headers: {token: localStorage.token}}).then(function (response) {
+    self.$http(window.ctx + '/api/coupon/t/list', {headers: {token: localStorage.token}}).then(function (response) {
       self.$set('items', response.data.result.result)
     }).catch(function (response) {
       console.log(response)

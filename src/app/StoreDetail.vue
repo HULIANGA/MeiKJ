@@ -45,7 +45,7 @@
       let self = this
       self.storeId = utils.getUrlParam('id')
       // 门店详情
-      self.$http.post(ctx + '/api/shop/detail', {shopId: self.storeId}).then((response) => {
+      self.$http.post(window.ctx + '/api/shop/detail', {shopId: self.storeId}).then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {
@@ -55,7 +55,7 @@
         self.loading.show = false
       })
       // 门店项目
-      self.$http.get(ctx + '/api/shop/productList', {shopId: self.storeId}).then((response) => {
+      self.$http.get(window.ctx + '/api/shop/productList', {shopId: self.storeId}).then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {
@@ -65,7 +65,7 @@
         self.loading.show = false
       })
       // 门店发型师
-      self.$http.get(ctx + '/api/shop/barberList', {shopId: self.storeId, pageNo: 1, pageSize: 5}).then((response) => {
+      self.$http.get(window.ctx + '/api/shop/barberList', {shopId: self.storeId, pageNo: 1, pageSize: 5}).then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {
