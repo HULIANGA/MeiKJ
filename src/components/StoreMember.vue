@@ -24,7 +24,7 @@
 </div>
 </template>
 <script>
-import utils from '../libs/utils'
+import utils from '../js/utils'
 export default {
   props: {
     storemember: Array

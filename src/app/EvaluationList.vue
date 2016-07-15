@@ -8,7 +8,7 @@
 </template>
 <script>
 import Evaluation from '../components/Evaluation'
-import utils from '../libs/utils'
+import utils from '../js/utils'
 export default {
   data () {
     return {

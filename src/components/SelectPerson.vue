@@ -6,7 +6,7 @@
 </template>
 <script>
 import PersonOne from '../components/PersonOne'
-import toast from '../libs/toast'
+import toast from '../js/toast'
 
 export default {
   data () {

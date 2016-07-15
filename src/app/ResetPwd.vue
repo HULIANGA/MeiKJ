@@ -15,7 +15,7 @@
   <button class="btn btn-reserve" @click.prevent="reset">重置</button>
 </template>
 <script>
-import toast from '../libs/toast'
+import toast from '../js/toast'
 export default {
   data () {
     return {

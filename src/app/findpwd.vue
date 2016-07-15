@@ -23,8 +23,8 @@
   <loading :show="loading.show" :show-text="loading.showText"></loading>
 </template>
 <script>
-import utils from '../libs/utils'
-import toast from '../libs/toast'
+import utils from '../js/utils'
+import toast from '../js/toast'
 import Loading from '../components/Loading'
 
 export default {

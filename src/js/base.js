@@ -1,0 +1,2 @@
+window.ctx = ''
+window.imageDomain = ''

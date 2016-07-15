@@ -26,7 +26,7 @@
 <script>
 import SwiperHair from '../components/SwiperHair'
 import Loading from '../components/Loading'
-import toast from '../libs/toast'
+import toast from '../js/toast'
 
 export default {
   data () {
