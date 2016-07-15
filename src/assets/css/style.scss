@@ -81,6 +81,10 @@ button {
   text-align: center;
   padding: 0;
 }
+button:disabled {
+  background: #c0c0bf;
+  color: #fff;
+}
 a.btn {
   display: inline-block;
 }
@@ -166,6 +170,7 @@ img {
   top: 6px;
   right: 0;
   padding: 0 10px;
+  min-width: 80px;
 }
 .btn-code {
   background-color: #ff6251;
