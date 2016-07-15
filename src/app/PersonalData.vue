@@ -61,7 +61,7 @@ export default {
   ready () {
     let self = this
     self.token = localStorage.token
-    self.$http.post('/api/customer/t/detail', {}, {headers: {token: self.token}}).then((response) => {
+    self.$http.post(ctx + '/api/customer/t/detail', {}, {headers: {token: self.token}}).then((response) => {
       let res = response.data
       if (res.code === 0) {
         self.$set('userInfo', res.result)
@@ -84,7 +84,7 @@ export default {
         toast('请填写正确的邮箱地址')
         return false
       }
-      self.$http.post('/api/customer/t/edit', {nickName: self.userInfo.nickName, gender: self.userInfo.gender, email: self.userInfo.email}, {headers: {token: self.token}}).then((response) => {
+      self.$http.post(ctx + '/api/customer/t/edit', {nickName: self.userInfo.nickName, gender: self.userInfo.gender, email: self.userInfo.email}, {headers: {token: self.token}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           self.show = true

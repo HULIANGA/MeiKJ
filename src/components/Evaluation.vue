@@ -58,7 +58,7 @@ export default {
     },
     confirmDel () {
       let self = this
-      self.$http.post('/api/comment/t/delete', {commentId: self.delCommentId}, {headers: {token: self.token}}).then((response) => {
+      self.$http.post(ctx + '/api/comment/t/delete', {commentId: self.delCommentId}, {headers: {token: self.token}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           self.$parent.evaluations.$remove(self.evaluation)

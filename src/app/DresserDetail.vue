@@ -5,7 +5,7 @@
   <div class="hair-dresser-detail">
     <div class="detail-header clearfix">
       <div class="detail-header-item">
-        <div class="detail-img"><img v-if="hairDresser.logo" :src="'http://meimeidou.qiniudn.com/'+hairDresser.logo"></div>
+        <div class="detail-img"><img v-if="hairDresser.logo" :src="imageDomain + hairDresser.logo"></div>
       </div>
       <div class="detail-header-item">
         <p class="detail-header-name">{{hairDresser.stageName}} <span>{{hairDresser.positionName}}</span></p>
@@ -60,6 +60,7 @@
   export default {
     data () {
       return {
+        imageDomain: window.imageDomain,
         loading: {
           show: true
         },
@@ -75,7 +76,7 @@
       self.barberId = _barberId
       self.token = localStorage.getItem('token')
       // 发型师信息
-      self.$http.post('/api/barber/detail', {barberId: self.barberId}).then((response) => {
+      self.$http.post(ctx + '/api/barber/detail', {barberId: self.barberId}).then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {
@@ -85,9 +86,9 @@
         self.loading.show = false
       })
       // 发型师项目
-      self.$http.get('/api/')
+
       // 评论列表
-      self.$http.get('/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 1}).then((response) => {
+      self.$http.get(ctx + '/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 1}).then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {

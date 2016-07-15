@@ -125,7 +125,7 @@ export default {
   },
   methods: {
     getProject: function (requestData) {// 获取项目列表
-      this.$http.get('/api/order/selectProject', requestData).then(function (response) {
+      this.$http.get(ctx + '/api/order/selectProject', requestData).then(function (response) {
         var res = response.data
         if (res.code === 0) {
           this.serviceItem = res.result
@@ -133,7 +133,7 @@ export default {
       })
     },
     getStore: function () {
-      this.$http.get('/api/order/selectShop').then(function (response) {
+      this.$http.get(ctx + '/api/order/selectShop').then(function (response) {
         var res = response.data
         if (res.code === 0) {
           this.storeItem = res.result.result
@@ -144,7 +144,7 @@ export default {
       this.$broadcast('get-time-list', requestData)
     },
     getPerson: function (requestData) {
-      this.$http.get('/api/order/selectBarber', requestData).then(function (response) {
+      this.$http.get(ctx + '/api/order/selectBarber', requestData).then(function (response) {
         var res = response.data
         if (res.code === 0) {
           this.personItem = res.result

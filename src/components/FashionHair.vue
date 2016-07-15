@@ -2,7 +2,7 @@
   <div class="hair-list">
     <div class="hair-item" v-for="item in hairitems" @click.prevent="detail(item)">
       <a>
-        <img :src="'http://meimeidou.qiniudn.com/'+item.coverImg">
+        <img :src="imageDomain + item.coverImg">
       </a>
       <div class="hair-like">
         {{ item.praiseNum }}
@@ -12,6 +12,11 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      imageDomain: window.imageDomain
+    }
+  },
   props: {
     hairitems: Array
   },

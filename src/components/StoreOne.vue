@@ -1,7 +1,7 @@
 <template>
   <div class="store-item">
     <div class="store-img">
-      <span><img :src="'http://meimeidou.qiniudn.com/'+item.logo"></span>
+      <span><img :src="imageDomain + item.logo"></span>
     </div>
     <div class="store-text">
       <p class="store-name">{{item.name}}</p>
@@ -13,6 +13,11 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      imageDomain: window.imageDomain
+    }
+  },
   props: {
     item: Object
   },

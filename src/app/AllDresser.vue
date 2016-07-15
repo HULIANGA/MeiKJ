@@ -34,7 +34,7 @@ export default {
   created () {
     let self = this
     // 获取发型师列表
-    self.$http.get('/api/barber/list').then((response) => {
+    self.$http.get(ctx + '/api/barber/list').then((response) => {
       self.loading.show = false
       let res = response.data
       if (res.code === 0) {
@@ -50,7 +50,7 @@ export default {
       self.loading.show = false
     })
     // 头部filter数据
-    self.$http.get('/static/filter.json').then((response) => {
+    self.$http.get(ctx + '/static/filter.json').then((response) => {
       self.searchItems = response.data
     }, (response) => {
 

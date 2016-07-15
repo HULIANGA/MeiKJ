@@ -1,7 +1,7 @@
 <template>
   <div class="hair-dresser-item">
     <div class="hair-dresser-img">
-      <div><img :src="'http://meimeidou.qiniudn.com/'+item.logo"></div>
+      <div><img :src="imageDomain + item.logo"></div>
     </div>
     <div class="hair-dresser-text">
         <p class="hair-dresser-name">{{item.stageName }}</p>
@@ -22,6 +22,11 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      imageDomain: window.imageDomain
+    }
+  },
   props: {
     item: Object
   }

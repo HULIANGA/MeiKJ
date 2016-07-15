@@ -21,7 +21,7 @@ import CitySelect from '../components/CitySelect'
 export default {
   data () {
     return {
-      dataHref: '/api/banner/list',
+      dataHref: window.ctx + '/api/banner/list',
       hairItems: window.hairItems,
       localCity: '定位中'
     }

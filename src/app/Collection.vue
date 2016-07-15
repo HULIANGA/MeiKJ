@@ -18,7 +18,7 @@ export default {
   ready () {
     let self = this
     self.token = localStorage.token
-    self.$http.get('/api/collect/t/list', {}, {headers: {token: self.token}}).then((response) => {
+    self.$http.get(ctx + '/api/collect/t/list', {}, {headers: {token: self.token}}).then((response) => {
       let res = response.data
       if (res.code === 0) {
         self.$set('hairItems', res.result.result)

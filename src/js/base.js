@@ -1,2 +1,2 @@
-window.ctx = ''
-window.imageDomain = ''
+window.ctx = '../..'
+window.imageDomain = 'http://meimeidou.qiniudn.com/'

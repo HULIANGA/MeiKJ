@@ -4,7 +4,7 @@
   <div class="s-member-list">
     <div class="s-member-item" v-for="(index, item) in storemember" v-if="index < 4" @click.prevent="detail(item.id)">
       <div class="s-member-img">
-        <img :src="'http://meimeidou.qiniudn.com/'+item.logo">
+        <img :src="imageDomain + item.logo">
       </div>
       <p class="s-member-name">{{item.stageName}}</p>
       <p class="s-member-level">{{item.positionName}}</p>
@@ -26,6 +26,11 @@
 <script>
 import utils from '../js/utils'
 export default {
+  data () {
+    return {
+      imageDomain: window.imageDomain
+    }
+  },
   props: {
     storemember: Array
   },
