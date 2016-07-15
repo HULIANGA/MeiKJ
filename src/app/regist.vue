@@ -10,7 +10,7 @@
       </div>
       <div class="input-item input-code">
         <input class="user-code" type="tel" placeholder="请输入验证码" v-model="verifyCode">
-        <button class="btn btn-code" @click.prevent="getVerifyCode">获取验证码</button>
+        <button class="btn btn-code" @click.prevent="getVerifyCode" v-disable="disabled">{{disabled ? count : '获取验证码'}}</button>
       </div>
       <div class="input-item">
         <input class="user-pwd" type="password" placeholder="请设置密码" v-model="password">
@@ -35,7 +35,9 @@ export default {
       password: '',
       loading: {
         show: false
-      }
+      },
+      disabled: false,
+      count: 60
     }
   },
   methods: {
@@ -80,10 +82,23 @@ export default {
         toast('请输入正确的手机号')
         return
       }
+      self.disabled = true
       self.$http.post('/api/customer/verifyCode', {mobile: self.phone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
-        console.log(response.data)
+        let res = response.data
+        if (res.code === 0) {
+          toast('发送成功')
+          const countTime = setInterval(function () {
+            self.count = self.count - 1
+            if (self.count === 0) {
+              self.disabled = false
+              self.count = 60
+              clearInterval(countTime)
+            }
+          }, 1000)
+        }
       }, (response) => {
-        console.log(response.data)
+        toast('发送失败')
+        self.disabled = false
       })
     }
   },
