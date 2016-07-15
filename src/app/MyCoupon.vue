@@ -15,26 +15,39 @@
       </div>
     </div>
     <div class="coupon-control">
-      <button class="btn btn-coupon">领取</button>
+      <button class="btn btn-coupon">去使用</button>
     </div>
   </div>
 </div>
-<div class="no-data" v-if="items.length == 0">暂无优惠券</div>
+<no-result v-show="noresult" :text=""></no-result>
 </template>
 <script>
+import NoResult from '../components/NoResult'
 export default {
   data () {
     return {
-      items: []
+      items: null,
+      noresult: false
     }
   },
-  ready () {
+  created () {
     let self = this
     self.$http('/api/coupon/t/list', {headers: {token: localStorage.token}}).then(function (response) {
-      self.$set('items', response.data.result.result)
+      let res = response.data
+      if (res.code === 0) {
+        self.$set('items', res.result.result)
+        if (!res.result.result || res.result.result.length === 0) {
+          self.noresult = true
+        }
+      } else {
+        self.noresult = true
+      }
     }).catch(function (response) {
       console.log(response)
     })
+  },
+  components: {
+    NoResult
   }
 }
 </script>
