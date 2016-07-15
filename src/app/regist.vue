@@ -20,12 +20,50 @@
     <p class="clearfix regist-link"><a class="pull-r" :href="login">已有账号，去登录</a></p>
   </div>
   <loading :show="loading.show" :show-text="loading.showText"></loading>
+    <modal :show.sync="showModal">
+      <div slot="modal-header" class="modal-header">
+        <button class="close" @click.prevent="goMain"></button>
+        <h4 class="modal-title">
+          个人信息
+        </h4>
+      </div>
+      <div slot="modal-body" class="modal-body">
+        <div class="p-item">
+          <div class="p-item-hd">
+            <label>昵称</label>
+          </div>
+          <div class="p-item-bd">
+            <input type="text" placeholder="昵称" v-model="userInfo.nickName" maxlength="15">
+          </div>
+        </div>
+        <div class="p-item">
+          <div class="p-item-hd">
+            <label>性别</label>
+          </div>
+          <div class="p-item-bd">
+            <input type="radio" name="gender" value="1" v-model="userInfo.gender">男
+            <input type="radio" name="gender" value="0" v-model="userInfo.gender">女
+          </div>
+        </div>
+        <div class="p-item">
+          <div class="p-item-hd">
+            <label>我的邮箱</label>
+          </div>
+          <div class="p-item-bd">
+            <input type="text" placeholder="我的邮箱" v-model="userInfo.email">
+          </div>
+        </div>
+      </div>
+      <div slot="modal-footer" class="modal-footer">
+        <button type="button" class="btn btn-ok" @click.prevent="confirmInfo">确认</button>
+      </div>
+  </modal>
 </template>
 <script>
 import utils from '../libs/utils'
 import toast from '../libs/toast'
 import Loading from '../components/Loading'
-
+import Modal from '../components/Modal'
 export default {
   data () {
     return {
@@ -36,8 +74,14 @@ export default {
       loading: {
         show: false
       },
+      userInfo: {
+        nickName: null,
+        gender: 1,
+        email: null
+      },
       disabled: false,
-      count: 60
+      count: 60,
+      showModal: false
     }
   },
   methods: {
@@ -63,7 +107,9 @@ export default {
       self.$http.post('/api/customer/register', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
-          window.location.href = 'main.html'
+          self.loading.show = false
+          self.showModal = true
+          // window.location.href = 'main.html'
         }else {
           self.loading.show = false
         }
@@ -100,10 +146,30 @@ export default {
         toast('发送失败')
         self.disabled = false
       })
+    },
+    confirmInfo () {
+      let self = this
+      if (self.userInfo.nickName && self.userInfo.nickName.trim() === '') {
+        toast('请填写昵称')
+        return
+      }
+      if (self.userInfo.email && self.userInfo.email.trim() === '') {
+        toast('请填写邮箱')
+        return
+      }
+      if (self.userInfo.email && !utils.getCheck.checkEmail(self.userInfo.email.trim())) {
+        toast('请填写正确的邮箱地址')
+        return
+      }
+    },
+    goMain () {
+      this.showModal = false
+      window.location.href = 'main.html'
     }
   },
   components: {
-    Loading
+    Loading,
+    Modal
   }
 }
 </script>
@@ -118,5 +184,53 @@ export default {
   font-size: 1.4rem;
   padding: 5px;
   color: #333;
+}
+.modal-body {
+  padding: 15px 10px;
+}
+.p-item {
+  display: -webkit-box;
+  display: flex;
+  display: -webkit-flex;
+  padding: 10px 15px;
+  border-bottom: 1px solid #eaeaea;
+  align-items: center;
+}
+.p-item .p-item-hd {
+  font-size: 1.6rem;
+}
+.p-item .p-item-bd {
+  -webkit-box-flex:1;
+  flex: 1;
+  -webkit-flex:1;
+  font-size: 1.5rem;
+  text-align: right;
+}
+.p-item-hd>label {
+  display: block;
+  width: 105px;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.p-item-bd>input {
+  height: 24px;
+  line-height: 24px;
+  width: 100%;
+  text-align: right;
+  font-size: 1.5rem;
+}
+.p-item-bd>input[type=radio] {
+  -webkit-appearance:none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #eaeaea;
+  vertical-align: middle;
+  margin-right: 5px;
+  position: relative;
+  top: -2px;
+}
+.p-item-bd>input[type=radio]:checked {
+  background-color: #ff6251;
 }
 </style>
