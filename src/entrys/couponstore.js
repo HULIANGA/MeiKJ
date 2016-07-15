@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import CouponStore from '../app/couponstore'
+import CouponStore from '../app/CouponStore'
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
 
