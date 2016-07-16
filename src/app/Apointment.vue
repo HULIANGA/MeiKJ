@@ -4,6 +4,7 @@
   <select-time v-show="currentStep === 'time'" :hours="maxHours" :shopid="shopId"></select-time>
   <select-person v-show="currentStep === 'person'" :items="personItem"></select-person>
   <create-order v-show="currentStep === 'order'" :order="orderInfo"></create-order>
+  <loading :show="loading.show"></loading>
 </template>
 
 <script>
@@ -12,12 +13,16 @@ import SelectStore from '../components/SelectStore'
 import SelectTime from '../components/SelectTime'
 import SelectPerson from '../components/SelectPerson'
 import CreateOrder from '../components/CreateOrder'
+import Loading from '../components/Loading'
 import utils from '../js/utils'
 import toast from '../js/toast'
 
 export default {
   data: function () {
     return {
+      loading: {
+        show: true
+      },
       maxHours: null, // 消耗时间
       shopId: null, // 门店id
       serviceItem: null, // 项目数据
@@ -48,6 +53,9 @@ export default {
   },
   computed: {},
   created: function () {
+    if (window.location.hash !== '') {
+      window.location.hash = ''
+    }
     let requestData = {}
     if (utils.getUrlParam('shopId')) {
       requestData.shopId = utils.getUrlParam('shopId')
@@ -57,19 +65,36 @@ export default {
     }
     this.getProject(requestData)
   },
+  ready: function () {
+    var self = this
+    window.onhashchange = function () {
+      var hashVal = window.location.hash
+      if (hashVal === '') {
+        self.currentStep = 'service'
+      }else if (hashVal === '#time') {
+        self.currentStep = 'time'
+      }else if (hashVal === '#store') {
+        self.currentStep = 'store'
+      }else if (hashVal === '#person') {
+        self.currentStep = 'person'
+      }else if (hashVal === '#order') {
+        self.currentStep = 'order'
+      }
+    }
+  },
   attached: function () {},
   events: {
     'next': function (data) {
       if (data.fromStep === 'service') {
         if (utils.getUrlParam('shopId')) { // 从门店预约和从发型师预约
-          this.currentStep = 'time'
+          window.location.hash = 'time'
           this.$broadcast('time-show')
           this.shopId = parseInt(utils.getUrlParam('shopId'), 10)
           this.getTime({'shopId': this.shopId})
           this.orderInfo.shopName = decodeURIComponent(utils.getUrlParam('shopName'))
           this.orderInfo.orderSubmit.shopId = this.shopId
         }else {
-          this.currentStep = 'store'
+          window.location.hash = 'store'
           this.getStore()
         }
         this.maxHours = data.maxHours
@@ -85,7 +110,7 @@ export default {
         }
         this.orderInfo.productNames = productNameString
       }else if (data.fromStep === 'store') {
-        this.currentStep = 'time'
+        window.location.hash = 'time'
         this.$broadcast('time-show')
         this.shopId = data.shopId
         this.getTime({'shopId': data.shopId})
@@ -106,18 +131,18 @@ export default {
           this.orderInfo.orderSubmit.date = parseInt(tempDate, 10)
           this.orderInfo.orderSubmit.time = tempTime
           if (utils.getUrlParam('personId')) { // 从发型师预约
-            this.currentStep = 'order'
+            window.location.hash = 'order'
             this.orderInfo.orderSubmit.barberId = utils.getUrlParam('personId')
             this.orderInfo.barberName = decodeURIComponent(utils.getUrlParam('personName'))
           }else {
-            this.currentStep = 'person'
+            window.location.hash = 'person'
             this.getPerson({'date': parseInt(tempDate, 10), 'time': tempTime, 'hours': this.maxHours, shopId: this.shopId})
           }
         }else {
           toast('请选择时间')
         }
       }else if (data.fromStep === 'person') {
-        this.currentStep = 'order'
+        window.location.hash = 'order'
         this.orderInfo.orderSubmit.barberId = data.personId
         this.orderInfo.barberName = data.personName
       }
@@ -125,30 +150,51 @@ export default {
   },
   methods: {
     getProject: function (requestData) {// 获取项目列表
-      this.$http.get('/api/order/selectProject', requestData).then(function (response) {
+      this.loading.show = true
+      this.$http.get(window.ctx + '/api/order/selectProject', requestData).then(function (response) {
+        this.loading.show = false
         var res = response.data
         if (res.code === 0) {
           this.serviceItem = res.result
+        }else {
+          toast('获取项目失败')
         }
+      }, function (response) {
+        this.loading.show = false
+        toast('获取项目失败')
       })
     },
     getStore: function () {
-      this.$http.get('/api/order/selectShop').then(function (response) {
+      this.loading.show = true
+      this.$http.get(window.ctx + '/api/order/selectShop').then(function (response) {
+        this.loading.show = false
         var res = response.data
         if (res.code === 0) {
           this.storeItem = res.result.result
+        }else {
+          toast('获取门店失败')
         }
+      }, function (response) {
+        this.loading.show = false
+        toast('获取门店失败')
       })
     },
     getTime: function (requestData) {
       this.$broadcast('get-time-list', requestData)
     },
     getPerson: function (requestData) {
-      this.$http.get('/api/order/selectBarber', requestData).then(function (response) {
+      this.loading.show = true
+      this.$http.get(window.ctx + '/api/order/selectBarber', requestData).then(function (response) {
+        this.loading.show = false
         var res = response.data
         if (res.code === 0) {
           this.personItem = res.result
+        }else {
+          toast('获取发型师失败')
         }
+      }, function (response) {
+        this.loading.show = false
+        toast('获取发型师失败')
       })
     }
   },
@@ -157,7 +203,8 @@ export default {
     SelectStore,
     SelectTime,
     SelectPerson,
-    CreateOrder
+    CreateOrder,
+    Loading
   }
 }
 </script>

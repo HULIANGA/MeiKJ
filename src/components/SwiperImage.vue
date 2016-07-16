@@ -20,7 +20,7 @@
   <div class="swiper-container swiper-box">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="item in items">
-        <img :src="'http://meimeidou.qiniudn.com/' + item.imgUrl">
+        <img :src="imageDomain + item.imgUrl">
       </div>
     </div>
     <div class="swiper-pagination swiper-pagination-white"></div>
@@ -33,7 +33,8 @@
   export default {
     data () {
       return {
-        items: null
+        items: null,
+        imageDomain: window.imageDomain
       }
     },
     ready: function () {

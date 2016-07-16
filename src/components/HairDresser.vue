@@ -1,7 +1,7 @@
 <template>
   <div class="hair-dresser-item" v-for="item in items" @click.prevent="detail(item)">
     <div >
-      <div class="hair-dresser-img"><img :src="'http://meimeidou.qiniudn.com/'+item.logo"></div>
+      <div class="hair-dresser-img"><img :src="imageDomain + item.logo"></div>
     </div>
     <div class="hair-dresser-text">
         <p class="hair-dresser-store">{{item.shopName}}</p>
@@ -24,6 +24,11 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      imageDomain: window.imageDomain
+    }
+  },
   props: {
     items: Array
   },

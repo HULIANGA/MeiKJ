@@ -1,7 +1,7 @@
 <template>
   <div class="store-item" v-for="item in items" @click.prevent="viewDetail(item)">
     <div class="store-img">
-      <span><img :src="'http://meimeidou.qiniudn.com/'+item.logo"></span>
+      <span><img :src="imageDomain + item.logo"></span>
     </div>
     <div class="store-text">
       <p class="store-name">{{ item.name}}</p>
@@ -13,13 +13,18 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      imageDomain: window.imageDomain
+    }
+  },
   props: {
     items: Array
   },
   methods: {
     viewDetail (item) {
       let storeId = item.id
-      window.location.href = location.origin + '/dist/html/storeDetail.html?id=' + storeId
+      window.location.href = 'storeDetail.html?id=' + storeId
     }
   }
 }

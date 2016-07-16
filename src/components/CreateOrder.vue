@@ -28,7 +28,7 @@
         <label>真实姓名：</label>
       </div>
       <div class="user-info-bd">
-        <input type="text" placeholder="请输入您的真实姓名">
+        <input type="text" v-model="order.orderSubmit.customerName" placeholder="请输入您的真实姓名">
       </div>
     </div>
     <div class="user-info-item">
@@ -36,7 +36,7 @@
         <label>手机号码：</label>
       </div>
       <div class="user-info-bd">
-        <input type="tel" placeholder="请输入您的手机号码">
+        <input type="tel" v-model="order.orderSubmit.customerPhone" placeholder="请输入您的手机号码">
       </div>
     </div>
   </div>
@@ -61,7 +61,7 @@
         <p>微信支付</p>
       </div>
       <div class="o-pay-ft">
-        <input type="radio" name="pay" value='2'>
+        <input type="radio" name="pay" v-model="order.orderSubmit.payType" value='2'>
       </div>
     </div>
     <div class="o-pay-item">
@@ -72,7 +72,7 @@
         <p>支付宝</p>
       </div>
       <div class="o-pay-ft">
-        <input type="radio" name="pay" value="1">
+        <input type="radio" name="pay" v-model="order.orderSubmit.payType" value="1">
       </div>
     </div>
   </div>
@@ -80,7 +80,7 @@
   <div class="order-remark">
     <div class="order-remark-item">
       <div class="o-remark-bd">
-        <textarea rows="3" placeholder="在这里填上您的备注说明"></textarea>
+        <textarea rows="3" placeholder="在这里填上您的备注说明" v-model="order.orderSubmit.memo"></textarea>
       </div>
     </div>
   </div>
@@ -106,14 +106,10 @@
     },
     methods: {
       submit: function () {
-        this.order.orderSubmit.payType = 1
-        this.order.orderSubmit.customerName = '胡靓'
-        this.order.orderSubmit.customerPhone = '15800985626'
         this.order.orderSubmit.price = 20.00
         this.order.orderSubmit.realPrice = 19.00
-        this.order.orderSubmit.memo = '我是备注'
         console.log(this.order.orderSubmit)
-        this.$http.post('/api/order/t/save', this.order.orderSubmit, {headers: {token: localStorage.token}}).then(function (response) {
+        this.$http.post(window.ctx + '/api/order/t/save', this.order.orderSubmit, {headers: {token: localStorage.token}}).then(function (response) {
 
         })
       }

@@ -52,7 +52,7 @@ export default {
         return
       }
       self.loading.show = true
-      self.$http.post('/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
         if (response.data.code === 0) {
           localStorage.loginname = response.data.result.id
           localStorage.loginphone = this.phone

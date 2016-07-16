@@ -29,7 +29,9 @@ export default {
   },
   events: {
     'get-time-list': function (requestData) {
-      this.$http.get('/api/order/selectAppointment', requestData).then(function (response) {
+      this.$parent.$parent.loading.show = true
+      this.$http.get(window.ctx + '/api/order/selectAppointment', requestData).then(function (response) {
+        this.$parent.$parent.loading.show = false
         var res = response.data
         if (res.code === 0) {
           let tempList = res.result
@@ -50,6 +52,8 @@ export default {
           }
           this.resetList()
         }
+      }, function (response) {
+        this.$parent.$parent.loading.show = true
       })
     }
   },

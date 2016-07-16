@@ -66,7 +66,7 @@ export default {
   created () {
     let self = this
     self.token = localStorage.getItem('token')
-    self.$http.get('/api/coupon/allList', {pageNo: 1, pageSize: 10}).then((response) => {
+    self.$http.get(window.ctx + '/api/coupon/allList', {pageNo: 1, pageSize: 10}).then((response) => {
       self.loading.show = false
       let res = response.data
       if (res.code === 0) {
@@ -82,7 +82,7 @@ export default {
       let self = this
       if (self.token && self.token !== '') {
         self.loading.show = true
-        self.$http.post('/api/coupon/t/receive', {couponId: couponId}, {headers: {token: self.token}}).then((response) => {
+        self.$http.post(window.ctx + '/api/coupon/t/receive', {couponId: couponId}, {headers: {token: self.token}}).then((response) => {
           let res = response.data
           self.loading.show = false
           if (res.code === 0) {
@@ -100,7 +100,7 @@ export default {
     },
     showCouponDetail (couponId) {
       let self = this
-      self.$http.post('/api/coupon/detail', {couponId: couponId}).then((response) => {
+      self.$http.post(window.ctx + '/api/coupon/detail', {couponId: couponId}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           self.$set('couponDetail', res.result)

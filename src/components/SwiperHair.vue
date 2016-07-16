@@ -5,7 +5,7 @@
   <div class="swiper-container">
     <div class="swiper-wrapper">
       <div v-if="items" class="swiper-slide" v-for="item in items">
-        <img :src="'http://meimeidou.qiniudn.com/'+item.path">
+        <img :src="imageDomain + item.path">
       </div>
     </div>
     <div class="swiper-pagination swiper-pagination-white"></div>
@@ -21,6 +21,7 @@
     },
     data () {
       return {
+        imageDomain: window.imageDomain
       }
     },
     events: {

@@ -25,7 +25,7 @@
     },
     created () {
       let self = this
-      self.$http.get('/api/shop/list').then((response) => {
+      self.$http.get(window.ctx + '/api/shop/list').then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {

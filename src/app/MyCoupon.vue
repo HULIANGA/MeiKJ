@@ -72,7 +72,7 @@ export default {
   created () {
     let self = this
     self.token = localStorage.getItem('token')
-    self.$http('/api/coupon/t/list', {headers: {token: localStorage.token}}).then(function (response) {
+    self.$http(window.ctx + '/api/coupon/t/list', {headers: {token: localStorage.token}}).then(function (response) {
       let res = response.data
       self.loading.show = false
       if (res.code === 0) {
@@ -83,8 +83,6 @@ export default {
       } else {
         self.noresult = true
       }
-    }).catch(function (response) {
-      console.log(response)
     })
   },
   computed: {
@@ -114,7 +112,7 @@ export default {
     },
     delCoupon (couponId, index) {
       let self = this
-      self.$http.post('/api/coupon/t/deleteCoupon', {couponId: couponId}, {headers: {token: self.token}}).then((response) => {
+      self.$http.post(window.ctx + '/api/coupon/t/deleteCoupon', {couponId: couponId}, {headers: {token: self.token}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           toast('删除成功')
@@ -128,7 +126,7 @@ export default {
     },
     showCouponDetail (couponId) {
       let self = this
-      self.$http.post('/api/coupon/detail', {couponId: couponId}).then((response) => {
+      self.$http.post(window.ctx + '/api/coupon/detail', {couponId: couponId}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           self.$set('couponDetail', res.result)

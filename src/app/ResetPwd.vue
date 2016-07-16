@@ -36,7 +36,7 @@ export default {
         toast('请输入您的新密码')
         return false
       }
-      self.$http.post('/api/customer/t/changePwd', {oldPassword: self.oldpwd, newPassword: self.password}, {headers: {token: self.token}}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/t/changePwd', {oldPassword: self.oldpwd, newPassword: self.password}, {headers: {token: self.token}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           toast('重置成功')
