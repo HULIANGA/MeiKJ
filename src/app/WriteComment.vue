@@ -3,7 +3,7 @@
 </style>
 <template>
 <div class="comment">
-  <div class="comment-hd">
+  <!-- <div class="comment-hd">
     <div class="comment-hd-img">
       <div><img src="../assets/img/member.png"></div>
     </div>
@@ -11,14 +11,18 @@
       <p class="comment-hd-hair">李东田<span>总监</span></p>
       <p class="comment-hd-project">服务项目：剪发</p>
     </div>
-  </div>
+  </div> -->
   <div class="comment-bd">
     <div class="comment-control">
-      <div class="comment-control-star">评分：<span class="comment-star"></span></div>
-      <div class="comment-control-upload"><button class="btn btn-upload">上传图片</button></div>
+      <div class="comment-control-star">评分：<span class="comment-star" v-bind:class="{'active' : $index <= (star -1)}" v-for="item in items" @click="selectStar($index)"></span>
+      </div>
+      <div class="comment-control-upload">
+        <button class="btn btn-upload">上传图片</button>
+        <input type="file" v-model="upPic" @change="fileChange">
+      </div>
     </div>
     <div class="comment-text">
-      <textarea rows="3" placeholder="请输入评价内容"></textarea>
+      <textarea rows="3" placeholder="请输入评价内容" v-model="commentConent"></textarea>
     </div>
   </div>
   <div class="comment-btn">
@@ -27,7 +31,38 @@
   </div>
 </div>
 </template>
-<script></script>
+<script>
+export default {
+  data () {
+    return {
+      star: 0,
+      commentConent: null,
+      upPic: null,
+      token: '',
+      items: [
+        {star: 1},
+        {star: 2},
+        {star: 3},
+        {star: 4},
+        {star: 5}
+      ]
+    }
+  },
+  ready () {
+    let self = this
+    self.token = localStorage.getItem('token')
+  },
+  methods: {
+    selectStar (index) {
+      let self = this
+      self.star = index + 1
+    },
+    fileChange (e) {
+      console.log(e)
+    }
+  }
+}
+</script>
 <style>
 body {
   background-color: #eaeaea;
@@ -77,24 +112,28 @@ body {
 }
 .comment-bd .comment-star {
   display: inline-block;
-  overflow: hidden;
-  width: 100px;
+  width: 20px;
   height: 18px;
   background-image: url(../assets/img/star.png);
-  background-repeat: repeat-x;
+  background-repeat: no-repeat;
   background-position: center;
-  background-size: 20px 18px;
+  background-size: contain;
+  margin-right: 5px;
+}
+.comment-star.active {
+  background-image: url(../assets/img/real-star.png);
 }
 .btn-upload {
   background-color: #fff;
   border: 2px solid #858585;
   color: #333;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   background-image: url(../assets/img/upload.png);
   background-repeat: no-repeat;
   background-position: 6px center;
   background-size: 24px;
   padding-left: 35px;
+  padding-right: 5px;
 }
 .comment-control,.comment-control-star {
   display: -webkit-box;
@@ -108,7 +147,17 @@ body {
   -webkit-flex:1;
 }
 .comment-control-upload {
-
+  position: relative;
+}
+.comment-control-upload input[type=file] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 1;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 .comment-btn {
   display: -webkit-box;
