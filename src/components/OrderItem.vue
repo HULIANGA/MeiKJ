@@ -18,7 +18,7 @@
         <button class="btn btn-primary">确认服务</button>
       </div>
       <div class="control-right" v-if="item.processState == 3">
-        <button class="btn btn-primary">去评价</button>
+        <button class="btn btn-primary" @click.prevent="goComment(item.id)">去评价</button>
       </div>
       <div class="control-right" v-if="item.processState == 4">
         <button class="btn btn-primary">查看评价</button>
@@ -49,6 +49,9 @@ export default {
   methods: {
     detailModal (item) {
       this.$emit('detail-msg', item.id)
+    },
+    goComment (orderId) {
+      window.location.href = 'writeComment.html?orderId=' + orderId
     }
   }
 }

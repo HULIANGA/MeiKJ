@@ -5,29 +5,114 @@
   <div class="coupon-store">
     <div class="coupon-list">
       <div class="coupon-item"  v-for="item in items">
-        <div class="coupon-subitem">
+        <div class="coupon-subitem" @click.prevent="showCouponDetail(item.id)">
           <div class="c-left">
-              <p class="coupon-price">{{ item.couponPrice}}</p>
-              <p class="coupon-limit">（满{{item.couponLimit}}可用）</p>
+              <p class="coupon-price" v-if="item.type == 1">{{ item.discount / 10}}折</p>
+              <p class="coupon-price" v-if="item.type == 2">&yen;{{ item.money}}</p>
+              <p class="coupon-limit" v-if="item.type == 2">（满{{item.line}}可用）</p>
+              <p class="coupon-price" v-if="item.type == 3">&yen;{{ item.quota}}</p>
           </div>
           <div class="c-right">
-            <h3>{{item.couponName}}</h3>
-            <p class="coupon-time">{{item.couponStartTime}} - {{item.couponEndTime}}</p>
+            <h3>{{item.name}}</h3>
+            <p class="coupon-time">{{item.startTime}} - {{item.endTime}}</p>
           </div>
         </div>
         <div class="coupon-control">
-          <button class="btn btn-coupon">领取</button>
+          <button class="btn btn-coupon" @click.prevent="getCoupon(item.id)">领取</button>
         </div>
       </div>
     </div>
+    <no-result v-show="noresult" :text=""></no-result>
+    <loading :show="loading.show" :show-text=""></loading>
+    <detail-modal :show.sync="showDetail">
+      <div slot="detail-modal-header" class="detail-modal-header">
+        <h4 class="detail-modal-title">
+          {{couponDetail.name}}
+        </h4>
+      </div>
+      <div slot="detail-modal-body" class="detail-modal-body">
+        <div class="coupon-detail-list">
+          <h5><i></i>适用门店</h5>
+          <p><span>{{couponDetail.shopName}}</span></p>
+          <h5><i></i>适用职位</h5>
+          <p>{{couponDetail.positionName}}</p>
+          <h5><i></i>适用项目</h5>
+          <p><span>{{couponDetail.projectName}}</span></p>
+          <h5><i></i>适用城市</h5>
+          <p>{{couponDetail.cityName}}</p>
+        </div>
+      </div>
+    </detail-modal>
   </div>
 </template>
 <script>
+import Loading from '../components/Loading'
+import NoResult from '../components/NoResult'
+import DetailModal from '../components/DetailModal'
+import toast from '../js/toast'
 export default {
   data () {
     return {
-      items: window.couponStore
+      loading: {
+        show: true
+      },
+      items: null,
+      noresult: false,
+      token: '',
+      showDetail: false,
+      couponDetail: {}
     }
+  },
+  created () {
+    let self = this
+    self.token = localStorage.getItem('token')
+    self.$http.get(window.ctx + '/api/coupon/allList', {pageNo: 1, pageSize: 10}).then((response) => {
+      self.loading.show = false
+      let res = response.data
+      if (res.code === 0) {
+        self.$set('items', res.result.result)
+        if (!res.result.result || res.result.result.length === 0) {
+          self.noresult = true
+        }
+      }
+    })
+  },
+  methods: {
+    getCoupon (couponId) {
+      let self = this
+      if (self.token && self.token !== '') {
+        self.loading.show = true
+        self.$http.post(window.ctx + '/api/coupon/t/receive', {couponId: couponId}, {headers: {token: self.token}}).then((response) => {
+          let res = response.data
+          self.loading.show = false
+          if (res.code === 0) {
+            toast('领取成功')
+          } else {
+            toast(res.message)
+          }
+        }, (response) => {
+          self.loading.show = false
+          toast('领取失败')
+        })
+      } else {
+        window.location.href = 'login.html'
+      }
+    },
+    showCouponDetail (couponId) {
+      let self = this
+      self.$http.post(window.ctx + '/api/coupon/detail', {couponId: couponId}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          self.$set('couponDetail', res.result)
+          self.showDetail = true
+        }
+      })
+    }
+  },
+  components: {
+    Loading,
+    NoResult,
+    DetailModal
   }
 }
 </script>
@@ -131,5 +216,29 @@ body {
   font-size: 1.2rem;
   text-align: center;
   margin-top: 10px;
+}
+.coupon-store .detail-modal h5 {
+  font-weight: normal;
+  font-size: 1.4rem;
+  margin: 10px auto;
+  display: -webkit-box;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+}
+.coupon-store .detail-modal h5 i {
+  display: inline-block;
+  width: 5px;
+  height: 8px;
+  background-color: #ff6251;
+  margin-right: 10px;
+}
+.coupon-store .coupon-detail-list {
+  padding: 0 15px;
+}
+.coupon-store .coupon-detail-list p {
+  font-size: 1.3rem;
+  padding-left: 11px;
+  color: #8f8e8e;
 }
 </style>

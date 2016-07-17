@@ -163,6 +163,11 @@ module.exports = {
       template: 'src/html/evaluationList.html',
       filename: 'html/evaluationList.html',
       chunks: ['evaluationList']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/writeComment.html',
+      filename: 'html/writeComment.html',
+      chunks: ['comment']
     })
   ],
   module: {

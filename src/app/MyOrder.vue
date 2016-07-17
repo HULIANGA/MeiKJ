@@ -180,8 +180,8 @@ body {
 }
 .order-list .detail-modal h5 {
   font-weight: normal;
-  font-size: 1.5rem;
-  margin: 15px auto;
+  font-size: 1.4rem;
+  margin: 10px auto;
   display: -webkit-box;
   display: flex;
   display: -webkit-flex;
@@ -198,7 +198,7 @@ body {
   padding: 0 15px;
 }
 .order-list .order-detail-list p {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   padding-left: 11px;
   color: #8f8e8e;
 }

@@ -64,8 +64,10 @@ export default {
 .detail-modal-wrapper {
   position: relative;
   width: 90%;
-  margin: 30px auto;
+  margin: 0 auto;
   font-size: 1.6rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .detail-modal-content {
   position: relative;

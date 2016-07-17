@@ -81,7 +81,8 @@ export default {
       },
       disabled: false,
       count: 60,
-      showModal: false
+      showModal: false,
+      token: ''
     }
   },
   methods: {
@@ -108,8 +109,21 @@ export default {
         let res = response.data
         if (res.code === 0) {
           self.loading.show = false
-          self.showModal = true
-          // window.location.href = 'main.html'
+          toast('注册成功')
+          self.loading.show = true
+          self.$http.post('/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
+            if (response.data.code === 0) {
+              localStorage.loginname = response.data.result.id
+              localStorage.loginphone = this.phone
+              localStorage.token = response.data.result.token
+              self.showModal = true
+            }else {
+              self.loading.show = false
+            }
+          }, (response) => {
+            toast('登录失败')
+            self.loading.show = false
+          })
         }else {
           self.loading.show = false
         }
@@ -149,6 +163,7 @@ export default {
     },
     confirmInfo () {
       let self = this
+      self.token = localStorage.getItem('token')
       if (self.userInfo.nickName && self.userInfo.nickName.trim() === '') {
         toast('请填写昵称')
         return
@@ -161,6 +176,14 @@ export default {
         toast('请填写正确的邮箱地址')
         return
       }
+      self.$http.post('/api/customer/t/edit', {nickName: self.userInfo.nickName, gender: self.userInfo.gender, email: self.userInfo.email}, {headers: {token: self.token}}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          toast('保存成功')
+          self.showModal = false
+          window.location.href = 'main.html'
+        }
+      })
     },
     goMain () {
       this.showModal = false
