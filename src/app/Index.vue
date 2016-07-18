@@ -59,8 +59,8 @@ export default {
     }
   },
   events: {
-    'select-city': function (areaName) {
-      this.localCity = areaName
+    'select-city': function (area) {
+      this.localCity = area.name
     }
   }
 }
