@@ -112,6 +112,7 @@ export default {
           toast('注册成功')
           self.loading.show = true
           self.$http.post('/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
+            self.loading.show = false
             if (response.data.code === 0) {
               localStorage.loginname = response.data.result.id
               localStorage.loginphone = this.phone

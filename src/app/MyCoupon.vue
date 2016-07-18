@@ -3,6 +3,7 @@
 </style>
 <template>
 <div class="my-coupon-list">
+  <button class="btn btn-primary btn-exchange" @click.prevent="exchangeCoupon">去兑换</button>
   <div class="coupon-item-wrap" v-for="(index,item) in items">
     <div class="behind">
       <button class="btn btn-del" @click.prevent="delCoupon(item.id,$index)">删除</button>
@@ -47,6 +48,14 @@
       </div>
     </div>
   </detail-modal>
+  <modal :show.sync="exchangeModal">
+    <div slot="modal-body" class="modal-body">
+      <input type="input" maxlength="50" class="exchange-code" v-model="exchangeCode" placeholder="请填写兑换码">
+    </div>
+    <div class="modal-footer" slot="modal-footer">
+      <button class="btn btn-primary" @click.prevent="exchange()">兑换</button>
+    </div>
+  </modal>
 </div>
 <no-result v-show="noresult" :text=""></no-result>
 </template>
@@ -54,6 +63,7 @@
 import NoResult from '../components/NoResult'
 import Loading from '../components/Loading'
 import DetailModal from '../components/DetailModal'
+import Modal from '../components/Modal'
 import toast from '../js/toast'
 export default {
   data () {
@@ -66,7 +76,9 @@ export default {
       startX: null,
       token: '',
       showDetail: false,
-      couponDetail: {}
+      couponDetail: {},
+      exchangeCode: '',
+      exchangeModal: false
     }
   },
   created () {
@@ -136,12 +148,48 @@ export default {
     },
     useCoupon (couponId, applyShop) {
       window.location.href = 'apointment.html?couponId=' + couponId + 'shopId=' + applyShop
+    },
+    exchangeCoupon () {
+      this.exchangeModal = true
+    },
+    exchange () {
+      let self = this
+      if (self.exchangeCode && self.exchangeCode.trim() === '') {
+        toast('请填写兑换码')
+        return
+      }
+      self.exchangeModal = false
+      self.loading.show = true
+      self.$http.post(window.ctx + '/api/coupon/t/exchange', {code: self.exchangeCode}, {headers: {token: self.token}}).then((response) => {
+        let res = response.data
+        self.loading.show = false
+        if (res.code === 0) {
+          toast('兑换成功')
+          self.$http(window.ctx + '/api/coupon/t/list', {headers: {token: localStorage.token}}).then(function (response) {
+            let res = response.data
+            self.loading.show = false
+            if (res.code === 0) {
+              self.$set('items', res.result.result)
+              if (!res.result.result || res.result.result.length === 0) {
+                self.noresult = true
+              }
+            } else {
+              self.noresult = true
+            }
+          })
+        } else {
+          toast('兑换失败')
+        }
+      }, (response) => {
+        toast('兑换失败')
+      })
     }
   },
   components: {
     NoResult,
     DetailModal,
-    Loading
+    Loading,
+    Modal
   }
 }
 </script>
@@ -152,6 +200,12 @@ body {
 .my-coupon-list {
   margin-left: 15px;
   margin-top: 10px;
+}
+.my-coupon-list .btn-exchange {
+  display: block;
+  font-size: 1.4rem;
+  width: 50%;
+  margin: 0 auto 10px;
 }
 .coupon-item-wrap {
   position: relative;
@@ -295,5 +349,14 @@ body {
   font-size: 1.3rem;
   padding-left: 11px;
   color: #8f8e8e;
+}
+.exchange-code {
+  display: block;
+  height: 36px;
+  line-height: 36px;
+  border-bottom: 1px solid #eaeaea;
+  width: 80%;
+  margin: 30px auto;
+  text-align: center;
 }
 </style>

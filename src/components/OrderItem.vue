@@ -1,5 +1,5 @@
 <template>
-  <div class="order-item" v-for="item in items" @click.prevent="detailModal(item)">
+  <div class="order-item" v-for="(index, item) in items" @click.prevent="detailModal(item)">
     <p class="order-paytime" v-if="item.processState == 1">剩余支付时间：</p>
     <p class="orderno">订单编号：{{item.id}} <span>金额：{{item.price}}元</span></p>
     <p>预约门店：{{item.shopName}}</p>
@@ -8,20 +8,20 @@
     <div class="order-control">
       <div>
         <template v-if="item.processState == 1 || item.processState == 2">
-          <button class="btn btn-default">取消订单</button>
+          <button class="btn btn-default" @click.prevent.stop="cancelOrder(item.id,$index)">取消订单</button>
         </template>
       </div>
       <div v-if="item.processState == 1">
           <button class="btn btn-primary">去付款</button>
       </div>
       <div v-if="item.processState == 2">
-        <button class="btn btn-primary">确认服务</button>
+        <button class="btn btn-primary" @click.prevent.stop="confirmService(item.id,$index)">确认服务</button>
       </div>
       <div class="control-right" v-if="item.processState == 3">
-        <button class="btn btn-primary" @click.prevent="goComment(item.id)">去评价</button>
+        <button class="btn btn-primary" @click.prevent.stop="goComment(item.id)">去评价</button>
       </div>
       <div class="control-right" v-if="item.processState == 4">
-        <button class="btn btn-primary">查看评价</button>
+        <button class="btn btn-primary" @click.prevent.stop="viewComment(item.barberId)">查看评价</button>
       </div>
       <div class="control-right" v-if="item.processState == 5">
         <span class="order-status">待退款</span>
@@ -29,11 +29,18 @@
       <div class="control-right" v-if="item.processState == 6">
         <span class="order-status">已退款</span>
       </div>
+      <div class="control-right" v-if="item.processState == 7">
+        <span class="order-status">待验券</span>
+      </div>
+      <div class="control-right" v-if="item.processState == 9">
+        <span class="order-status">已取消</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import toast from '../js/toast'
 export default {
   props: {
     items: Array,
@@ -52,6 +59,29 @@ export default {
     },
     goComment (orderId) {
       window.location.href = 'writeComment.html?orderId=' + orderId
+    },
+    viewComment (barberId) {
+      window.location.href = 'dresserDetail.html?id=' + barberId
+    },
+    confirmService (orderId, index) {
+      let self = this
+      self.$http.post(window.ctx + '/api/order/t/confirm', {orderId: orderId}, {headers: {token: localStorage.getItem('token')}}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          toast('确认成功')
+          self.items.$remove(self.items[index])
+        }
+      })
+    },
+    cancelOrder (orderId, index) {
+      let self = this
+      self.$http.post(window.ctx + '/api/order/t/cancel', {orderId: orderId}, {headers: {token: localStorage.getItem('token')}}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          toast('取消成功')
+          self.items.$remove(self.items[index])
+        }
+      })
     }
   }
 }

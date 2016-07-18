@@ -14,27 +14,38 @@
   </div> -->
   <div class="comment-bd">
     <div class="comment-control">
-      <div class="comment-control-star">评分：<span class="comment-star" v-bind:class="{'active' : $index <= (star -1)}" v-for="item in items" @click="selectStar($index)"></span>
+      <div class="comment-control-star">评分：<span class="comment-star" v-bind:class="{'active' : $index <= (star -1)}" v-for="item in 5" @click="selectStar($index)"></span>
       </div>
       <div class="comment-control-upload">
-        <button class="btn btn-upload">上传图片</button>
-        <input type="file" v-model="upPic" @change="fileChange">
+          <button class="btn btn-upload">上传图片</button>
+          <input type="file" v-model="upPic" @change="fileChange" name="file">
       </div>
+    </div>
+    <div class="comment-pic clearfix">
+      <div class="pic-item" v-bind:style="{backgroundImage: 'url('+imageDomain+image.photoPath+')'}" v-for="image in photoList"></div>
     </div>
     <div class="comment-text">
       <textarea rows="3" placeholder="请输入评价内容" v-model="commentConent"></textarea>
     </div>
   </div>
   <div class="comment-btn">
-    <div><button class="btn btn-default">取消</button></div>
-    <div><button class="btn btn-info">提交评价</button></div>
+    <div><button class="btn btn-default" @click.prevent="goBack">取消</button></div>
+    <div><button class="btn btn-info" @click.prevent="saveComment()">提交评价</button></div>
   </div>
 </div>
+<loading :show="loading.show"></loading>
 </template>
 <script>
+import toast from '../js/toast'
+import Loading from '../components/Loading'
+import utils from '../js/utils'
 export default {
   data () {
     return {
+      loading: {
+        show: true
+      },
+      imageDomain: 'http://meimeidou.qiniudn.com/',
       star: 0,
       commentConent: null,
       upPic: null,
@@ -45,12 +56,15 @@ export default {
         {star: 3},
         {star: 4},
         {star: 5}
-      ]
+      ],
+      photoList: [],
+      orderId: ''
     }
   },
   ready () {
     let self = this
     self.token = localStorage.getItem('token')
+    self.loading.show = false
   },
   methods: {
     selectStar (index) {
@@ -58,8 +72,68 @@ export default {
       self.star = index + 1
     },
     fileChange (e) {
-      console.log(e)
+      let files = e.target.files || e.dataTransfer.files
+      if (!files.length) {
+        return
+      }
+      // this.createImage(files[0])
+      this._upload(files[0])
+    },
+    createImage (file) {
+      let reader = new FileReader()
+      let self = this
+      reader.onload = (e) => {
+        self.images.push({image: e.target.result})
+      }
+      reader.readAsDataURL(file)
+    },
+    _upload (file) {
+      let self = this
+      let data = new FormData()
+      data.append('file', file)
+      if (self.photoList.length < 6) {
+        self.loading.show = true
+        self.$http.post(window.ctx + '/api/common/uploadW', data).then((response) => {
+          let res = response.data
+          self.loading.show = false
+          if (res.code === 0) {
+            self.photoList.push({photoPath: res.result.key})
+            toast('上传成功')
+          } else {
+            toast('上传失败')
+          }
+        }, (response) => {
+          toast('上传失败')
+        })
+      } else {
+        toast('最多评论6张')
+      }
+    },
+    saveComment () {
+      let self = this
+      self.orderId = utils.getUrlParam('orderId')
+      let comment = {
+        orderId: self.orderId,
+        star: self.star,
+        content: self.commentConent,
+        photoList: self.photoList
+      }
+      self.loading.show = true
+      self.$http.post(window.ctx + '/api/comment/t/save', comment, {headers: {token: self.token}}).then((response) => {
+        let res = response.data
+        self.loading.show = false
+        if (res.code === 0) {
+          toast('评价成功')
+          window.location.href = 'myOrder.html'
+        }
+      })
+    },
+    goBack () {
+      window.history.go(-1)
     }
+  },
+  components: {
+    Loading
   }
 }
 </script>
@@ -179,7 +253,6 @@ body {
   display: flex;
   display: -webkit-flex;
   padding: 10px 15px;
-  margin-top: 15px;
 }
 .comment-text textarea {
   display: block;
@@ -189,5 +262,18 @@ body {
   font-size: 1.4rem;
   width: 100%;
   line-height: 24px;
+  padding: 2px 5px;
+}
+.comment-pic {
+  margin-top: 10px;
+}
+.comment-pic .pic-item {
+  float: left;
+  width: 79px;
+  height: 79px;
+  margin-right: 9px;
+  margin-bottom: 9px;
+  background:no-repeat center center;
+  background-size: cover;
 }
 </style>
