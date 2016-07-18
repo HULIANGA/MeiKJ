@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="first-city-list" v-show="showFirst">
     <div class="local-city">
-      当前定位城市：{{localcity}}
+      当前城市：{{localcity}}
     </div>
     <div class="list-title">
       热门城市
@@ -70,7 +70,6 @@ export default {
     this.cityData = tempCityData
   },
   ready: function () {
-    document.getElementsByClassName('first-city-list')
     this.hashChange()
     // 绑定hashchange事件
     var self = this
@@ -99,7 +98,7 @@ export default {
         this.curFirstId = areaId
       }else {
         window.location.hash = ''
-        this.$dispatch('select-city', areaName)
+        this.$dispatch('select-city', {'name': areaName, 'id': areaId})
       }
     }
   },
@@ -120,6 +119,7 @@ export default {
   overflow-y: auto;
   z-index: 999;
   background: #ffffff;
+  font-size: 1.2rem;
 }
 .list-title{
   background: #eaeaea;
