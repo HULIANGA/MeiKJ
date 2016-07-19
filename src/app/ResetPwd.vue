@@ -31,11 +31,11 @@ export default {
     reset () {
       let self = this
       if (self.token) {
-        if (self.oldpwd === '') {
+        if (self.oldpwd.trim() === '') {
           toast('请输入您的旧密码')
           return false
         }
-        if (self.password === '') {
+        if (self.password.trim() === '') {
           toast('请输入您的新密码')
           return false
         }

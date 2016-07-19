@@ -96,19 +96,19 @@ export default {
   methods: {
     register () {
       let self = this
-      if (self.phone === '') {
+      if (self.phone.trim() === '') {
         toast('请输入手机号')
         return
       }
-      if (self.verifyCode === '') {
+      if (self.verifyCode.trim() === '') {
         toast('请输入验证码')
         return
       }
-      if (self.password === '') {
+      if (self.password.trim() === '') {
         toast('请输入密码')
         return
       }
-      if (!utils.getCheck.checkPhone(self.phone)) {
+      if (!utils.getCheck.checkPhone(self.phone.trim())) {
         toast('请输入正确的手机号')
         return
       }
@@ -143,11 +143,11 @@ export default {
     },
     getVerifyCode () {
       let self = this
-      if (self.phone === '') {
+      if (self.phone.trim() === '') {
         toast('请输入手机号')
         return
       }
-      if (!utils.getCheck.checkPhone(self.phone)) {
+      if (!utils.getCheck.checkPhone(self.phone.trim())) {
         toast('请输入正确的手机号')
         return
       }
