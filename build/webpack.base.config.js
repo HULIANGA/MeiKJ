@@ -30,7 +30,7 @@ module.exports = {
     personalData: './src/entrys/personalData.js',
     comment: './src/entrys/comment.js',
     collection: './src/entrys/collection.js',
-    resetpwd: './src/entrys/resetpwd.js',
+    resetPwd: './src/entrys/resetpwd.js',
     apointment: './src/entrys/apointment.js',
     evaluationList: './src/entrys/evaluationList.js'
       // base: './src/entrys/base.js'

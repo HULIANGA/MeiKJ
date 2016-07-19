@@ -5,14 +5,17 @@
   <div class="collection">
     <fashion-hair :hairitems="hairItems"></fashion-hair>
   </div>
+  <no-result v-show="noresult" :text=""></no-result>
 </template>
 <script>
 import FashionHair from '../components/FashionHair'
+import NoResult from '../components/NoResult'
 export default {
   data () {
     return {
       hairItems: [],
-      token: ''
+      token: '',
+      noresult: false
     }
   },
   ready () {
@@ -22,15 +25,22 @@ export default {
       let res = response.data
       if (res.code === 0) {
         self.$set('hairItems', res.result.result)
+        if (!res.result.result || res.result.result.length === 0) {
+          self.noresult = true
+        }
       }
     })
   },
   components: {
-    FashionHair
+    FashionHair,
+    NoResult
   }
 }
 </script>
 <style>
+body {
+  background:#eaeaea;
+}
 .collection .hair-item {
   padding: 5px;
 }
