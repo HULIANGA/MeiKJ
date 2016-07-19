@@ -17,6 +17,9 @@
         <button class="btn" v-if="evaluation.customerId == loginId" @click.prevent="delEvaluation(evaluation.id)">删除</button>
       </p>
     </div>
+    <div class="eva-pic clearfix">
+        <div class="pic-item" v-bind:style="{backgroundImage: 'url('+imageDomain+image.photoPath+')'}" v-for="image in evaluation.photoList"></div>
+    </div>
     <div class="eva-body">
       {{evaluation.content}}
     </div>
@@ -44,7 +47,8 @@ export default {
       loginId: '',
       token: '',
       delCommentId: '',
-      delDialog: false
+      delDialog: false,
+      imageDomain: 'http://meimeidou.qiniudn.com/'
     }
   },
   ready () {
@@ -122,5 +126,18 @@ export default {
 .eva-body {
   padding-left: 32px;
   line-height: 20px;
+}
+.eva-pic {
+  margin-top: 10px;
+  padding-left: 32px;
+}
+.eva-pic .pic-item {
+  float: left;
+  width: 60px;
+  height: 60px;
+  margin-right: 9px;
+  margin-bottom: 9px;
+  background:no-repeat center center;
+  background-size: cover;
 }
 </style>
