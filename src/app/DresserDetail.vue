@@ -40,7 +40,7 @@
       </div>
     </div>
     <!-- evaluation -->
-    <div v-if="evaluations" class="evaluation">
+    <div v-if="evaluations && evaluations.length > 0" class="evaluation">
       <h3 class="item-title"><i></i>相关评价</h3>
       <evaluation :evaluation ="evaluations[0]"></evaluation>
       <div class="eva-footer">

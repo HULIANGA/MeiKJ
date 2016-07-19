@@ -21,7 +21,7 @@
 </template>
 <script>
 import toast from '../js/toast'
-import utils from '../js/utils'
+import {getCheck} from '../js/utils'
 import Loading from '../components/Loading'
 
 export default {
@@ -39,15 +39,15 @@ export default {
   methods: {
     login () {
       let self = this
-      if (self.phone === '') {
+      if (self.phone.trim() === '') {
         toast('请输入手机号')
         return
       }
-      if (self.password === '') {
+      if (self.password.trim() === '') {
         toast('请输入密码')
         return false
       }
-      if (!utils.getCheck.checkPhone(self.phone)) {
+      if (!getCheck.checkPhone(self.phone.trim())) {
         toast('请输入正确的手机号')
         return
       }
