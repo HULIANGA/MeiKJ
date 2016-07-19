@@ -88,7 +88,21 @@ export default {
       self.$http.post(window.ctx + '/api/customer/resetPwd', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
-          window.location.href = 'main.html'
+          self.loading.show = true
+          self.$http.post('/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
+            self.loading.show = false
+            if (response.data.code === 0) {
+              localStorage.loginname = response.data.result.id
+              localStorage.loginphone = this.phone
+              localStorage.token = response.data.result.token
+              window.location.href = 'main.html'
+            }else {
+              self.loading.show = false
+            }
+          }, (response) => {
+            toast('登录失败')
+            self.loading.show = false
+          })
         }else {
           self.loading.show = false
         }

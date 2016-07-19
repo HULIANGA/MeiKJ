@@ -127,6 +127,7 @@ export default {
           })
         }else {
           self.loading.show = false
+          toast(res.message)
         }
       }, (response) => {
         toast('注册失败')
