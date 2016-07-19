@@ -50,6 +50,7 @@ import Loading from '../components/Loading'
 import NoResult from '../components/NoResult'
 import DetailModal from '../components/DetailModal'
 import toast from '../js/toast'
+
 export default {
   data () {
     return {
@@ -87,15 +88,21 @@ export default {
           self.loading.show = false
           if (res.code === 0) {
             toast('领取成功')
-          } else {
-            toast(res.message)
+          } else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
           }
         }, (response) => {
           self.loading.show = false
           toast('领取失败')
         })
       } else {
-        window.location.href = 'login.html'
+        toast('登录已过期，请重新登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
       }
     },
     showCouponDetail (couponId) {

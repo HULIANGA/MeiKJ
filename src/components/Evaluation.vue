@@ -35,6 +35,7 @@
 <script>
 import Dialog from '../components/Dialog'
 import toast from '../js/toast'
+
 export default {
   props: {
     evaluation: Object
@@ -47,8 +48,8 @@ export default {
       delDialog: false
     }
   },
-  ready () {
-    this.loginId = localStorage.getItem('loginname')
+  created () {
+    this.loginId = localStorage.getItem('loginid')
     this.token = localStorage.getItem('token')
   },
   methods: {
@@ -58,17 +59,29 @@ export default {
     },
     confirmDel () {
       let self = this
-      self.$http.post(window.ctx + '/api/comment/t/delete', {commentId: self.delCommentId}, {headers: {token: self.token}}).then((response) => {
-        let res = response.data
-        if (res.code === 0) {
-          self.$parent.evaluations.$remove(self.evaluation)
-          this.delDialog = false
-          toast('删除成功')
-        } else {
-          this.delDialog = false
-          toast('删除失败')
-        }
-      })
+      if (self.token) {
+        self.$http.post(window.ctx + '/api/comment/t/delete', {commentId: self.delCommentId}, {headers: {token: self.token}}).then((response) => {
+          let res = response.data
+          if (res.code === 0) {
+            self.$parent.evaluations.$remove(self.evaluation)
+            this.delDialog = false
+            toast('删除成功')
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          } else {
+            this.delDialog = false
+            toast('删除失败')
+          }
+        })
+      }else {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      }
     }
   },
   components: {

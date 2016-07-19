@@ -16,7 +16,7 @@ export default {
       if (this.showText) {
         return this.showText
       }else {
-        return 'loading'
+        return '加载中'
       }
     }
   }
@@ -44,7 +44,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 46px 13px 10px;
+  padding: 46px 13px 5px;
   position: relative;
 }
 .loading .loading-icon {
@@ -56,7 +56,7 @@ export default {
   position: absolute;
   left: 50%;
   margin-left: -13px;
-  top: 15px;
+  top: 10px;
   clip: rect(0 auto 12px 0);
 }
 @keyframes gif {

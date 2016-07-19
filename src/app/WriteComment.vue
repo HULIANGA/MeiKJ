@@ -118,15 +118,27 @@ export default {
         content: self.commentConent,
         photoList: self.photoList
       }
-      self.loading.show = true
-      self.$http.post(window.ctx + '/api/comment/t/save', comment, {headers: {token: self.token}}).then((response) => {
-        let res = response.data
-        self.loading.show = false
-        if (res.code === 0) {
-          toast('评价成功')
-          window.location.href = 'myOrder.html'
-        }
-      })
+      if (self.token) {
+        self.loading.show = true
+        self.$http.post(window.ctx + '/api/comment/t/save', comment, {headers: {token: self.token}}).then((response) => {
+          let res = response.data
+          self.loading.show = false
+          if (res.code === 0) {
+            toast('评价成功')
+            window.location.href = 'myOrder.html'
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }
+        })
+      }else {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      }
     },
     goBack () {
       window.history.go(-1)

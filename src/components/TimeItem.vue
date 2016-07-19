@@ -48,6 +48,9 @@ export default {
             }else {
               tempItem.hour = (startHour + i).toString() + ':00'
             }
+            if ((startHour + i) <= new Date().getHours()) {
+              tempItem.status = 2
+            }
             this.timelist.push(tempItem)
           }
           this.resetList()

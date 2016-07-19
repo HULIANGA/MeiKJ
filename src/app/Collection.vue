@@ -8,6 +8,8 @@
 </template>
 <script>
 import FashionHair from '../components/FashionHair'
+import toast from '../js/toast'
+
 export default {
   data () {
     return {
@@ -18,10 +20,21 @@ export default {
   ready () {
     let self = this
     self.token = localStorage.token
+    if (!self.token) {
+      toast('登录已过期，请重新登录')
+      setTimeout(function () {
+        window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+      }, 1000)
+    }
     self.$http.get(window.ctx + '/api/collect/t/list', {}, {headers: {token: self.token}}).then((response) => {
       let res = response.data
       if (res.code === 0) {
         self.$set('hairItems', res.result.result)
+      }else if (res.code === 10007) {
+        toast('登录已过期，请重新登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
       }
     })
   },

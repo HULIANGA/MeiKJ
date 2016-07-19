@@ -56,17 +56,31 @@ export default {
     }, (response) => {
       self.loading.show = false
     })
-    self.$http.post(window.ctx + '/api/hairstyle/t/collectAndPraise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
-      let res = response.data
-      if (res.code === 0) {
-        self.$set('isPraise', res.result.isPriase)
-        self.$set('isCollect', res.result.isCollect)
-      }
-    })
+    if (self.token) {
+      self.$http.post(window.ctx + '/api/hairstyle/t/collectAndPraise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          self.$set('isPraise', res.result.isPriase)
+          self.$set('isCollect', res.result.isCollect)
+        }else if (res.code === 10007) {
+          toast('登录已过期')
+          setTimeout(function () {
+            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          }, 1000)
+        }
+      })
+    }
   },
   methods: {
     goApointment () {
-      window.location.href = 'apointment.html'
+      if (this.token) {
+        window.location.href = 'apointment.html'
+      }else {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      }
     },
     praise () {
       let self = this
@@ -79,6 +93,11 @@ export default {
               self.$set('isPraise', true)
               self.loading.show = false
               toast('成功点赞')
+            }else if (res.code === 10007) {
+              toast('登录已过期，请重新登录')
+              setTimeout(function () {
+                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              }, 1000)
             }else {
               self.loading.show = false
               toast('点赞失败')
@@ -94,6 +113,11 @@ export default {
               self.$set('isPraise', false)
               self.loading.show = false
               toast('取消点赞成功')
+            }else if (res.code === 10007) {
+              toast('登录已过期，请重新登录')
+              setTimeout(function () {
+                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              }, 1000)
             }else {
               self.loading.show = false
               toast('取消点赞失败')
@@ -106,7 +130,7 @@ export default {
       } else {
         toast('请先登录')
         setTimeout(function () {
-          window.location.href = 'login.html'
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
         }, 1000)
       }
     },
@@ -121,6 +145,11 @@ export default {
               self.$set('isCollect', true)
               self.loading.show = false
               toast('收藏成功')
+            }else if (res.code === 10007) {
+              toast('登录已过期，请重新登录')
+              setTimeout(function () {
+                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              }, 1000)
             }else {
               self.loading.show = false
               toast('收藏失败')
@@ -136,6 +165,11 @@ export default {
               self.$set('isCollect', false)
               self.loading.show = false
               toast('取消收藏成功')
+            }else if (res.code === 10007) {
+              toast('登录已过期，请重新登录')
+              setTimeout(function () {
+                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              }, 1000)
             }else {
               self.loading.show = false
               toast('取消收藏失败')
@@ -148,7 +182,7 @@ export default {
       } else {
         toast('请先登录')
         setTimeout(function () {
-          window.location.href = 'login.html'
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
         }, 1000)
       }
     }

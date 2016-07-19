@@ -33,12 +33,20 @@ export default {
       phone: '',
       verifyCode: '',
       password: '',
-      login: 'login.html',
       loading: {
         show: false
       },
       disabled: false,
       count: 60
+    }
+  },
+  computed: {
+    login: function () {
+      if (utils.getUrlParam('fromUrl')) {
+        return 'login.html?fromUrl=' + utils.getUrlParam('fromUrl')
+      }else {
+        return 'login.html'
+      }
     }
   },
   methods: {
@@ -88,8 +96,13 @@ export default {
       self.$http.post(window.ctx + '/api/customer/resetPwd', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
-          window.location.href = 'main.html'
+          if (utils.getUrlParam('fromUrl')) {
+            window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+          }else {
+            window.location.href = 'main.html'
+          }
         }else {
+          toast('重置密码失败')
           self.loading.show = false
         }
       }, (response) => {

@@ -58,15 +58,27 @@ export default {
       show: true
     }
   },
-  ready () {
+  created () {
     let self = this
     self.token = localStorage.token
-    self.$http.post(window.ctx + '/api/customer/t/detail', {}, {headers: {token: self.token}}).then((response) => {
-      let res = response.data
-      if (res.code === 0) {
-        self.$set('userInfo', res.result)
-      }
-    })
+    if (self.token) {
+      self.$http.post(window.ctx + '/api/customer/t/detail', {}, {headers: {token: self.token}}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          self.$set('userInfo', res.result)
+        }else if (res.code === 10007) {
+          toast('登录已过期，请重新登录')
+          setTimeout(function () {
+            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          }, 1000)
+        }
+      })
+    }else {
+      toast('请先登录')
+      setTimeout(function () {
+        window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+      }, 1000)
+    }
   },
   methods: {
     edit () {
@@ -75,22 +87,33 @@ export default {
     },
     save () {
       let self = this
-      self.token = localStorage.token
-      if (self.userInfo.nickName === '') {
-        toast('昵称不能为空')
-        return false
-      }
-      if (self.userInfo.email && !utils.getCheck.checkEmail(self.userInfo.email)) {
-        toast('请填写正确的邮箱地址')
-        return false
-      }
-      self.$http.post(window.ctx + '/api/customer/t/edit', {nickName: self.userInfo.nickName, gender: self.userInfo.gender, email: self.userInfo.email}, {headers: {token: self.token}}).then((response) => {
-        let res = response.data
-        if (res.code === 0) {
-          self.show = true
-          toast('修改成功')
+      if (self.token) {
+        if (self.userInfo.nickName === '') {
+          toast('昵称不能为空')
+          return false
         }
-      })
+        if (self.userInfo.email && !utils.getCheck.checkEmail(self.userInfo.email)) {
+          toast('请填写正确的邮箱地址')
+          return false
+        }
+        self.$http.post(window.ctx + '/api/customer/t/edit', {nickName: self.userInfo.nickName, gender: self.userInfo.gender, email: self.userInfo.email}, {headers: {token: self.token}}).then((response) => {
+          let res = response.data
+          if (res.code === 0) {
+            self.show = true
+            toast('修改成功')
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }
+        })
+      }else {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      }
     }
   }
 }

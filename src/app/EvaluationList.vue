@@ -14,13 +14,11 @@ export default {
     return {
       evaluations: [],
       barberId: '',
-      delCommentId: '',
-      token: ''
+      delCommentId: ''
     }
   },
   ready () {
     let self = this
-    self.token = localStorage.getItem('token')
     self.barberId = utils.getUrlParam('id')
     self.$http.get(window.ctx + '/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 8}).then((response) => {
       let res = response.data

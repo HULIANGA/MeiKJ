@@ -68,6 +68,7 @@ import OrderItem from '../components/OrderItem'
 import DetailModal from '../components/DetailModal'
 import Loading from '../components/Loading'
 import NoResult from '../components/NoResult'
+import toast from '../js/toast'
 
 export default {
   data () {
@@ -118,37 +119,61 @@ export default {
     },
     getOrder (state, pageNo, pageSize) {
       let self = this
-      self.loading.show = true
-      self.$http.get(window.ctx + '/api/order/t/list', {state: state, pageNo: pageNo, pageSize: pageSize}, {headers: {token: self.token}}).then((response) => {
-        self.loading.show = false
-        let res = response.data
-        if (res.code === 0) {
-          if (state === 1) {
-            self.$set('waitPay', res.result.result)
+      if (self.token) {
+        self.loading.show = true
+        self.$http.get(window.ctx + '/api/order/t/list', {state: state, pageNo: pageNo, pageSize: pageSize}, {headers: {token: self.token}}).then((response) => {
+          self.loading.show = false
+          let res = response.data
+          if (res.code === 0) {
+            if (state === 1) {
+              self.$set('waitPay', res.result.result)
+            }
+            if (state === 2) {
+              self.$set('waitService', res.result.result)
+            }
+            if (state === 3) {
+              self.$set('orderDone', res.result.result)
+            }
+            if (state === 4) {
+              self.$set('orderCanceled', res.result.result)
+            }
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
           }
-          if (state === 2) {
-            self.$set('waitService', res.result.result)
-          }
-          if (state === 3) {
-            self.$set('orderDone', res.result.result)
-          }
-          if (state === 4) {
-            self.$set('orderCanceled', res.result.result)
-          }
-        }
-      }, (response) => {
-        self.loading.show = false
-      })
+        }, (response) => {
+          self.loading.show = false
+        })
+      }else {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      }
     },
     showDetailModal (orderId) {
       let self = this
-      self.$http.get(window.ctx + '/api/order/t/detail', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
-        let res = response.data
-        if (res.code === 0) {
-          self.$set('orderDetail', res.result)
-          self.showDetail = true
-        }
-      })
+      if (self.token) {
+        self.$http.get(window.ctx + '/api/order/t/detail', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
+          let res = response.data
+          if (res.code === 0) {
+            self.$set('orderDetail', res.result)
+            self.showDetail = true
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }
+        })
+      }else {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      }
     }
   },
   components: {
