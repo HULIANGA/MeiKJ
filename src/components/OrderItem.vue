@@ -51,9 +51,7 @@ export default {
     confirmText: {
       type: String,
       default: ''
-    }
-  },
-  created: function () {
+    },
     token: localStorage.getItem('token')
   },
   methods: {
