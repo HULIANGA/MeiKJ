@@ -53,7 +53,7 @@ export default {
       default: ''
     }
   },
-  created: function {
+  created: function () {
     token: localStorage.getItem('token')
   },
   methods: {
