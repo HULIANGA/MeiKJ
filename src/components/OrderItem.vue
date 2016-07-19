@@ -51,7 +51,8 @@ export default {
     confirmText: {
       type: String,
       default: ''
-    }
+    },
+    token: localStorage.getItem('token')
   },
   methods: {
     detailModal (item) {
@@ -65,23 +66,47 @@ export default {
     },
     confirmService (orderId, index) {
       let self = this
-      self.$http.post(window.ctx + '/api/order/t/confirm', {orderId: orderId}, {headers: {token: localStorage.getItem('token')}}).then((response) => {
-        let res = response.data
-        if (res.code === 0) {
-          toast('确认成功')
-          self.items.$remove(self.items[index])
-        }
-      })
+      if (self.token) {
+        self.$http.post(window.ctx + '/api/order/t/confirm', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
+          let res = response.data
+          if (res.code === 0) {
+            toast('确认成功')
+            self.items.$remove(self.items[index])
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }
+        })
+      }else {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      }
     },
     cancelOrder (orderId, index) {
       let self = this
-      self.$http.post(window.ctx + '/api/order/t/cancel', {orderId: orderId}, {headers: {token: localStorage.getItem('token')}}).then((response) => {
-        let res = response.data
-        if (res.code === 0) {
-          toast('取消成功')
-          self.items.$remove(self.items[index])
-        }
-      })
+      if (self.token) {
+        self.$http.post(window.ctx + '/api/order/t/cancel', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
+          let res = response.data
+          if (res.code === 0) {
+            toast('取消成功')
+            self.items.$remove(self.items[index])
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }
+        })
+      }else {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      }
     }
   }
 }

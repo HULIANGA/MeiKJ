@@ -161,6 +161,12 @@ export default {
         self.noresult = true
         self.loading.show = false
       })
+    },
+    getStoreList: function (citycode) {// 获取门店列表
+
+    },
+    getPositionList: function () {// 获取职位列表
+
     }
   },
   components: {

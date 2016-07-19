@@ -24,28 +24,42 @@ export default {
       token: ''
     }
   },
+  created: function () {
+    self.token = localStorage.getItem('token')
+  },
   methods: {
     reset () {
       let self = this
-      self.token = localStorage.getItem('token')
-      if (self.oldpwd.trim() === '') {
-        toast('请输入您的旧密码')
-        return false
-      }
-      if (self.password.trim() === '') {
-        toast('请输入您的新密码')
-        return false
-      }
-      self.$http.post(window.ctx + '/api/customer/t/changePwd', {oldPassword: self.oldpwd, newPassword: self.password}, {headers: {token: self.token}}).then((response) => {
-        let res = response.data
-        if (res.code === 0) {
-          toast('重置成功')
-          self.oldpwd = ''
-          self.password = ''
-        } else {
-          toast(res.message)
+      if (self.token) {
+        if (self.oldpwd.trim() === '') {
+          toast('请输入您的旧密码')
+          return false
         }
-      })
+        if (self.password.trim() === '') {
+          toast('请输入您的新密码')
+          return false
+        }
+        self.$http.post(window.ctx + '/api/customer/t/changePwd', {oldPassword: self.oldpwd, newPassword: self.password}, {headers: {token: self.token}}).then((response) => {
+          let res = response.data
+          if (res.code === 0) {
+            toast('重置成功')
+            self.oldpwd = ''
+            self.password = ''
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          } else {
+            toast(res.message)
+          }
+        })
+      }else {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      }
     }
   }
 }

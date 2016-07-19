@@ -90,6 +90,8 @@
 </template>
 <script>
   import BottomMenu from '../components/BottomMenu'
+  import toast from '../js/toast'
+
   export default {
     data () {
       return {
@@ -104,18 +106,25 @@
         token: ''
       }
     },
-    created () {
+    ready () {
       let self = this
       self.token = localStorage.token
       if (!self.token) {
-        window.location.href = 'login.html'
+        toast('请先登录')
+        window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+      }else {
+        self.$http.post(window.ctx + '/api/customer/t/detail', { }, {headers: {token: self.token}}).then((response) => {
+          let res = response.data
+          if (res.code === 0) {
+            self.$set('userInfo', res.result)
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }
+        })
       }
-      self.$http.post(window.ctx + '/api/customer/t/detail', { }, {headers: {token: self.token}}).then((response) => {
-        let res = response.data
-        if (res.code === 0) {
-          self.$set('userInfo', res.result)
-        }
-      })
     },
     methods: {
       logout () {

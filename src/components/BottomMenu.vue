@@ -10,6 +10,8 @@
   </div>
 </template>
 <script>
+import toast from '../js/toast'
+
 export default {
   data () {
     return {
@@ -30,7 +32,8 @@ export default {
         if (this.token) {
           window.location.href = 'userCenter.html'
         } else {
-          window.location.href = 'login.html'
+          toast('请先登录')
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
         }
       }
     },
@@ -39,7 +42,8 @@ export default {
         if (this.token) {
           window.location.href = 'myOrder.html'
         }else {
-          window.location.href = 'login.html'
+          toast('请先登录')
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
         }
       }
     },
@@ -48,7 +52,8 @@ export default {
         if (this.token) {
           window.location.href = 'apointment.html'
         }else {
-          window.location.href = 'login.html'
+          toast('请先登录')
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
         }
       }
     }

@@ -67,7 +67,6 @@ import Modal from '../components/Modal'
 export default {
   data () {
     return {
-      login: 'login.html',
       phone: '',
       verifyCode: '',
       password: '',
@@ -83,6 +82,15 @@ export default {
       count: 60,
       showModal: false,
       token: ''
+    }
+  },
+  computed: {
+    login: function () {
+      if (utils.getUrlParam('fromUrl')) {
+        return 'login.html?fromUrl=' + utils.getUrlParam('fromUrl')
+      }else {
+        return 'login.html'
+      }
     }
   },
   methods: {
@@ -114,7 +122,7 @@ export default {
           self.$http.post('/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
             self.loading.show = false
             if (response.data.code === 0) {
-              localStorage.loginname = response.data.result.id
+              localStorage.loginid = response.data.result.id
               localStorage.loginphone = this.phone
               localStorage.token = response.data.result.token
               self.showModal = true
@@ -183,7 +191,11 @@ export default {
         if (res.code === 0) {
           toast('保存成功')
           self.showModal = false
-          window.location.href = 'main.html'
+          if (utils.getUrlParam('fromUrl')) {
+            window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+          }else {
+            window.location.href = 'main.html'
+          }
         }
       })
     },

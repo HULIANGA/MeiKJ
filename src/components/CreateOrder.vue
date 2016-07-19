@@ -98,10 +98,13 @@
 </div>
 </template>
 <script>
+  import toast from '../js/toast'
+
   export default {
     data () {
       return {
-        isWeixin: /MicroMessenger/i.test(navigator.userAgent)
+        isWeixin: /MicroMessenger/i.test(navigator.userAgent),
+        token: localStorage.token
       }
     },
     methods: {
@@ -109,9 +112,14 @@
         this.order.orderSubmit.price = 20.00
         this.order.orderSubmit.realPrice = 19.00
         console.log(this.order.orderSubmit)
-        this.$http.post(window.ctx + '/api/order/t/save', this.order.orderSubmit, {headers: {token: localStorage.token}}).then(function (response) {
+        if (this.token) {
+          this.$http.post(window.ctx + '/api/order/t/save', this.order.orderSubmit, {headers: {token: localStorage.token}}).then(function (response) {
 
-        })
+          })
+        }else {
+          toast('请先登录')
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }
       }
     },
     props: {

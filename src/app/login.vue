@@ -21,19 +21,33 @@
 </template>
 <script>
 import toast from '../js/toast'
-import {getCheck} from '../js/utils'
+import utils from '../js/utils'
 import Loading from '../components/Loading'
 
 export default {
   data () {
     return {
-      regist: 'regist.html',
-      forgetPwd: 'findPwd.html',
       loading: {
         show: false
       },
       phone: '',
       password: ''
+    }
+  },
+  computed: {
+    regist: function () {
+      if (utils.getUrlParam('fromUrl')) {
+        return 'regist.html?fromUrl=' + utils.getUrlParam('fromUrl')
+      }else {
+        return 'regist.html'
+      }
+    },
+    forgetPwd: function () {
+      if (utils.getUrlParam('fromUrl')) {
+        return 'findPwd.html?fromUrl=' + utils.getUrlParam('fromUrl')
+      }else {
+        return 'findPwd.html'
+      }
     }
   },
   methods: {
@@ -47,17 +61,21 @@ export default {
         toast('请输入密码')
         return false
       }
-      if (!getCheck.checkPhone(self.phone.trim())) {
+      if (!utils.getCheck.checkPhone(self.phone.trim())) {
         toast('请输入正确的手机号')
         return
       }
       self.loading.show = true
       self.$http.post(window.ctx + '/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
         if (response.data.code === 0) {
-          localStorage.loginname = response.data.result.id
+          localStorage.loginid = response.data.result.id
           localStorage.loginphone = this.phone
           localStorage.token = response.data.result.token
-          window.location.href = 'main.html'
+          if (utils.getUrlParam('fromUrl')) {
+            window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+          }else {
+            window.location.href = 'main.html'
+          }
         }else {
           self.loading.show = false
         }

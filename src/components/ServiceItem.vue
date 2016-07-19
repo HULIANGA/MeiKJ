@@ -2,7 +2,7 @@
   <div class="service-item">
     <h3 class="item-title"><i></i>服务项目<span>({{totalCount}})</span></h3>
     <div class="service-subitem" v-for="(index, item) in serviceitem">
-      <div class="service-subitem-first">
+      <div class="service-subitem-first" @click="showSecond(index)">
         <span class="service-name"><i></i>{{item.name}}</span>
         <span>&yen;{{projectPrice[index]}}起</span>
       </div>
@@ -39,6 +39,16 @@ export default {
       console.log(projectPrices)
       return projectPrices
     }
+  },
+  methods: {
+    showSecond: function (index) {
+      var tempServiceitem = document.querySelectorAll('.service-subitem')[index]
+      if (tempServiceitem.getAttribute('class').indexOf('active') !== -1) {
+        tempServiceitem.setAttribute('class', 'service-subitem')
+      }else {
+        tempServiceitem.setAttribute('class', 'service-subitem active')
+      }
+    }
   }
 }
 </script>
@@ -73,6 +83,10 @@ export default {
 .service-item .service-subitem-second {
   padding-left: 60px;
   color: #555555;
+  display: none;
+}
+.service-subitem.active .service-subitem-second {
+  display: block;
 }
 .service-subitem-first .service-name,.service-subitem-second .service-name {
   float: left;

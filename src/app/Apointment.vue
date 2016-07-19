@@ -73,6 +73,7 @@ export default {
         self.currentStep = 'service'
       }else if (hashVal === '#time') {
         self.currentStep = 'time'
+        self.$broadcast('time-show')
       }else if (hashVal === '#store') {
         self.currentStep = 'store'
       }else if (hashVal === '#person') {
@@ -88,7 +89,6 @@ export default {
       if (data.fromStep === 'service') {
         if (utils.getUrlParam('shopId')) { // 从门店预约和从发型师预约
           window.location.hash = 'time'
-          this.$broadcast('time-show')
           this.shopId = parseInt(utils.getUrlParam('shopId'), 10)
           this.getTime({'shopId': this.shopId})
           this.orderInfo.shopName = decodeURIComponent(utils.getUrlParam('shopName'))

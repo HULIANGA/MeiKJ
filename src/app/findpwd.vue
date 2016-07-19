@@ -33,12 +33,20 @@ export default {
       phone: '',
       verifyCode: '',
       password: '',
-      login: 'login.html',
       loading: {
         show: false
       },
       disabled: false,
       count: 60
+    }
+  },
+  computed: {
+    login: function () {
+      if (utils.getUrlParam('fromUrl')) {
+        return 'login.html?fromUrl=' + utils.getUrlParam('fromUrl')
+      }else {
+        return 'login.html'
+      }
     }
   },
   methods: {
@@ -95,15 +103,21 @@ export default {
               localStorage.loginname = response.data.result.id
               localStorage.loginphone = this.phone
               localStorage.token = response.data.result.token
-              window.location.href = 'main.html'
+              if (utils.getUrlParam('fromUrl')) {
+                window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+              }else {
+                window.location.href = 'main.html'
+              }
             }else {
               self.loading.show = false
+              toast(res.message)
             }
           }, (response) => {
             toast('登录失败')
             self.loading.show = false
           })
         }else {
+          toast('重置密码失败')
           self.loading.show = false
         }
       }, (response) => {

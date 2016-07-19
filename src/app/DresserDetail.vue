@@ -57,6 +57,7 @@
   import Loading from '../components/Loading'
   import utils from '../js/utils'
   import toast from '../js/toast'
+
   export default {
     data () {
       return {
@@ -67,10 +68,11 @@
         hairDresser: {},
         evaluations: null,
         serviceItem: [],
-        barberId: null
+        barberId: null,
+        token: ''
       }
     },
-    ready () {
+    created () {
       let self = this
       let _barberId = utils.getUrlParam('id')
       self.barberId = _barberId
@@ -86,7 +88,15 @@
         self.loading.show = false
       })
       // 发型师项目
-
+      self.$http.get(window.ctx + '/api/barber/productList', {barberId: self.barberId}).then((response) => {
+        self.loading.show = false
+        let res = response.data
+        if (res.code === 0) {
+          self.$set('serviceItem', res.result)
+        }
+      }, (response) => {
+        self.loading.show = false
+      })
       // 评论列表
       self.$http.get(window.ctx + '/api/comment/list', {barberId: self.barberId, pageNo: 1, pageSize: 1}).then((response) => {
         self.loading.show = false
@@ -100,11 +110,18 @@
     },
     methods: {
       goApointment: function () {
-        window.location.href =
-        'apointment.html?personId=' + this.hairDresser.id +
-        '&personName=' + this.hairDresser.stageName +
-        '&shopId=' + this.hairDresser.shopId +
-        '&shopName=' + this.hairDresser.shopName
+        if (this.token) {
+          window.location.href =
+          'apointment.html?personId=' + this.hairDresser.id +
+          '&personName=' + this.hairDresser.stageName +
+          '&shopId=' + this.hairDresser.shopId +
+          '&shopName=' + this.hairDresser.shopName
+        }else {
+          toast('请先登录')
+          setTimeout(function () {
+            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          }, 1000)
+        }
       },
       goEvaList () {
         window.location.href = 'evaluationList.html?id=' + this.barberId
