@@ -6,14 +6,14 @@
     <img src="../assets/img/login-header.jpg">
     <div class="regist-body">
       <div class="input-item">
-        <input class="user-phone" type="tel" placeholder="请输入手机号" v-model="phone">
+        <input class="user-phone" type="tel" placeholder="请输入手机号" v-model="phone" @keyup.enter="findPwd">
       </div>
       <div class="input-item input-code">
-        <input class="user-code" type="tel" placeholder="请输入验证码" v-model="verifyCode">
+        <input class="user-code" type="tel" placeholder="请输入验证码" v-model="verifyCode" @keyup.enter="findPwd">
         <button class="btn btn-code" v-disable="disabled" @click.prevent="getVerifyCode">{{disabled ? count : '获取验证码'}}</button>
       </div>
       <div class="input-item">
-        <input class="user-pwd" type="password" placeholder="请设置您的新密码" v-model="password">
+        <input class="user-pwd" type="password" placeholder="请设置您的新密码" v-model="password" @keyup.enter="findPwd">
       </div>
       <button class="btn btn-confirm" @click.prevent="findPwd">确认提交</button>
 
@@ -96,11 +96,26 @@ export default {
       self.$http.post(window.ctx + '/api/customer/resetPwd', {mobile: self.phone, password: self.password}, {headers: {code: self.verifyCode}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
-          if (utils.getUrlParam('fromUrl')) {
-            window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
-          }else {
-            window.location.href = 'main.html'
-          }
+          self.loading.show = true
+          self.$http.post('/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
+            self.loading.show = false
+            if (response.data.code === 0) {
+              localStorage.loginname = response.data.result.id
+              localStorage.loginphone = this.phone
+              localStorage.token = response.data.result.token
+              if (utils.getUrlParam('fromUrl')) {
+                window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+              }else {
+                window.location.href = 'main.html'
+              }
+            }else {
+              self.loading.show = false
+              toast(res.message)
+            }
+          }, (response) => {
+            toast('登录失败')
+            self.loading.show = false
+          })
         }else {
           toast('重置密码失败')
           self.loading.show = false
