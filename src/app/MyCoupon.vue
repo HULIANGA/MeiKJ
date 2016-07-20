@@ -358,5 +358,6 @@ body {
   width: 80%;
   margin: 30px auto;
   text-align: center;
+  -webkit-filter: blur(0); /* chrome bug blurry font or border */
 }
 </style>
