@@ -68,6 +68,7 @@ export default {
     right: 0;
     height: 50px;
     background-color: #3f3c39;
+    z-index: 999;
   }
   .bottom-menu footer {
     display: flex;

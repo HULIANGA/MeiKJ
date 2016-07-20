@@ -7,7 +7,7 @@
       <p class="store-name">{{item.name}}</p>
       <p class="store-address">{{item.address}}</p>
       <p class="store-phone">{{item.phone}}</p>
-      <span class="store-distance">{{item.storeDistance}}</span>
+      <span class="store-distance">{{item.range}}米</span>
     </div>
   </div>
 </template>

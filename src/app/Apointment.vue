@@ -1,6 +1,6 @@
 <template lang="html">
   <select-item v-show="currentStep === 'service'" :items="serviceItem"></select-item>
-  <select-store v-show="currentStep === 'store'" :items="storeItem"></select-store>
+  <select-store v-show="currentStep === 'store'"></select-store>
   <select-time v-show="currentStep === 'time'" :hours="maxHours" :shopid="shopId"></select-time>
   <select-person v-show="currentStep === 'person'" :items="personItem"></select-person>
   <create-order v-show="currentStep === 'order'" :order="orderInfo"></create-order>
@@ -29,7 +29,6 @@ export default {
       maxHours: null, // 消耗时间
       shopId: null, // 门店id
       serviceItem: null, // 项目数据
-      storeItem: null, // 门店数据
       timeItem: null, // 时间数据
       personItem: null, // 发型师数据
       currentStep: 'service', // 当前显示步骤。service选项目；store选门店；time选时间；person选发型师；order下单
@@ -106,7 +105,7 @@ export default {
           this.orderInfo.orderSubmit.shopId = this.shopId
         }else {
           window.location.hash = 'store'
-          this.getStore()
+          this.$broadcast('get-store-data')
         }
         this.maxHours = data.maxHours
         this.orderInfo.orderSubmit.productList = data.productItems
@@ -187,25 +186,25 @@ export default {
         toast('获取项目失败')
       })
     },
-    getStore: function () {
-      this.loading.show = true
-      let requestData = {}
-      if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
-        requestData.couponId = utils.getUrlParam('couponId')
-      }
-      this.$http.get(window.ctx + '/api/order/selectShop', requestData).then(function (response) {
-        this.loading.show = false
-        var res = response.data
-        if (res.code === 0) {
-          this.storeItem = res.result.result
-        }else {
-          toast('获取门店失败')
-        }
-      }, function (response) {
-        this.loading.show = false
-        toast('获取门店失败')
-      })
-    },
+    // getStore: function () {
+    //   this.loading.show = true
+    //   let requestData = {}
+    //   if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
+    //     requestData.couponId = utils.getUrlParam('couponId')
+    //   }
+    //   this.$http.get(window.ctx + '/api/order/selectShop', requestData).then(function (response) {
+    //     this.loading.show = false
+    //     var res = response.data
+    //     if (res.code === 0) {
+    //       this.storeItem = res.result.result
+    //     }else {
+    //       toast('获取门店失败')
+    //     }
+    //   }, function (response) {
+    //     this.loading.show = false
+    //     toast('获取门店失败')
+    //   })
+    // },
     getTime: function (requestData) {
       this.$broadcast('get-time-list', requestData)
     },

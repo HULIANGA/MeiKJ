@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="head-filter flex">
-    <div class="one-filter flex-grow" @click="showSelect(filterIndex)" v-for="(filterIndex,searchItem) in searchitems.filters">
+    <div class="one-filter flex-grow" @click="showSelect(filterIndex)" v-for="(filterIndex,searchItem) in searchitems.filters" track-by="$index" v-if="searchItem">
       <div :class="['filter-content', showIndex === filterIndex ? 'active' : '']">
         <span>{{searchItem.name }}</span>
       </div>
@@ -11,12 +11,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="one-filter flex-grow" v-if="searchitems.areas" @click="showAreas()">
-      <div class="filter-content">
-        <span v-if="localCity">{{localCity}}</span>
-        <span v-else>区域</span>
-      </div>
-    </div> -->
     <div v-if="searchitems.search" class="filter-search flex-no-shrink" @click="showSearchPage()">
       <img src="../assets/img/hearFilter/search.png" alt="搜索" />
     </div>
@@ -24,14 +18,11 @@
   <div class="head-filter-back">
 
   </div>
-  <!-- <city-select v-ref:city :localcity="localCity"></city-select> -->
   <search v-ref:search></search>
 </template>
 
 <script>
-// import CitySelect from '../components/CitySelect'
 import Search from '../components/Search'
-import cityJson from '../libs/area.js'
 
 export default {
   data: function () {
@@ -41,8 +32,7 @@ export default {
     }
   },
   props: {
-    searchitems: Object,
-    locacitycode: Number
+    searchitems: Object
   },
   computed: {
     searchParams: function () {
@@ -52,13 +42,6 @@ export default {
       }
       tempObj.keywords = ''
       return tempObj
-    },
-    localCity: function () {
-      for (let i = 0; i < cityJson.data.row.length; i++) {
-        if (parseInt(cityJson.data.row[i].area_id, 10) === this.locacitycode) {
-          return cityJson.data.row[i].area_name
-        }
-      }
     }
   },
   created: function () {
@@ -73,27 +56,13 @@ export default {
       var hash = window.location.hash
       if (hash === '') {
         self.$refs.search.show = false
-        // self.$refs.city.showFirst = false
-        // self.$refs.city.showSecond = false
       }else if (hash === '#showSearch') {
         self.$refs.search.show = true
       }
-      // else if (hash === '#showSecond') {
-      //   self.$refs.city.showFirst = false
-      //   self.$refs.city.showSecond = true
-      // }else if (hash === '#showFirst') {
-      //   self.$refs.city.showFirst = true
-      //   self.$refs.city.showSecond = false
-      // }
     }
   },
   attached: function () {},
   events: {
-    'select-city': function (area) {
-      this.localCity = area.name
-      this.searchParams.cityCode = parseInt(area.id, 10)
-      this.$dispatch('go-search', this.searchParams)
-    },
     'get-search-value': function (value) {
       this.searchParams.keywords = value
       this.$dispatch('go-search', this.searchParams)
@@ -113,15 +82,11 @@ export default {
       this.selectIndex.$set(filterIndex, valueIndex)
       this.$dispatch('go-search', this.searchParams)
     },
-    // showAreas: function () {
-    //   window.location.hash = 'showFirst'
-    // },
     showSearchPage: function () {
       window.location.hash = '#showSearch'
     }
   },
   components: {
-    // CitySelect,
     Search
   }
 }
@@ -175,6 +140,8 @@ export default {
   border-bottom: 1px solid #eaeaea;
   border-right: 1px solid #eaeaea;
   border-left: 1px solid #eaeaea;
+  max-height: 300px;
+  overflow-y: auto;
 }
 .filter-select.active{
   display: block;

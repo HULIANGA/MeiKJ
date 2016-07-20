@@ -4,10 +4,10 @@
       <span><img :src="imageDomain + item.logo"></span>
     </div>
     <div class="store-text">
-      <p class="store-name">{{ item.name}}</p>
-      <p class="store-address">{{ item.address}}</p>
-      <p class="store-phone">{{ item.phone}}</p>
-      <span class="store-distance">{{ item.storeDistance}}</span>
+      <p class="store-name">{{item.name}}</p>
+      <p class="store-address">{{item.address}}</p>
+      <p class="store-phone">{{item.phone}}</p>
+      <span class="store-distance">{{item.range}}米</span>
     </div>
   </div>
 </template>

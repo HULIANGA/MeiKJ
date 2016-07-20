@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="searchPage" v-if="show">
     <div>
-      <input id="searchValue" value="">
+      <input id="searchValue" v-model="searchValue" placeholder="请输入关键字">
       <button type="button" name="button" class="btn-primary" @click="search()">点击搜索</button>
     </div>
   </div>
@@ -11,6 +11,7 @@
 export default {
   data: function () {
     return {
+      searchValue: ''
     }
   },
   computed: {},
@@ -36,7 +37,7 @@ export default {
   methods: {
     search: function () {
       window.location.hash = ''
-      this.$dispatch('get-search-value', document.getElementById('searchValue').value)
+      this.$dispatch('get-search-value', this.searchValue)
     }
   },
   components: {}

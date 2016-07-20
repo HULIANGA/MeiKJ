@@ -13,7 +13,7 @@
           <span>{{storeDetail.phone}}</span>
           <span class="get-order">已接单<strong>{{storeDetail.orderNum}}</strong></span>
         </p>
-        <p class="store-address">{{storeDetail.address}}<span>{{storeDetail.storeDistance}}</span></p>
+        <p class="store-address">{{storeDetail.address}}<span>{{storeDetail.range}}米</span></p>
       </div>
     </div>
     <service-item :serviceitem="serviceItem"></service-item>
@@ -38,46 +38,84 @@
         storeDetail: null,
         serviceItem: [],
         storeMember: [],
-        storeId: null
+        storeId: null,
+        latitude: null,
+        longitude: null
       }
     },
     created () {
       let self = this
-      self.storeId = utils.getUrlParam('id')
-      // 门店详情
-      self.$http.post(window.ctx + '/api/shop/detail', {shopId: self.storeId}).then((response) => {
-        self.loading.show = false
-        let res = response.data
-        if (res.code === 0) {
-          self.$set('storeDetail', res.result)
+      // 百度地图api放在最后加载，判断api加载完成后获取城市
+      let getCityInterval = setInterval(() => {
+        if (typeof (window.BMap) !== 'undefined') {
+          this.getLocation()
+          clearInterval(getCityInterval)
         }
-      }, (response) => {
-        self.loading.show = false
-      })
+      }, 500)
+      self.storeId = utils.getUrlParam('id')
       // 门店项目
       self.$http.get(window.ctx + '/api/shop/productList', {shopId: self.storeId}).then((response) => {
-        self.loading.show = false
+        // self.loading.show = false
         let res = response.data
         if (res.code === 0) {
           self.$set('serviceItem', res.result)
         }
       }, (response) => {
-        self.loading.show = false
+        // self.loading.show = false
       })
       // 门店发型师
       self.$http.get(window.ctx + '/api/shop/barberList', {shopId: self.storeId, pageNo: 1, pageSize: 5}).then((response) => {
-        self.loading.show = false
+        // self.loading.show = false
         let res = response.data
         if (res.code === 0) {
           self.$set('storeMember', res.result.result)
         }
       }, (response) => {
-        self.loading.show = false
+        // self.loading.show = false
       })
     },
     methods: {
+      getLocation: function () {
+        let self = this
+      // 定位当前位置start
+      // 关于状态码
+      // BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
+      // BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
+      // BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
+      // BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
+      // BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
+      // BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
+      // BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
+      // BMAP_STATUS_SERVICE_UNAVAILABLE	服务不可用。对应数值“7”。(自 1.1 新增)
+      // BMAP_STATUS_TIMEOUT	超时。对应数值“8”。(自 1.1 新增)
+        var geolocation = new window.BMap.Geolocation()
+        geolocation.getCurrentPosition(function (r) {// 支持h5定位
+          console.log(r)
+          // if (r.accuracy) {// 获取到了精确位置
+          if (this.getStatus() === window.BMAP_STATUS_SUCCESS) {
+            self.latitude = r.point.lat
+            self.longitude = r.point.lng
+          }
+          self.getData()
+          // }
+        }, function () {// 不支持h5定位
+          self.getData()
+        }, {enableHighAccuracy: true})
+      },
       goApointment: function () {
         window.location.href = 'apointment.html?shopId=' + this.storeDetail.id + '&shopName=' + this.storeDetail.name
+      },
+      getData: function () {
+        // 门店详情
+        this.$http.post(window.ctx + '/api/shop/detail', {shopId: this.storeId, longitude: this.longitude, latitude: this.latitude}).then((response) => {
+          this.loading.show = false
+          let res = response.data
+          if (res.code === 0) {
+            this.$set('storeDetail', res.result)
+          }
+        }, (response) => {
+          this.loading.show = false
+        })
       }
     },
     components: {

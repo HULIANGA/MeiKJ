@@ -19,6 +19,8 @@ import FashionHair from '../components/FashionHair'
 import BottomMenu from '../components/BottomMenu'
 import CitySelect from '../components/CitySelect'
 import Loading from '../components/Loading'
+import cityJson from '../libs/area.js'
+import provinceCity from '../libs/province_city.js'
 
 export default {
   data () {
@@ -33,7 +35,7 @@ export default {
   },
   created: function () {
     // 百度地图api放在最后加载，判断api加载完成后获取城市
-    var getCityInterval = setInterval(() => {
+    let getCityInterval = setInterval(() => {
       if (typeof (window.BMap) !== 'undefined') {
         this.loading.show = false
         this.getCity()
@@ -51,10 +53,25 @@ export default {
   },
   methods: {
     getCity: function () {
-      var BaiduMap = window.BMap
+      let BaiduMap = window.BMap
       new BaiduMap.LocalCity().get((result) => {
-        console.log(result)
-        this.localCity = result.name.slice(0, result.name.length - 1)
+        let cityName = result.name
+        let cityCode = 310000
+        for (let i = 0; i < provinceCity.data.length; i++) { // 根据定位的城市名匹配citycode
+          for (let j = 0; j < provinceCity.data[i].cities.length; j++) {
+            if (provinceCity.data[i].cities[j].city === cityName) {
+              cityCode = parseInt(provinceCity.data[i].cities[j].city_code, 10)
+              localStorage.cityName = cityName
+              localStorage.cityCode = cityCode
+              for (let i = 0; i < cityJson.data.row.length; i++) { // 根据citycode匹配城市简称
+                if (parseInt(cityJson.data.row[i].area_id, 10) === cityCode) {
+                  this.localCity = cityJson.data.row[i].area_name
+                  return false
+                }
+              }
+            }
+          }
+        }
       })
     }
   },

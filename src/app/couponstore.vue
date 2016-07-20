@@ -3,6 +3,7 @@
 </style>
 <template>
   <div class="coupon-store">
+    <head-filter :searchitems="searchItems"></head-filter>
     <div class="coupon-list">
       <div class="coupon-item"  v-for="item in items">
         <div class="coupon-subitem" @click.prevent="showCouponDetail(item.id)">
@@ -47,9 +48,11 @@
 </template>
 <script>
 import Loading from '../components/Loading'
+import HeadFilter from '../components/HeadFilter'
 import NoResult from '../components/NoResult'
 import DetailModal from '../components/DetailModal'
 import toast from '../js/toast'
+import utils from '../js/utils'
 
 export default {
   data () {
@@ -57,28 +60,108 @@ export default {
       loading: {
         show: true
       },
+      searchItems: {
+        filters: []
+      },
+      baseRequsetData: {
+        pageNo: 1,
+        pageSize: 10
+      },
       items: null,
       noresult: false,
-      token: '',
+      token: localStorage.getItem('token'),
       showDetail: false,
       couponDetail: {}
     }
   },
   created () {
-    let self = this
-    self.token = localStorage.getItem('token')
-    self.$http.get(window.ctx + '/api/coupon/allList', {pageNo: 1, pageSize: 10}).then((response) => {
-      self.loading.show = false
-      let res = response.data
-      if (res.code === 0) {
-        self.$set('items', res.result.result)
-        if (!res.result.result || res.result.result.length === 0) {
-          self.noresult = true
-        }
-      }
-    })
+    // 门店列表
+    this.getStoreList(localStorage.cityCode)
+    // 职位列表
+    this.getPositionList()
+    // 获取项目列表
+    this.getProjectList()
+    // 获取优惠券列表
+    this.getCouponList()
+  },
+  events: {
+    'go-search': function (searchData) {
+      console.log(searchData)
+      this.getCouponList(searchData)
+    }
   },
   methods: {
+    getCouponList: function (requestData) {
+      let self = this
+      let extendRequestData = utils.extendObj(self.baseRequsetData, requestData)
+      if (!extendRequestData.cityCode) {
+        extendRequestData.cityCode = localStorage.cityCode
+      }
+      console.log(extendRequestData)
+      // 获取优惠券列表
+      self.loading.show = true
+      self.$http.get(window.ctx + '/api/coupon/allList', extendRequestData).then((response) => {
+        self.loading.show = false
+        let res = response.data
+        if (res.code === 0) {
+          self.$set('items', res.result.result)
+          if (!res.result.result || res.result.result.length === 0) {
+            self.noresult = true
+          }
+        }
+      })
+    },
+    getStoreList: function (citycode) {// 获取门店列表
+      this.$http.get(window.ctx + '/api/shop/allList', {'cityCode': citycode}).then(function (response) {
+        let res = response.data
+        if (res.code === 0) {
+          let tempFilter = {
+            'name': '门店',
+            'param': 'shopId',
+            'values': res.result
+          }
+          this.searchItems.filters.$set(0, tempFilter)
+        }else {
+          toast('获取门店列表失败')
+        }
+      }, function (response) {
+        toast('获取门店列表失败')
+      })
+    },
+    getPositionList: function () {// 获取职位列表
+      this.$http.get(window.ctx + '/api/position/list').then(function (response) {
+        let res = response.data
+        if (res.code === 0) {
+          let tempFilter = {
+            'name': '职位',
+            'param': 'positionId',
+            'values': res.result
+          }
+          this.searchItems.filters.$set(1, tempFilter)
+        }else {
+          toast('获取职位列表失败')
+        }
+      }, function (response) {
+        toast('获取职位列表失败')
+      })
+    },
+    getProjectList: function () {// 获取项目列表
+      this.$http.get(window.ctx + '/api/order/selectProject').then(function (response) {
+        let res = response.data
+        if (res.code === 0) {
+          let tempFilter = {
+            'name': '项目',
+            'param': 'positionId',
+            'values': res.result
+          }
+          this.searchItems.filters.$set(2, tempFilter)
+        }else {
+          toast('获取项目列表失败')
+        }
+      }, function (response) {
+        toast('获取项目列表失败')
+      })
+    },
     getCoupon (couponId) {
       let self = this
       if (self.token && self.token !== '') {
@@ -121,7 +204,8 @@ export default {
   components: {
     Loading,
     NoResult,
-    DetailModal
+    DetailModal,
+    HeadFilter
   }
 }
 </script>
