@@ -11,12 +11,12 @@
         </div>
       </div>
     </div>
-    <div class="one-filter flex-grow" v-if="searchitems.areas" @click="showAreas()">
+    <!-- <div class="one-filter flex-grow" v-if="searchitems.areas" @click="showAreas()">
       <div class="filter-content">
         <span v-if="localCity">{{localCity}}</span>
         <span v-else>区域</span>
       </div>
-    </div>
+    </div> -->
     <div v-if="searchitems.search" class="filter-search flex-no-shrink" @click="showSearchPage()">
       <img src="../assets/img/hearFilter/search.png" alt="搜索" />
     </div>
@@ -24,12 +24,12 @@
   <div class="head-filter-back">
 
   </div>
-  <city-select v-ref:city :localcity="localCity"></city-select>
+  <!-- <city-select v-ref:city :localcity="localCity"></city-select> -->
   <search v-ref:search></search>
 </template>
 
 <script>
-import CitySelect from '../components/CitySelect'
+// import CitySelect from '../components/CitySelect'
 import Search from '../components/Search'
 import cityJson from '../libs/area.js'
 
@@ -65,7 +65,6 @@ export default {
     for (let i = 0; i < this.searchitems.filters.length; i++) {
       this.selectIndex.push('')
     }
-
   },
   ready: function () {
     // 绑定hashchange事件
@@ -74,17 +73,18 @@ export default {
       var hash = window.location.hash
       if (hash === '') {
         self.$refs.search.show = false
-        self.$refs.city.showFirst = false
-        self.$refs.city.showSecond = false
+        // self.$refs.city.showFirst = false
+        // self.$refs.city.showSecond = false
       }else if (hash === '#showSearch') {
         self.$refs.search.show = true
-      }else if (hash === '#showSecond') {
-        self.$refs.city.showFirst = false
-        self.$refs.city.showSecond = true
-      }else if (hash === '#showFirst') {
-        self.$refs.city.showFirst = true
-        self.$refs.city.showSecond = false
       }
+      // else if (hash === '#showSecond') {
+      //   self.$refs.city.showFirst = false
+      //   self.$refs.city.showSecond = true
+      // }else if (hash === '#showFirst') {
+      //   self.$refs.city.showFirst = true
+      //   self.$refs.city.showSecond = false
+      // }
     }
   },
   attached: function () {},
@@ -113,15 +113,15 @@ export default {
       this.selectIndex.$set(filterIndex, valueIndex)
       this.$dispatch('go-search', this.searchParams)
     },
-    showAreas: function () {
-      window.location.hash = 'showFirst'
-    },
+    // showAreas: function () {
+    //   window.location.hash = 'showFirst'
+    // },
     showSearchPage: function () {
       window.location.hash = '#showSearch'
     }
   },
   components: {
-    CitySelect,
+    // CitySelect,
     Search
   }
 }

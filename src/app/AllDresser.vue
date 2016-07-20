@@ -68,7 +68,7 @@ export default {
             ]
           }
         ],
-        'areas': true,
+        // 'areas': true,
         'search': true
       },
       items: null,

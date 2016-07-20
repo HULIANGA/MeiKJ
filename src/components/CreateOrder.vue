@@ -40,13 +40,16 @@
       </div>
     </div>
   </div>
-  <div class="user-coupon">
+  <div class="user-coupon" @click="showCoupon()">
     <a class="user-info-item">
       <div class="user-info-hd">
         <label>优惠券</label>
       </div>
       <div class="user-info-bd">
-        <p class="u-info-text"><span>0张可用</span></p>
+        <p class="u-info-text">
+          <span v-if="couponName">{{couponName}}</span>
+          <span v-else>{{order.couponItem.length}}张可用</span>
+        </p>
       </div>
     </a>
   </div>
@@ -61,10 +64,10 @@
         <p>微信支付</p>
       </div>
       <div class="o-pay-ft">
-        <input type="radio" name="pay" v-model="order.orderSubmit.payType" value='2'>
+        <input type="radio" name="pay" v-model="order.orderSubmit.payType" value='1'>
       </div>
     </div>
-    <div class="o-pay-item">
+    <!-- <div class="o-pay-item">
       <div class="o-pay-hd">
         <img src="../assets/img/alipay.png">
       </div>
@@ -72,9 +75,9 @@
         <p>支付宝</p>
       </div>
       <div class="o-pay-ft">
-        <input type="radio" name="pay" v-model="order.orderSubmit.payType" value="1">
+        <input type="radio" name="pay" v-model="order.orderSubmit.payType" value="2">
       </div>
-    </div>
+    </div> -->
   </div>
   <!-- remark -->
   <div class="order-remark">
@@ -87,8 +90,8 @@
   <div class="order-submit">
     <div class="o-submit-left">
       <p>
-        <span class="real-price">实付金额：99元</span>
-        <span class="cut-price">(优惠：0元)</span>
+        <span class="real-price">实付金额：{{order.orderSubmit.realPrice}}元</span>
+        <span class="cut-price">(优惠：{{couponPrice}}元)</span>
       </p>
     </div>
     <div class="o-submit-right">
@@ -104,22 +107,71 @@
     data () {
       return {
         isWeixin: /MicroMessenger/i.test(navigator.userAgent),
-        token: localStorage.token
+        token: localStorage.token,
+        couponPrice: 0,
+        couponName: null
       }
     },
     methods: {
       submit: function () {
-        this.order.orderSubmit.price = 20.00
-        this.order.orderSubmit.realPrice = 19.00
-        console.log(this.order.orderSubmit)
+        // if (!this.isWeixin) {
+        //   toast('目前只支持微信环境支付')
+        //   return false
+        // }
+        console.log(this.order.orderSubmit.productList)
         if (this.token) {
-          this.$http.post(window.ctx + '/api/order/t/save', this.order.orderSubmit, {headers: {token: localStorage.token}}).then(function (response) {
+          if (!this.order.orderSubmit.customerName) {
+            toast('请填写您的姓名')
+            return false
+          }else if (!this.order.orderSubmit.customerPhone) {
+            toast('请填写您的手机号')
+            return false
+          }else if (!this.order.orderSubmit.memo) {
+            toast('请填写备注说明')
+            return false
+          }
+          this.$parent.loading.show = true
+          this.$http.post(window.ctx + '/api/order/t/save', this.order.orderSubmit, {headers: {token: this.token}}).then(function (response) {
+            let res = response.data
+            if (res.code === 0) {
+              toast('订单提交成功，请在15分钟内完成付款')
+              this.$http.post(window.ctx + '/api/pay/wechat-pay', res.result, {headers: {token: this.token}}).then(function (response) {
 
+              })
+            }else if (res.code === 10007) {
+              toast('登录已过期，请重新登录')
+              setTimeout(function () {
+                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              }, 1000)
+            }else {
+              toast('订单提交失败')
+            }
           })
         }else {
           toast('请先登录')
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          setTimeout(function () {
+            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          }, 1000)
         }
+      },
+      showCoupon: function () {
+        window.location.hash = 'coupon'
+      }
+    },
+    events: {
+      'select-coupon': function (id, name, type, money) {
+        if (type === 1) { // 折扣
+          this.couponPrice = this.order.orderSubmit.price * (1 - money / 10)
+          this.order.orderSubmit.realPrice = this.order.orderSubmit.price * money / 10
+        }else if (type === 2) {
+          this.couponPrice = money
+          this.order.orderSubmit.realPrice = this.order.orderSubmit.price - money
+        }else if (type === 3) {
+          this.couponPrice = money
+          this.order.orderSubmit.realPrice = this.order.orderSubmit.price - money
+        }
+        this.order.orderSubmit.couponId = id
+        this.couponName = name
       }
     },
     props: {

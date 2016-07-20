@@ -4,6 +4,7 @@
   <select-time v-show="currentStep === 'time'" :hours="maxHours" :shopid="shopId"></select-time>
   <select-person v-show="currentStep === 'person'" :items="personItem"></select-person>
   <create-order v-show="currentStep === 'order'" :order="orderInfo"></create-order>
+  <select-coupon v-show="currentStep === 'coupon'" :items="orderInfo.couponItem"></select-coupon>
   <loading :show="loading.show"></loading>
 </template>
 
@@ -13,6 +14,7 @@ import SelectStore from '../components/SelectStore'
 import SelectTime from '../components/SelectTime'
 import SelectPerson from '../components/SelectPerson'
 import CreateOrder from '../components/CreateOrder'
+import SelectCoupon from '../components/SelectCoupon'
 import Loading from '../components/Loading'
 import utils from '../js/utils'
 import toast from '../js/toast'
@@ -20,6 +22,7 @@ import toast from '../js/toast'
 export default {
   data: function () {
     return {
+      token: localStorage.token,
       loading: {
         show: true
       },
@@ -34,19 +37,22 @@ export default {
         shopName: null, // 门店名称
         barberName: null, // 发型师名称
         timeString: null, // 预约时间
-        productNames: null, // 预约产品
+        productNames: null, // 预约产品名称
+        productIds: null, // 预约产品id
+        couponItem: [], // 优惠券数据
         orderSubmit: { // 提交订单数据
           productList: [], // 产品信息
-          payType: null, // 支付方式
+          payType: 1, // 支付方式
           shopId: null, // 门店id
           customerName: null, // 用户名称
-          customerPhone: null, // 用户手机号
+          customerPhone: localStorage.loginphone, // 用户手机号
           date: null, // 预约日期
           time: null, // 预约时间
           barberId: null, // 发型师id
           price: null, // 订单总额
           realPrice: null, // 实付金额
-          memo: null // 订单备注
+          memo: null, // 订单备注
+          couponId: null // 优惠券id
         }
       }
     }
@@ -62,6 +68,9 @@ export default {
     }
     if (utils.getUrlParam('personId')) {
       requestData.barberId = utils.getUrlParam('personId')
+    }
+    if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
+      requestData.couponId = utils.getUrlParam('couponId')
     }
     this.getProject(requestData)
   },
@@ -80,13 +89,15 @@ export default {
         self.currentStep = 'person'
       }else if (hashVal === '#order') {
         self.currentStep = 'order'
+      }else if (hashVal === '#coupon') {
+        self.currentStep = 'coupon'
       }
     }
   },
   attached: function () {},
   events: {
     'next': function (data) {
-      if (data.fromStep === 'service') {
+      if (data.fromStep === 'service') { // 在项目选择点下一步
         if (utils.getUrlParam('shopId')) { // 从门店预约和从发型师预约
           window.location.hash = 'time'
           this.shopId = parseInt(utils.getUrlParam('shopId'), 10)
@@ -109,14 +120,15 @@ export default {
           }
         }
         this.orderInfo.productNames = productNameString
-      }else if (data.fromStep === 'store') {
+        this.orderInfo.productIds = data.productIds
+      }else if (data.fromStep === 'store') { // 在选择门店点下一步
         window.location.hash = 'time'
         this.$broadcast('time-show')
         this.shopId = data.shopId
         this.getTime({'shopId': data.shopId})
         this.orderInfo.shopName = data.shopName
         this.orderInfo.orderSubmit.shopId = data.shopId
-      }else if (data.fromStep === 'time') {
+      }else if (data.fromStep === 'time') { // 在选择时间点下一步
         if (document.querySelector('.time-item.active')) {
           let tempDate = document.querySelector('.date-item.active').getAttribute('data-time')
           let tempTime = document.querySelector('.time-item.active').getAttribute('data-time')
@@ -141,11 +153,22 @@ export default {
         }else {
           toast('请选择时间')
         }
-      }else if (data.fromStep === 'person') {
+      }else if (data.fromStep === 'person') { // 在选择发型师点下一步
         window.location.hash = 'order'
         this.orderInfo.orderSubmit.barberId = data.personId
         this.orderInfo.barberName = data.personName
+        this.orderInfo.orderSubmit.price = 0
+        for (let i = 0; i < this.orderInfo.orderSubmit.productList.length; i++) {
+          let productInfo = this.orderInfo.orderSubmit.productList[i]
+          this.orderInfo.orderSubmit.price += parseInt(productInfo.price, 10)
+          this.orderInfo.orderSubmit.realPrice += parseInt(productInfo.price, 10)
+        }
+        this.getAvilCoupon({'barberId': this.orderInfo.orderSubmit.barberId, 'productIds': this.orderInfo.productIds, 'money': this.orderInfo.orderSubmit.price})
       }
+    },
+    'select-coupon': function (id, name, type, money) {
+      window.location.hash = 'order'
+      this.$broadcast('select-coupon', id, name, type, money)
     }
   },
   methods: {
@@ -166,7 +189,11 @@ export default {
     },
     getStore: function () {
       this.loading.show = true
-      this.$http.get(window.ctx + '/api/order/selectShop').then(function (response) {
+      let requestData = {}
+      if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
+        requestData.couponId = utils.getUrlParam('couponId')
+      }
+      this.$http.get(window.ctx + '/api/order/selectShop', requestData).then(function (response) {
         this.loading.show = false
         var res = response.data
         if (res.code === 0) {
@@ -196,6 +223,34 @@ export default {
         this.loading.show = false
         toast('获取发型师失败')
       })
+    },
+    getAvilCoupon: function (requestData) {
+      if (this.token) {
+        this.loading.show = true
+        console.log(requestData)
+        this.$http.post(window.ctx + '/api/coupon/t/availableList', requestData, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+          this.loading.show = false
+          var res = response.data
+          if (res.code === 0) {
+            this.orderInfo.couponItem = res.result
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }else {
+            toast('获取可用优惠券失败')
+          }
+        }, function (response) {
+          this.loading.show = false
+          toast('获取可用优惠券失败')
+        })
+      }else {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      }
     }
   },
   components: {
@@ -204,6 +259,7 @@ export default {
     SelectTime,
     SelectPerson,
     CreateOrder,
+    SelectCoupon,
     Loading
   }
 }

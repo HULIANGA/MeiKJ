@@ -147,7 +147,7 @@ export default {
       })
     },
     useCoupon (couponId, applyShop) {
-      window.location.href = 'apointment.html?couponId=' + couponId + 'shopId=' + applyShop
+      window.location.href = 'apointment.html?couponId=' + couponId
     },
     exchangeCoupon () {
       this.exchangeModal = true
@@ -211,9 +211,7 @@ body {
   position: relative;
 }
 .coupon-item {
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   height: 100px;
   margin-bottom: 15px;
   position: relative;
@@ -234,21 +232,15 @@ body {
   background: #b3b3b3;
 }
 .coupon-subitem {
-  -webkit-box-flex:4;
   flex: 4;
-  -webkit-flex:4;
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   padding: 10px 0;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   background-color: #fff;
 }
 .coupon-control {
-  -webkit-box-flex:1;
   flex: 1;
-  -webkit-flex:1;
   border-radius: 4px;
 }
 .coupon-control .btn-coupon {
@@ -270,9 +262,11 @@ body {
   border-radius: 3px;
 }
 .coupon-subitem .c-left {
-  -webkit-box-flex:1;
   flex: 1;
-  -webkit-flex:1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   position: relative;
   padding: 10px 0;
 }
@@ -330,9 +324,7 @@ body {
   font-weight: normal;
   font-size: 1.4rem;
   margin: 10px auto;
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   align-items: center;
 }
 .my-coupon-list .detail-modal h5 i {

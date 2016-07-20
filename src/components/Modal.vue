@@ -83,7 +83,7 @@ export default {
 .modal-wrapper {
   position: relative;
   width: 90%;
-  margin: 30px auto;
+  margin: auto;
   font-size: 1.6rem;
   top: 50%;
   transform: translate(0,-51%);

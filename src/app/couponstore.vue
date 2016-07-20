@@ -88,6 +88,8 @@ export default {
           self.loading.show = false
           if (res.code === 0) {
             toast('领取成功')
+          }else if (res.code === -1) {
+            toast(res.message)
           } else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
@@ -135,28 +137,20 @@ body {
   margin-top: 10px;
 }
 .coupon-item {
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   height: 100px;
   margin-bottom: 15px;
 }
 .coupon-subitem {
-  -webkit-box-flex:4;
   flex: 4;
-  -webkit-flex:4;
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   padding: 10px 0;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   background-color: #fff;
 }
 .coupon-control {
-  -webkit-box-flex:1;
   flex: 1;
-  -webkit-flex:1;
   background-color: #ff6251;
   border-radius: 4px;
 }
@@ -171,9 +165,11 @@ body {
   background-size: 9px auto;
 }
 .coupon-subitem .c-left {
-  -webkit-box-flex:1;
   flex: 1;
-  -webkit-flex:1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   position: relative;
   padding: 10px 0;
 }
@@ -189,9 +185,7 @@ body {
 }
 .coupon-subitem .c-right {
   position: relative;
-  -webkit-box-flex:2;
   flex: 2;
-  -webkit-flex:2;
   padding: 10px 0;
   border-left: 1px dashed #a7a7a7;
 }
@@ -228,9 +222,7 @@ body {
   font-weight: normal;
   font-size: 1.4rem;
   margin: 10px auto;
-  display: -webkit-box;
   display: flex;
-  display: -webkit-flex;
   align-items: center;
 }
 .coupon-store .detail-modal h5 i {

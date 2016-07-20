@@ -1,13 +1,14 @@
 var config = require('./webpack.base.config')
 
-config.devtool = 'source-map'
+config.devtool = '#source-map'
 
 config.devServer = {
   noInfo: true,
   proxy: {
     '/api/*': {
       // target: 'http://company1.bigaka.com:9552',
-      target: 'http://139.196.87.99',
+      target: 'http://139.196.87.99', // 测试环境
+      // target: 'http://192.168.1.114:8080/mkj',
       secure: false
     },
     '/json/*': {

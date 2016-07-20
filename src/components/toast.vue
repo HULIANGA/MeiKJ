@@ -21,7 +21,7 @@ export default {
   box-sizing: border-box;
   text-align: center;
   padding: 10px;
-  z-index: 1000;
+  z-index: 10000;
 }
 .toast .toast-text {
   font-size: 14px;
