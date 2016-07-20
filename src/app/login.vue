@@ -7,11 +7,11 @@
     <div class="login-body">
       <div class="input-item">
         <input style="display:none"><!-- for disable autocomplete on chrome -->
-        <input class="user-phone" type="tel" placeholder="请输入手机号" autocomplete="off" v-model="phone" maxlength="11">
+        <input class="user-phone" type="tel" placeholder="请输入手机号" autocomplete="off" v-model="phone" maxlength="11" @keyup.enter="login">
       </div>
       <div class="input-item">
         <input style="display:none"><!-- for disable autocomplete on chrome -->
-        <input class="user-pwd" type="password" placeholder="请输入密码" autocomplete="off" v-model="password">
+        <input class="user-pwd" type="password" placeholder="请输入密码" autocomplete="off" v-model="password" @keyup.enter="login">
       </div>
       <button class="btn btn-confirm" @click.prevent="login">登录</button>
     </div>

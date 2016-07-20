@@ -6,14 +6,14 @@
     <img src="../assets/img/login-header.jpg">
     <div class="regist-body">
       <div class="input-item">
-        <input class="user-phone" type="tel" placeholder="请输入手机号" v-model="phone">
+        <input class="user-phone" type="tel" placeholder="请输入手机号" v-model="phone" @keyup.enter="register">
       </div>
       <div class="input-item input-code">
-        <input class="user-code" type="tel" placeholder="请输入验证码" v-model="verifyCode">
+        <input class="user-code" type="tel" placeholder="请输入验证码" v-model="verifyCode" @keyup.enter="register">
         <button class="btn btn-code" @click.prevent="getVerifyCode" v-disable="disabled">{{disabled ? count : '获取验证码'}}</button>
       </div>
       <div class="input-item">
-        <input class="user-pwd" type="password" placeholder="请设置密码" v-model="password">
+        <input class="user-pwd" type="password" placeholder="请设置密码" v-model="password" @keyup.enter="register">
       </div>
       <button class="btn btn-confirm" @click.prevent="register">注册</button>
     </div>
