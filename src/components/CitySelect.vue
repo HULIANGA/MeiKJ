@@ -98,6 +98,8 @@ export default {
         this.curFirstId = areaId
       }else {
         window.location.hash = ''
+        localStorage.cityName = areaName
+        localStorage.cityCode = areaId
         this.$dispatch('select-city', {'name': areaName, 'id': areaId})
       }
     }

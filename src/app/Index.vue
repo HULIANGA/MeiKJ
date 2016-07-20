@@ -61,11 +61,11 @@ export default {
           for (let j = 0; j < provinceCity.data[i].cities.length; j++) {
             if (provinceCity.data[i].cities[j].city === cityName) {
               cityCode = parseInt(provinceCity.data[i].cities[j].city_code, 10)
-              localStorage.cityName = cityName
-              localStorage.cityCode = cityCode
               for (let i = 0; i < cityJson.data.row.length; i++) { // 根据citycode匹配城市简称
                 if (parseInt(cityJson.data.row[i].area_id, 10) === cityCode) {
                   this.localCity = cityJson.data.row[i].area_name
+                  localStorage.cityName = cityJson.data.row[i].area_name
+                  localStorage.cityCode = cityCode
                   return false
                 }
               }
