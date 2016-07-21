@@ -42,6 +42,11 @@
 <script>
 import toast from '../js/toast'
 export default {
+  data () {
+    return {
+      token: localStorage.getItem('token')
+    }
+  },
   props: {
     items: Array,
     cancelText: {
@@ -51,8 +56,7 @@ export default {
     confirmText: {
       type: String,
       default: ''
-    },
-    token: localStorage.getItem('token')
+    }
   },
   methods: {
     detailModal (item) {
