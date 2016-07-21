@@ -137,11 +137,14 @@
           self.loading.show = false
           let res = response.data
           if (res.code === 0) {
+            document.querySelector('body').scrollTop = 0
             self.$set('items', res.result.result)
             if (!res.result.result || res.result.result.length === 0) {
               self.noresult = true
             }else if (res.result.result.length < self.baseRequsetData.pageSize) {
               self.hasMoreData = false
+            }else {
+              self.hasMoreData = true
             }
           }else {
             self.noresult = true
@@ -161,9 +164,7 @@
         console.log(self.baseRequsetData)
         self.$http.get(window.ctx + '/api/shop/list', self.baseRequsetData).then((response) => {
           self.loading.show = false
-          self.$nextTick(function () {
-            document.querySelector('html').style.overflowY = 'auto'
-          })
+          document.querySelector('html').style.overflowY = 'auto'
           let res = response.data
           if (res.code === 0) {
             self.items = self.items.concat(res.result.result)

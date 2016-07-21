@@ -114,10 +114,10 @@
     },
     methods: {
       submit: function () {
-        // if (!this.isWeixin) {
-        //   toast('目前只支持微信环境支付')
-        //   return false
-        // }
+        if (!this.isWeixin) {
+          toast('目前只支持微信环境支付')
+          return false
+        }
         console.log(this.order.orderSubmit.productList)
         if (this.token) {
           if (!this.order.orderSubmit.customerName) {
