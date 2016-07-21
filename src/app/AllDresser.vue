@@ -38,7 +38,8 @@ export default {
       baseRequsetData: {
         pageNo: 1,
         pageSize: 20
-      }
+      },
+      hasMoreData: true
     }
   },
   events: {
@@ -107,7 +108,7 @@ export default {
     setMoreData: function () {
       let self = this
       self.baseRequsetData.pageNo = self.baseRequsetData.pageNo + 1
-      this.loading.show = true
+      self.loading.show = true
       document.querySelector('html').style.overflowY = 'hidden'
       console.log('getmoredata：')
       console.log(self.baseRequsetData)

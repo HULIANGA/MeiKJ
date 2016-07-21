@@ -4,21 +4,23 @@
 
 <template>
   <div class="hair-filter">
-    <a :class="currentClassId === 1 ? 'active' : ''" @click="getHairData(1)">男士</a>
-    <a :class="currentClassId === 2 ? 'active' : ''" @click="getHairData(2)">女士</a>
-    <a :class="currentClassId === 3 ? 'active' : ''" @click="getHairData(3)">儿童</a>
-    <a :class="currentClassId === 4 ? 'active' : ''" @click="getHairData(4)">明星</a>
+    <a :class="currentClassId === 1 ? 'active' : ''" @click="setHairFirstData(1)">男士</a>
+    <a :class="currentClassId === 2 ? 'active' : ''" @click="setHairFirstData(2)">女士</a>
+    <a :class="currentClassId === 3 ? 'active' : ''" @click="setHairFirstData(3)">儿童</a>
+    <a :class="currentClassId === 4 ? 'active' : ''" @click="setHairFirstData(4)">明星</a>
   </div>
+  <div class="hair-filter-back"></div>
   <div class="all-hair">
     <fashion-hair :hairitems="hairItems"></fashion-hair>
   </div>
-  <loading :show="loading.show"></loading>
   <no-result v-show="noresult" :text=""></no-result>
+  <loading :show="loading.show"></loading>
 </template>
 <script>
 import FashionHair from '../components/FashionHair'
 import Loading from '../components/Loading'
 import NoResult from '../components/NoResult'
+import toast from '../js/toast.js'
 
 export default {
   data () {
@@ -30,40 +32,87 @@ export default {
       hairItems: [],
       searchPageParam: {
         pageNo: 1,
-        pageSize: 16,
+        pageSize: 20,
         hairstyleClassId: 1
       },
-      currentClassId: null
+      currentClassId: null,
+      hasMoreData: true
     }
   },
   created () {
-    this.getHairData(1)
+    this.setHairFirstData(1)
+  },
+  ready: function () {
+    let self = this
+    window.onscroll = function () {
+      let container = document.querySelector('.all-hair')
+      // let laschild = document.querySelectorAll('.store-item')[document.querySelectorAll('.store-item').length - 1]
+      if (self.hasMoreData && (window.screen.height + window.scrollY) >= (container.offsetHeight + document.querySelector('.hair-filter').offsetHeight)) {
+        self.setMoreData()
+      }
+    }
   },
   methods: {
-    getHairData: function (id, getMoreData) {
+    setHairFirstData: function (id, getMoreData) {
       let self = this
       self.loading.show = true
       self.noresult = false
+      self.hasMoreData = true
       if (id === self.currentClassId) {
         return false
       }else {
         self.currentClassId = id
       }
       self.searchPageParam.hairstyleClassId = self.currentClassId
+      self.searchPageParam.pageNo = 1
+      document.querySelector('html').style.overflowY = 'hidden'
       self.$http.get(window.ctx + '/api/hairstyle/list', self.searchPageParam).then((response) => {
+        document.querySelector('html').style.overflowY = 'auto'
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {
+          document.querySelector('body').scrollTop = 0
           self.$set('hairItems', res.result.result)
           if (!res.result.result || res.result.result.length === 0) {
             self.noresult = true
+          }else if (res.result.result.length < self.searchPageParam.pageSize) {
+            self.hasMoreData = false
+          }else {
+            self.hasMoreData = true
           }
         }else {
           self.noresult = true
         }
       }, (response) => {
         self.loading.show = false
+        document.querySelector('html').style.overflowY = 'auto'
         self.noresult = true
+      })
+    },
+    setMoreData: function () {
+      let self = this
+      self.searchPageParam.pageNo = self.searchPageParam.pageNo + 1
+      self.loading.show = true
+      document.querySelector('html').style.overflowY = 'hidden'
+      self.$http.get(window.ctx + '/api/hairstyle/list', self.searchPageParam).then((response) => {
+        self.loading.show = false
+        document.querySelector('html').style.overflowY = 'auto'
+        let res = response.data
+        if (res.code === 0) {
+          self.hairItems = self.hairItems.concat(res.result.result)
+          if (!res.result.result || res.result.result.length === 0) {
+            toast('没有更多数据了')
+            self.hasMoreData = false
+          }else if (res.result.result.length < self.searchPageParam.pageSize) {
+            self.hasMoreData = false
+          }
+        }else {
+          toast('加载失败')
+        }
+      }, (response) => {
+        self.loading.show = false
+        document.querySelector('html').style.overflowY = 'auto'
+        toast('加载失败')
       })
     }
   },
@@ -80,6 +129,14 @@ export default {
   line-height: 50px;
   padding: 0 20px;
   border-bottom: 1px solid #dbdbdb;
+  background: #ffffff;
+  position: fixed;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 999;
+}
+.hair-filter-back {
+  height: 50px;
 }
 .hair-filter>a {
   position: relative;
