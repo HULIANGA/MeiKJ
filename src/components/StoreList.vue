@@ -7,7 +7,8 @@
       <p class="store-name">{{item.name}}</p>
       <p class="store-address">{{item.address}}</p>
       <p class="store-phone">{{item.phone}}</p>
-      <span class="store-distance">{{item.range}}米</span>
+      <span class="store-distance" v-if="item.range < 1000">{{item.range}}米</span>
+      <span class="store-distance" v-else>{{(item.range / 1000).toFixed(2)}}千米</span>
     </div>
   </div>
 </template>

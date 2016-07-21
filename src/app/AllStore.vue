@@ -15,6 +15,7 @@
   import Loading from '../components/Loading'
   import NoResult from '../components/NoResult'
   import utils from '../js/utils.js'
+  import toast from '../js/toast.js'
   import provinceCity from '../libs/province_city.js'
 
   export default {
@@ -34,13 +35,14 @@
           pageSize: 20,
           longitude: null,
           latitude: null
-        }
+        },
+        hasMoreData: true
       }
     },
     events: {
       'go-search': function (searchData) {
         console.log(searchData)
-        this.getData(searchData)
+        this.setFirstData(searchData)
       }
     },
     created () {
@@ -79,6 +81,16 @@
         }
       }, 500)
     },
+    ready: function () {
+      let self = this
+      window.onscroll = function () {
+        let container = document.querySelector('.store-list')
+        // let laschild = document.querySelectorAll('.store-item')[document.querySelectorAll('.store-item').length - 1]
+        if (self.hasMoreData && (window.screen.height + window.scrollY) >= container.offsetHeight) {
+          self.setMoreData()
+        }
+      }
+    },
     methods: {
       getLocation: function () {
         let self = this
@@ -101,35 +113,73 @@
             self.baseRequsetData.latitude = r.point.lat
             self.baseRequsetData.longitude = r.point.lng
           }
-          self.getData()
+          self.setFirstData()
           // }
         }, function () {// 不支持h5定位
-          self.getData()
+          self.setFirstData()
         }, {enableHighAccuracy: true})
       },
-      getData: function (requestData) {
+      setFirstData: function (requestData) {
         let self = this
         let extendRequestData = utils.extendObj(self.baseRequsetData, requestData)
         if (!extendRequestData.cityCode) {
           extendRequestData.cityCode = localStorage.cityCode
         }
-        console.log(extendRequestData)
+        extendRequestData.pageNo = 1
+        self.baseRequsetData = extendRequestData
+        console.log('setFirstData：')
+        console.log(self.baseRequsetData)
         // 获取门店列表
         this.loading.show = true
+        document.querySelector('html').style.overflowY = 'hidden'
         self.$http.get(window.ctx + '/api/shop/list', extendRequestData).then((response) => {
+          document.querySelector('html').style.overflowY = 'auto'
           self.loading.show = false
           let res = response.data
           if (res.code === 0) {
             self.$set('items', res.result.result)
             if (!res.result.result || res.result.result.length === 0) {
               self.noresult = true
+            }else if (res.result.result.length < self.baseRequsetData.pageSize) {
+              self.hasMoreData = false
             }
           }else {
             self.noresult = true
           }
         }, (response) => {
           self.loading.show = false
+          document.querySelector('html').style.overflowY = 'auto'
           self.noresult = true
+        })
+      },
+      setMoreData: function () {
+        let self = this
+        self.baseRequsetData.pageNo = self.baseRequsetData.pageNo + 1
+        this.loading.show = true
+        document.querySelector('html').style.overflowY = 'hidden'
+        console.log('getmoredata：')
+        console.log(self.baseRequsetData)
+        self.$http.get(window.ctx + '/api/shop/list', self.baseRequsetData).then((response) => {
+          self.loading.show = false
+          self.$nextTick(function () {
+            document.querySelector('html').style.overflowY = 'auto'
+          })
+          let res = response.data
+          if (res.code === 0) {
+            self.items = self.items.concat(res.result.result)
+            if (!res.result.result || res.result.result.length === 0) {
+              toast('没有更多数据了')
+              self.hasMoreData = false
+            }else if (res.result.result.length < self.baseRequsetData.pageSize) {
+              self.hasMoreData = false
+            }
+          }else {
+            toast('加载失败')
+          }
+        }, (response) => {
+          self.loading.show = false
+          document.querySelector('html').style.overflowY = 'auto'
+          toast('加载失败')
         })
       },
       getAreaList: function (cityCode) {

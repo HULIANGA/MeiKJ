@@ -57,7 +57,8 @@ export default {
   left: 50%;
   margin-left: -13px;
   top: 10px;
-  clip: rect(0 auto 12px 0);
+  border-right-color: transparent;
+  border-bottom-color: transparent;
 }
 @keyframes gif {
   0% {
