@@ -75,11 +75,11 @@ export default {
     },
     confirmService (orderId, index) {
       let self = this
-      self.$parent.$parent.loading.show = true
+      self.$parent.$parent.$parent.loading.show = true
       if (self.token) {
         self.$http.post(window.ctx + '/api/order/t/confirm', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
           let res = response.data
-          self.$parent.$parent.loading.show = false
+          self.$parent.$parent.$parent.loading.show = false
           if (res.code === 0) {
             toast('确认成功')
             self.items.$remove(self.items[index])
@@ -91,7 +91,7 @@ export default {
           }
         })
       }else {
-        self.$parent.$parent.loading.show = false
+        self.$parent.$parent.$parent.loading.show = false
         toast('请先登录')
         setTimeout(function () {
           window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
@@ -100,11 +100,11 @@ export default {
     },
     cancelOrder (orderId, index) {
       let self = this
-      self.$parent.$parent.loading.show = true
+      self.$parent.$parent.$parent.loading.show = true
       if (self.token) {
         self.$http.post(window.ctx + '/api/order/t/cancel', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
           let res = response.data
-          self.$parent.$parent.loading.show = false
+          self.$parent.$parent.$parent.loading.show = false
           if (res.code === 0) {
             toast('取消成功')
             self.items.$remove(self.items[index])
@@ -117,7 +117,7 @@ export default {
         })
       }else {
         toast('请先登录')
-        self.$parent.$parent.loading.show = false
+        self.$parent.$parent.$parent.loading.show = false
         setTimeout(function () {
           window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
         }, 1000)
