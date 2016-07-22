@@ -1,10 +1,13 @@
 <template>
   <div class="order-item" v-for="(index, item) in items" @click.prevent="detailModal(item)">
-    <p class="order-paytime" v-if="item.processState == 1">剩余支付时间：</p>
+    <p class="order-paytime" v-if="item.processState == 1">剩余支付时间：<span>00</span>:<span>{{Math.floor((item.createTime + paytime - nowtime)/1000/60) | dtime}}</span>:<span>{{Math.floor((item.createTime + paytime - nowtime)/1000)%60 | dtime}}</span></p>
     <p class="orderno">订单编号：{{item.id}} <span>金额：{{item.price}}元</span></p>
     <p>预约门店：{{item.shopName}}</p>
     <p>预约时间：{{item.time}}</p>
-    <p class="clearfix"><span class="pull-l">预约项目：</span><span class="pull-r">预约发型师：{{item.barberName}}</span></p>
+    <p class="clearfix">
+      <span class="pull-l">预约项目：<span v-for="(index,pro) in item.productList" v-show="$index < 1">{{pro.productName}}<i v-show="item.productList.length > 1">...</i></span></span>
+      <span class="pull-r">预约发型师：{{item.barberName}}</span>
+    </p>
     <div class="order-control">
       <div>
         <template v-if="item.processState == 1 || item.processState == 2">
@@ -44,7 +47,9 @@ import toast from '../js/toast'
 export default {
   data () {
     return {
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      paytime: 900000,
+      nowtime: new Date().getTime()
     }
   },
   props: {
@@ -70,9 +75,11 @@ export default {
     },
     confirmService (orderId, index) {
       let self = this
+      self.$parent.$parent.loading.show = true
       if (self.token) {
         self.$http.post(window.ctx + '/api/order/t/confirm', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
           let res = response.data
+          self.$parent.$parent.loading.show = false
           if (res.code === 0) {
             toast('确认成功')
             self.items.$remove(self.items[index])
@@ -84,6 +91,7 @@ export default {
           }
         })
       }else {
+        self.$parent.$parent.loading.show = false
         toast('请先登录')
         setTimeout(function () {
           window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
@@ -92,9 +100,11 @@ export default {
     },
     cancelOrder (orderId, index) {
       let self = this
+      self.$parent.$parent.loading.show = true
       if (self.token) {
         self.$http.post(window.ctx + '/api/order/t/cancel', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
           let res = response.data
+          self.$parent.$parent.loading.show = false
           if (res.code === 0) {
             toast('取消成功')
             self.items.$remove(self.items[index])
@@ -107,6 +117,7 @@ export default {
         })
       }else {
         toast('请先登录')
+        self.$parent.$parent.loading.show = false
         setTimeout(function () {
           window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
         }, 1000)
@@ -169,5 +180,14 @@ export default {
   line-height: 32px;
   text-align: center;
   border-radius: 3px;
+}
+.order-paytime>span {
+  display: inline-block;
+  background: #ff7162;
+  color: #fff;
+  text-align: center;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
 }
 </style>
