@@ -45,9 +45,9 @@ export default {
   ready: function () {
     let self = this
     window.onscroll = function () {
-      let container = document.querySelector('.all-hair')
+      let container = document.querySelector('body')
       // let laschild = document.querySelectorAll('.store-item')[document.querySelectorAll('.store-item').length - 1]
-      if (self.hasMoreData && (window.screen.height + window.scrollY) >= (container.offsetHeight + document.querySelector('.hair-filter').offsetHeight)) {
+      if (self.hasMoreData && (window.screen.height + window.scrollY) >= container.offsetHeight) {
         self.setMoreData()
       }
     }
