@@ -86,7 +86,7 @@ export default {
   margin: auto;
   font-size: 1.6rem;
   top: 50%;
-  transform: translate(0,-51%);
+  transform: translate(0,-50%);
 }
 .modal-content {
   position: relative;
