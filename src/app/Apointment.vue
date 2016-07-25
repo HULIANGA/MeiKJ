@@ -110,13 +110,11 @@ export default {
         this.maxHours = data.maxHours
         this.orderInfo.orderSubmit.productList = data.productItems
         let productNameString = ''
-        for (let index in data.productItems) {
-          if (data.productItems.hasOwnProperty(index)) {
-            if (index > 0) {
-              productNameString += ','
-            }
-            productNameString += data.productItems[index].productName
+        for (let index = 0; index < data.productItems.length; index++) {
+          if (index > 0) {
+            productNameString += ','
           }
+          productNameString += data.productItems[index].productName
         }
         this.orderInfo.productNames = productNameString
         this.orderInfo.productIds = data.productIds

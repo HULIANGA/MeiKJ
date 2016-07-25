@@ -58,10 +58,8 @@ export default {
       if (document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked) {
         document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked = false
       }else {
-        for (let index in document.getElementsByClassName(projectClass)) {
-          if (document.getElementsByClassName(projectClass).hasOwnProperty(index)) {
-            document.getElementsByClassName(projectClass)[index].getElementsByClassName('product-check')[0].checked = false
-          }
+        for (let i = 0; i < document.getElementsByClassName(projectClass).length; i++) {
+          document.getElementsByClassName(projectClass)[i].getElementsByClassName('product-check')[0].checked = false
         }
         document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked = true
       }
@@ -69,9 +67,9 @@ export default {
     },
     selectCheckbox: function (projectClass, productClass) {
       if (document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked) {
-        for (let index in document.getElementsByClassName(projectClass)) {
-          if (document.getElementsByClassName(projectClass).hasOwnProperty(index)) {
-            document.getElementsByClassName(projectClass)[index].getElementsByClassName('product-check')[0].checked = false
+        for (let i = 0; i < document.getElementsByClassName(projectClass).length; i++) {
+          if (document.getElementsByClassName(projectClass).hasOwnProperty(i)) {
+            document.getElementsByClassName(projectClass)[i].getElementsByClassName('product-check')[0].checked = false
           }
         }
         document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked = true
@@ -85,7 +83,7 @@ export default {
       this.costHours = []
       this.selectedItem = []
       this.productIds = ''
-      for (let index in document.getElementsByClassName('product-check')) {
+      for (let index = 0; index < document.getElementsByClassName('product-check').length; index++) {
         if (document.getElementsByClassName('product-check').hasOwnProperty(index)) {
           if (document.getElementsByClassName('product-check')[index].checked === true) {
             this.costHours.push(document.getElementsByClassName('product-check')[index].getAttribute('data-hours'))
@@ -167,6 +165,7 @@ export default {
   margin-left: 5px;
   margin-top: 14px;
   float: right;
+  background-color: #ffffff;
 }
 .p-item-bd input[type=checkbox]:checked {
   background-image: url(../assets/img/checked.png);

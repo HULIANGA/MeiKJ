@@ -33,7 +33,9 @@ export default {
           window.location.href = 'userCenter.html'
         } else {
           toast('请先登录')
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          setTimeout(function () {
+            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          }, 1000)
         }
       }
     },
@@ -43,7 +45,9 @@ export default {
           window.location.href = 'myOrder.html'
         }else {
           toast('请先登录')
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          setTimeout(function () {
+            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          }, 1000)
         }
       }
     },
@@ -53,7 +57,9 @@ export default {
           window.location.href = 'apointment.html'
         }else {
           toast('请先登录')
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          setTimeout(function () {
+            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          }, 1000)
         }
       }
     }
