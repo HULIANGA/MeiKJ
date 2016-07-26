@@ -143,6 +143,13 @@ export default {
             window.location.hash = 'order'
             this.orderInfo.orderSubmit.barberId = utils.getUrlParam('personId')
             this.orderInfo.barberName = decodeURIComponent(utils.getUrlParam('personName'))
+            this.orderInfo.orderSubmit.price = 0
+            for (let i = 0; i < this.orderInfo.orderSubmit.productList.length; i++) {
+              let productInfo = this.orderInfo.orderSubmit.productList[i]
+              this.orderInfo.orderSubmit.price += parseInt(productInfo.price, 10)
+              this.orderInfo.orderSubmit.realPrice += parseInt(productInfo.price, 10)
+            }
+            this.getAvilCoupon({'barberId': this.orderInfo.orderSubmit.barberId, 'productIds': this.orderInfo.productIds, 'money': this.orderInfo.orderSubmit.price})
           }else {
             window.location.hash = 'person'
             this.getPerson({'date': parseInt(tempDate, 10), 'time': tempTime, 'hours': this.maxHours, shopId: this.shopId})
@@ -184,25 +191,6 @@ export default {
         toast('获取项目失败')
       })
     },
-    // getStore: function () {
-    //   this.loading.show = true
-    //   let requestData = {}
-    //   if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
-    //     requestData.couponId = utils.getUrlParam('couponId')
-    //   }
-    //   this.$http.get(window.ctx + '/api/order/selectShop', requestData).then(function (response) {
-    //     this.loading.show = false
-    //     var res = response.data
-    //     if (res.code === 0) {
-    //       this.storeItem = res.result.result
-    //     }else {
-    //       toast('获取门店失败')
-    //     }
-    //   }, function (response) {
-    //     this.loading.show = false
-    //     toast('获取门店失败')
-    //   })
-    // },
     getTime: function (requestData) {
       this.$broadcast('get-time-list', requestData)
     },

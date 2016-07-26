@@ -116,7 +116,7 @@
       submit: function () {
         if (!this.isWeixin) {
           toast('目前只支持微信环境支付')
-          return false
+          // return false
         }
         console.log(this.order.orderSubmit.productList)
         if (this.token) {
@@ -136,7 +136,10 @@
             if (res.code === 0) {
               toast('订单提交成功，请在15分钟内完成付款')
               this.$http.post(window.ctx + '/api/pay/wechat-pay', res.result, {headers: {token: this.token}}).then(function (response) {
-
+                window.location.href = response.data
+              }, function (response) {
+                this.$parent.loading.show = false
+                toast('支付失败')
               })
             }else if (res.code === 10007) {
               toast('登录已过期，请重新登录')
