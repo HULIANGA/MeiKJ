@@ -68,7 +68,7 @@
   .change-city img{
     position: absolute;
     width: 10px;
-    bottom: 20px;
+    top: 22px;
     right: 5px;
   }
 </style>
