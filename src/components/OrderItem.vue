@@ -15,7 +15,7 @@
         </template>
       </div>
       <div v-if="item.processState == 1">
-          <button class="btn btn-primary">去付款</button>
+          <button class="btn btn-primary" @click.prevent.stop="goPay(item)">去付款</button>
       </div>
       <div v-if="item.processState == 2">
         <button class="btn btn-primary" @click.prevent.stop="confirmService(item.id,$index)">确认服务</button>
@@ -64,6 +64,16 @@ export default {
     }
   },
   methods: {
+    goPay (item) {
+      console.log(item)
+      this.$parent.$parent.$parent.loading.show = true
+      this.$http.post(window.ctx + '/api/pay/wechat-pay', item, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+        window.location.href = response.data
+      }, function (response) {
+        this.$parent.$parent.$parent.loading.show = false
+        toast('支付失败')
+      })
+    },
     detailModal (item) {
       this.$emit('detail-msg', item.id)
     },
