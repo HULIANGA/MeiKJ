@@ -84,7 +84,10 @@ export default {
       orderDetail: {},
       showDetail: false,
       state: 1,
-      token: ''
+      token: '',
+      currentPage: 1,
+      pageSize: 10,
+      hasMoreData: true
     }
   },
   created () {
@@ -92,13 +95,23 @@ export default {
     self.token = localStorage.getItem('token')
     self.getOrder(1, 1, 10)
   },
+  ready: function () {
+    let self = this
+    window.onscroll = function () {
+      let container = document.querySelector('body')
+      // let laschild = document.querySelectorAll('.store-item')[document.querySelectorAll('.store-item').length - 1]
+      if (self.hasMoreData && (window.screen.height + window.scrollY) >= container.offsetHeight) {
+        self.getOrder(self.state, self.currentPage + 1, self.pageSize)
+      }
+    }
+  },
   methods: {
     handleLink (active) {
       console.log(active)
       let self = this
       let state
       let pageNo = 1
-      let pageSize = 10
+      let pageSize = self.pageSize
       if (active === 0) {
         self.state = 1
         state = self.state
@@ -121,21 +134,44 @@ export default {
       let self = this
       if (self.token) {
         self.loading.show = true
+        self.currentPage = pageNo
         self.$http.get(window.ctx + '/api/order/t/list', {state: state, pageNo: pageNo, pageSize: pageSize}, {headers: {token: self.token}}).then((response) => {
           self.loading.show = false
           let res = response.data
           if (res.code === 0) {
             if (state === 1) {
-              self.$set('waitPay', res.result.result)
+              if (pageNo === 1) {
+                self.$set('waitPay', res.result.result)
+              }else {
+                self.waitPay = self.waitPay.concat(res.result.result)
+              }
             }
             if (state === 2) {
-              self.$set('waitService', res.result.result)
+              if (pageNo === 1) {
+                self.$set('waitService', res.result.result)
+              }else {
+                self.waitService = self.waitService.concat(res.result.result)
+              }
             }
             if (state === 3) {
-              self.$set('orderDone', res.result.result)
+              if (pageNo === 1) {
+                self.$set('orderDone', res.result.result)
+              }else {
+                self.orderDone = self.orderDone.concat(res.result.result)
+              }
             }
             if (state === 4) {
-              self.$set('orderCanceled', res.result.result)
+              if (pageNo === 1) {
+                self.$set('orderCanceled', res.result.result)
+              }else {
+                self.orderCanceled = self.orderCanceled.concat(res.result.result)
+              }
+            }
+            if (!res.result.result || res.result.result.length === 0) {
+            }else if (res.result.result.length < self.pageSize) {
+              self.hasMoreData = false
+            }else {
+              self.hasMoreData = true
             }
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')

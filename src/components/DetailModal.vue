@@ -79,9 +79,9 @@ export default {
   position: relative;
   background: #ff6251;
   color: #fff;
-  height: 36px;
   line-height: 36px;
   text-align: center;
+  font-size: 1.4rem;
 }
 .detail-modal .close {
   display: block;

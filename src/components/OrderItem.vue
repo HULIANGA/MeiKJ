@@ -173,11 +173,11 @@ export default {
 .order-control .order-status {
   display: block;
   width: 50%;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   background-color: #c0c0bf;
   color: #fff;
-  height: 32px;
-  line-height: 32px;
+  height: 25px;
+  line-height: 25px;
   text-align: center;
   border-radius: 3px;
 }

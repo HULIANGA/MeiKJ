@@ -333,6 +333,7 @@
   line-height: 24px;
   padding: 10px;
   box-sizing: border-box;
+  appearance: none;
 }
 .order-submit {
   position: fixed;
