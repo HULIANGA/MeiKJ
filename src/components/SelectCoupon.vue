@@ -1,6 +1,3 @@
-<style lang="sass">
-@import '../assets/css/style.scss'
-</style>
 <template>
 <div class="my-coupon-list">
   <div class="coupon-item-wrap" v-for="(index,item) in items">

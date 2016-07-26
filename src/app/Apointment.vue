@@ -254,6 +254,10 @@ export default {
 @import '../assets/css/style.scss'
 </style>
 <style>
+html, body {
+  height: 100%;
+  overflow-y: auto;
+}
 body {
   background: #eaeaea;
 }

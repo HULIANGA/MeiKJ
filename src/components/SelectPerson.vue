@@ -1,11 +1,13 @@
 <template>
   <div class="all-dressers">
     <person-one v-for="item in items" @click="selectPerson(item)" :item="item" :class="item.id === personId ? 'active' : ''"></person-one>
+    <no-result v-show="items && items.length === 0" :text=""></no-result>
     <button class="btn btn-reserve" @click="next()">已选好</button>
   </div>
 </template>
 <script>
 import PersonOne from '../components/PersonOne'
+import NoResult from '../components/NoResult'
 import toast from '../js/toast'
 
 export default {
@@ -34,7 +36,8 @@ export default {
     }
   },
   components: {
-    PersonOne
+    PersonOne,
+    NoResult
   },
   props: {
     items: Array

@@ -4,8 +4,11 @@
       <a>
         <img :src="imageDomain + item.coverImg">
       </a>
-      <div class="hair-like">
-        {{ item.praiseNum }}
+      <div v-if="item.praiseNum" class="hair-like">
+        {{item.praiseNum}}
+      </div>
+      <div v-else class="hair-like">
+        0
       </div>
     </div>
   </div>

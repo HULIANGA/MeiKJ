@@ -1,9 +1,12 @@
 <template>
-  <div class="store-list">
-    <head-filter :searchitems="searchItems"></head-filter>
-    <store-one @click="selectStore(item)" :class="selectId === item.id ? 'active' : ''" v-for="item in storeItems" :item="item"></store-one>
-    <button class="btn btn-reserve" @click="next()">已选好</button>
-    <loading :show="loading.show"></loading>
+  <div class="store-list-container">
+    <div class="store-list">
+      <head-filter :searchitems="searchItems"></head-filter>
+      <store-one @click="selectStore(item)" :class="selectId === item.id ? 'active' : ''" v-for="item in storeItems" :item="item"></store-one>
+      <no-result v-show="noresult" :text=""></no-result>
+      <button class="btn btn-reserve" @click="next()">已选好</button>
+      <loading :show="loading.show"></loading>
+    </div>
   </div>
 </template>
 <script>
@@ -27,12 +30,14 @@ export default {
       searchItems: {
         filters: []
       },
+      noresult: false,
       baseRequsetData: {
         pageNo: 1,
         pageSize: 20,
         longitude: null,
         latitude: null
-      }
+      },
+      hasMoreData: true
     }
   },
   created: function () {
@@ -64,6 +69,12 @@ export default {
     this.getAreaList(localStorage.cityCode)
   },
   ready: function () {
+    let self = this
+    document.querySelector('.store-list-container').onscroll = function () {
+      if (self.hasMoreData && (document.querySelector('.store-list-container').scrollTop + document.querySelector('.store-list-container').offsetHeight - 50) >= document.querySelector('.store-list').offsetHeight) {
+        self.setMoreData()
+      }
+    }
   },
   events: {
     'get-store-data': function () {
@@ -79,7 +90,7 @@ export default {
     },
     'go-search': function (searchData) {
       console.log(searchData)
-      this.getStore(searchData)
+      this.getFirstStore(searchData)
     }
   },
   methods: {
@@ -99,7 +110,8 @@ export default {
         this.selectName = selectItem.name
       }
     },
-    getStore: function (requestData) {
+    getFirstStore: function (requestData) {
+      let self = this
       let extendRequestData = utils.extendObj(this.baseRequsetData, requestData)
       if (!extendRequestData.cityCode) {
         extendRequestData.cityCode = localStorage.cityCode
@@ -107,18 +119,64 @@ export default {
       if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
         extendRequestData.couponId = utils.getUrlParam('couponId')
       }
-      this.loading.show = true
-      this.$http.get(window.ctx + '/api/order/selectShop', extendRequestData).then(function (response) {
-        this.loading.show = false
-        var res = response.data
+      extendRequestData.pageNo = 1
+      self.baseRequsetData = extendRequestData
+      console.log('getFirstStore')
+      console.log(self.baseRequsetData)
+      self.loading.show = true
+      // 获取门店列表
+      document.querySelector('.store-list-container').style.overflowY = 'hidden'
+      self.$http.get(window.ctx + '/api/order/selectShop', extendRequestData).then(function (response) {
+        document.querySelector('.store-list-container').style.overflowY = 'auto'
+        self.loading.show = false
+        let res = response.data
         if (res.code === 0) {
-          this.storeItems = res.result.result
+          document.querySelector('.store-list-container').scrollTop = 0
+          self.storeItems = res.result.result
+          if (!res.result.result || res.result.result.length === 0) {
+            self.noresult = true
+          }else if (res.result.result.length < self.baseRequsetData.pageSize) {
+            self.hasMoreData = false
+          }else {
+            self.hasMoreData = true
+          }
         }else {
+          self.noresult = true
           toast('获取门店失败')
         }
       }, function (response) {
-        this.loading.show = false
+        self.loading.show = false
+        document.querySelector('.store-list-container').style.overflowY = 'auto'
+        self.noresult = true
         toast('获取门店失败')
+      })
+    },
+    setMoreData: function () {
+      let self = this
+      self.baseRequsetData.pageNo = self.baseRequsetData.pageNo + 1
+      this.loading.show = true
+      document.querySelector('html').style.overflowY = 'hidden'
+      console.log('getmoredata：')
+      console.log(self.baseRequsetData)
+      self.$http.get(window.ctx + '/api/order/selectShop', self.baseRequsetData).then((response) => {
+        self.loading.show = false
+        document.querySelector('html').style.overflowY = 'auto'
+        let res = response.data
+        if (res.code === 0) {
+          self.storeItems = self.storeItems.concat(res.result.result)
+          if (!res.result.result || res.result.result.length === 0) {
+            toast('没有更多数据了')
+            self.hasMoreData = false
+          }else if (res.result.result.length < self.baseRequsetData.pageSize) {
+            self.hasMoreData = false
+          }
+        }else {
+          toast('加载失败')
+        }
+      }, (response) => {
+        self.loading.show = false
+        document.querySelector('html').style.overflowY = 'auto'
+        toast('加载失败')
       })
     },
     getLocation: function () {
@@ -142,10 +200,10 @@ export default {
           self.baseRequsetData.latitude = r.point.lat
           self.baseRequsetData.longitude = r.point.lng
         }
-        self.getStore()
+        self.getFirstStore()
         // }
       }, function () {// 不支持h5定位
-        self.getStore()
+        self.getFirstStore()
       }, {enableHighAccuracy: true})
     },
     getAreaList: function (cityCode) {
@@ -174,7 +232,10 @@ export default {
 }
 </script>
 <style scoped>
-.store-list{
-  padding-bottom: 50px
+.store-list-container{
+  padding-bottom: 50px;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 </style>
