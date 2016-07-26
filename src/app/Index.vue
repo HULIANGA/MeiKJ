@@ -29,11 +29,12 @@ export default {
         show: true
       },
       dataHref: window.window.ctx + '/api/banner/list',
-      hairItems: window.hairItems,
+      hairItems: null,
       localCity: '定位中'
     }
   },
   created: function () {
+    let self = this
     // 百度地图api放在最后加载，判断api加载完成后获取城市
     let getCityInterval = setInterval(() => {
       if (typeof (window.BMap) !== 'undefined') {
@@ -42,6 +43,15 @@ export default {
         clearInterval(getCityInterval)
       }
     }, 500)
+    // 获取发型列表
+    self.$http.get(window.ctx + '/api/hairstyle/list', {hairstyleClassId: 3}).then((response) => {
+      let res = response.data
+      if (res.code === 0) {
+        self.$set('hairItems', res.result.result)
+      }
+    }, (response) => {
+      self.loading.show = false
+    })
   },
   components: {
     HeaderMenu,
