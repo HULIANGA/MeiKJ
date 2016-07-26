@@ -135,7 +135,7 @@
             let res = response.data
             if (res.code === 0) {
               toast('订单提交成功，请在15分钟内完成付款')
-              this.$http.post(window.ctx + '/api/pay/wechat-pay', res.result, {headers: {token: this.token}}).then(function (response) {
+              this.$http.post(window.ctx + '/api/pay/wechat-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
                 window.location.href = response.data
               }, function (response) {
                 this.$parent.loading.show = false
