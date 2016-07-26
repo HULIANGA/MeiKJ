@@ -26,8 +26,8 @@
       <label>性别</label>
     </div>
     <div class="p-item-bd" v-show="show">
-      <p v-if="userInfo.gender == 1">男</p>
-      <p v-if="userInfo.gender == 0">女</p>
+      <p v-if="userInfo.gender === 1">男</p>
+      <p v-if="userInfo.gender === 0">女</p>
     </div>
     <div class="p-item-bd" v-else>
       <input type="radio" name="gender" value="1" v-model="userInfo.gender">男

@@ -74,28 +74,27 @@ export default {
       items: null,
       noresult: false,
       startX: null,
-      token: '',
+      token: localStorage.getItem('token'),
       showDetail: false,
       couponDetail: {},
       exchangeCode: '',
-      exchangeModal: false
+      exchangeModal: false,
+      currentPage: 1,
+      pageSize: 10,
+      hasMoreData: true
     }
   },
   created () {
+    this.getCouponData(1)
+  },
+  ready: function () {
     let self = this
-    self.token = localStorage.getItem('token')
-    self.$http(window.ctx + '/api/coupon/t/list', {headers: {token: localStorage.token}}).then(function (response) {
-      let res = response.data
-      self.loading.show = false
-      if (res.code === 0) {
-        self.$set('items', res.result.result)
-        if (!res.result.result || res.result.result.length === 0) {
-          self.noresult = true
-        }
-      } else {
-        self.noresult = true
+    window.onscroll = function () {
+      let container = document.querySelector('body')
+      if (self.hasMoreData && (window.screen.height + window.scrollY) >= container.offsetHeight) {
+        self.getCouponData(self.currentPage + 1)
       }
-    })
+    }
   },
   computed: {
     moveWidth: function () {
@@ -103,6 +102,51 @@ export default {
     }
   },
   methods: {
+    getCouponData: function (pageNo) {
+      let self = this
+      self.loading.show = true
+      self.currentPage = pageNo
+      if (self.token) {
+        self.$http.get(window.ctx + '/api/coupon/t/list', {pageNo: pageNo, pageSize: self.pageSize}, {headers: {token: localStorage.token}}).then(function (response) {
+          let res = response.data
+          self.loading.show = false
+          if (res.code === 0) {
+            if (pageNo === 1) {
+              document.querySelector('body').scrollTop = 0
+              self.$set('items', res.result.result)
+              if (!res.result.result || res.result.result.length === 0) {
+                self.noresult = true
+                self.hasMoreData = false
+              }
+            }else {
+              self.items = self.items.concat(res.result.result)
+            }
+            if (!res.result.result || res.result.result.length === 0) {
+              self.hasMoreData = false
+            }else if (res.result.result.length < self.pageSize) {
+              self.hasMoreData = false
+            }else {
+              self.hasMoreData = true
+            }
+          } else {
+            if (res.code === 10007) {
+              toast('登录已过期，请重新登录')
+              setTimeout(function () {
+                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              }, 1000)
+            }
+            if (pageNo === 1) {
+              self.noresult = true
+            }
+          }
+        })
+      }else {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      }
+    },
     touchStart (e) {
       this.startX = e.touches[0].pageX
       document.querySelector('.coupon-item').style.left = '0px'
@@ -165,18 +209,7 @@ export default {
         self.loading.show = false
         if (res.code === 0) {
           toast('兑换成功')
-          self.$http(window.ctx + '/api/coupon/t/list', {headers: {token: localStorage.token}}).then(function (response) {
-            let res = response.data
-            self.loading.show = false
-            if (res.code === 0) {
-              self.$set('items', res.result.result)
-              if (!res.result.result || res.result.result.length === 0) {
-                self.noresult = true
-              }
-            } else {
-              self.noresult = true
-            }
-          })
+          self.getCouponData(1)
         } else {
           toast('兑换失败')
         }

@@ -168,6 +168,7 @@ export default {
               }
             }
             if (!res.result.result || res.result.result.length === 0) {
+              self.hasMoreData = false
             }else if (res.result.result.length < self.pageSize) {
               self.hasMoreData = false
             }else {

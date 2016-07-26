@@ -76,6 +76,7 @@ export default {
           self.$set('hairItems', res.result.result)
           if (!res.result.result || res.result.result.length === 0) {
             self.noresult = true
+            self.hasMoreData = false
           }else if (res.result.result.length < self.searchPageParam.pageSize) {
             self.hasMoreData = false
           }else {
