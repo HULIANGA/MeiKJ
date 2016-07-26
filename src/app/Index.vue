@@ -21,6 +21,7 @@ import CitySelect from '../components/CitySelect'
 import Loading from '../components/Loading'
 import cityJson from '../libs/area.js'
 import provinceCity from '../libs/province_city.js'
+import toast from '../js/toast.js'
 
 export default {
   data () {
@@ -30,7 +31,12 @@ export default {
       },
       dataHref: window.window.ctx + '/api/banner/list',
       hairItems: null,
-      localCity: '定位中'
+      localCity: '定位中',
+      searchPageParam: {
+        pageNo: 1,
+        pageSize: 20
+      },
+      hasMoreData: true
     }
   },
   created: function () {
@@ -44,14 +50,35 @@ export default {
       }
     }, 500)
     // 获取发型列表
-    self.$http.get(window.ctx + '/api/hairstyle/list', {hairstyleClassId: 3}).then((response) => {
+    document.querySelector('html').style.overflowY = 'hidden'
+    //
+    self.$http.get(window.ctx + '/api/hairstyle/popularList', self.searchPageParam).then((response) => {
+      document.querySelector('html').style.overflowY = 'auto'
       let res = response.data
       if (res.code === 0) {
         self.$set('hairItems', res.result.result)
+        if (!res.result.result || res.result.result.length === 0) {
+        }else if (res.result.result.length < self.searchPageParam.pageSize) {
+          self.hasMoreData = false
+        }else {
+          self.hasMoreData = true
+        }
       }
     }, (response) => {
+      document.querySelector('html').style.overflowY = 'auto'
       self.loading.show = false
     })
+  },
+  ready: function () {
+    let self = this
+    window.onscroll = function () {
+      let container = document.querySelector('body')
+      // let laschild = document.querySelectorAll('.store-item')[document.querySelectorAll('.store-item').length - 1]
+      if (self.hasMoreData && (window.screen.height + window.scrollY) >= container.offsetHeight
+    ) {
+        self.setMoreData()
+      }
+    }
   },
   components: {
     HeaderMenu,
@@ -62,6 +89,32 @@ export default {
     Loading
   },
   methods: {
+    setMoreData: function () {
+      let self = this
+      self.searchPageParam.pageNo = self.searchPageParam.pageNo + 1
+      self.loading.show = true
+      document.querySelector('html').style.overflowY = 'hidden'
+      self.$http.get(window.ctx + '/api/hairstyle/popularList', self.searchPageParam).then((response) => {
+        self.loading.show = false
+        document.querySelector('html').style.overflowY = 'auto'
+        let res = response.data
+        if (res.code === 0) {
+          self.hairItems = self.hairItems.concat(res.result.result)
+          if (!res.result.result || res.result.result.length === 0) {
+            toast('没有更多数据了')
+            self.hasMoreData = false
+          }else if (res.result.result.length < self.searchPageParam.pageSize) {
+            self.hasMoreData = false
+          }
+        }else {
+          toast('加载失败')
+        }
+      }, (response) => {
+        self.loading.show = false
+        document.querySelector('html').style.overflowY = 'auto'
+        toast('加载失败')
+      })
+    },
     getCity: function () {
       let BaiduMap = window.BMap
       new BaiduMap.LocalCity().get((result) => {
