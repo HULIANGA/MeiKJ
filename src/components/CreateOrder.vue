@@ -299,6 +299,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  background-color: #ffffff;
 }
 .o-pay-ft input[type=radio]:checked {
   -webkit-appearance:none;

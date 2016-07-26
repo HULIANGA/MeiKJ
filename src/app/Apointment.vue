@@ -146,8 +146,8 @@ export default {
             this.orderInfo.orderSubmit.price = 0
             for (let i = 0; i < this.orderInfo.orderSubmit.productList.length; i++) {
               let productInfo = this.orderInfo.orderSubmit.productList[i]
-              this.orderInfo.orderSubmit.price += parseInt(productInfo.price, 10)
-              this.orderInfo.orderSubmit.realPrice += parseInt(productInfo.price, 10)
+              this.orderInfo.orderSubmit.price += parseFloat(productInfo.price, 10)
+              this.orderInfo.orderSubmit.realPrice += parseFloat(productInfo.price, 10)
             }
             this.getAvilCoupon({'barberId': this.orderInfo.orderSubmit.barberId, 'productIds': this.orderInfo.productIds, 'money': this.orderInfo.orderSubmit.price})
           }else {
@@ -164,8 +164,8 @@ export default {
         this.orderInfo.orderSubmit.price = 0
         for (let i = 0; i < this.orderInfo.orderSubmit.productList.length; i++) {
           let productInfo = this.orderInfo.orderSubmit.productList[i]
-          this.orderInfo.orderSubmit.price += parseInt(productInfo.price, 10)
-          this.orderInfo.orderSubmit.realPrice += parseInt(productInfo.price, 10)
+          this.orderInfo.orderSubmit.price += parseFloat(productInfo.price, 10)
+          this.orderInfo.orderSubmit.realPrice += parseFloat(productInfo.price, 10)
         }
         this.getAvilCoupon({'barberId': this.orderInfo.orderSubmit.barberId, 'productIds': this.orderInfo.productIds, 'money': this.orderInfo.orderSubmit.price})
       }
