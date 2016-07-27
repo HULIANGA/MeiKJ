@@ -21,11 +21,10 @@ export default {
     return {
       oldpwd: '',
       password: '',
-      token: ''
+      token: localStorage.getItem('token')
     }
   },
   created: function () {
-    self.token = localStorage.getItem('token')
   },
   methods: {
     reset () {
