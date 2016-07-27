@@ -60,6 +60,7 @@ export default {
       self.noresult = false
       self.hasMoreData = true
       if (id === self.currentClassId) {
+        self.loading.show = false
         return false
       }else {
         self.currentClassId = id
