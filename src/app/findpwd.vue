@@ -16,7 +16,6 @@
         <input class="user-pwd" type="password" placeholder="请设置您的新密码" v-model="password" @keyup.enter="findPwd">
       </div>
       <button class="btn btn-confirm" @click.prevent="findPwd">确认提交</button>
-
     </div>
     <p class="clearfix regist-link"><a class="pull-r" :href="login">想起密码，去登录</a></p>
   </div>

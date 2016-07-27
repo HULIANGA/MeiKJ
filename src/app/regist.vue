@@ -64,6 +64,7 @@ import utils from '../js/utils'
 import toast from '../js/toast'
 import Loading from '../components/Loading'
 import Modal from '../components/Modal'
+
 export default {
   data () {
     return {

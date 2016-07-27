@@ -53,7 +53,6 @@ import NoResult from '../components/NoResult'
 import DetailModal from '../components/DetailModal'
 import toast from '../js/toast'
 import utils from '../js/utils'
-
 export default {
   data () {
     return {
