@@ -203,17 +203,17 @@ export default {
       }
       self.exchangeModal = false
       self.loading.show = true
-      self.$http.post(window.ctx + '/api/coupon/t/exchange', {code: self.exchangeCode}, {headers: {token: self.token}}).then((response) => {
+      self.$http.post(window.ctx + '/api/coupon/t/exchange', {code: self.exchangeCode}, {headers: {token: self.token}, emulateJSON: true}).then((response) => {
         let res = response.data
         self.loading.show = false
         if (res.code === 0) {
           toast('兑换成功')
           self.getCouponData(1)
         } else {
-          toast('兑换失败')
+          toast(res.message)
         }
       }, (response) => {
-        toast('兑换失败')
+        toast(response.data.message)
       })
     }
   },
