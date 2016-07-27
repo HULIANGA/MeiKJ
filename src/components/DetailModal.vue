@@ -1,5 +1,5 @@
 <template>
-  <div class="detail-modal">
+  <div class="detail-modal" v-show="show" transition="detail-modal">
     <div class="detail-modal-wrapper">
       <div class="detail-modal-content">
         <slot name="detail-modal-header">
@@ -31,16 +31,6 @@ export default {
       type: Boolean
     }
   },
-  ready () {
-    this.$watch('show', function (val) {
-      const el = this.$el
-      if (val) {
-        el.style.display = 'block'
-      } else {
-        el.style.display = 'none'
-      }
-    })
-  },
   methods: {
     close () {
       this.show = false
@@ -55,11 +45,11 @@ export default {
   right: 0;
   left: 0;
   bottom: 0;
-  display: none;
   width: 100%;
   height: 100%;
   background:rgba(0,0,0,.5);
   z-index: 1000;
+  transition: opacity .5s ease;
 }
 .detail-modal-wrapper {
   position: relative;
@@ -74,6 +64,8 @@ export default {
   background: #fff;
   border-radius: 3px;
   overflow: hidden;
+  animation-duration: 1s;
+  animation-fill-mode: both;
 }
 .detail-modal-header {
   position: relative;
@@ -109,15 +101,14 @@ export default {
   height: 3px;
   width: 18px;
 }
-.detail-modal-transition {
-  animation-duration: 1s;
-  animation-fill-mode: both;
+.detail-modal-enter,.detail-modal-leave {
+  opacity: 0;
 }
-.detail-modal-enter {
-  animation-name: fadeInDown
+.detail-modal-enter .detail-modal-content {
+  animation-name: fadeInDown;
 }
-.detail-modal-leave {
-  animation-name: fadeOutUp
+.detail-modal-leave .detail-modal-content {
+  animation-name: fadeOutUp;
 }
 @keyframes fadeInDown {
   from {
