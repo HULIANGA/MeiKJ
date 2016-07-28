@@ -30,8 +30,8 @@
       <p v-if="userInfo.gender === 0">女</p>
     </div>
     <div class="p-item-bd" v-else>
-      <input type="radio" name="gender" value="1" v-model="userInfo.gender">男
-      <input type="radio" name="gender" value="0" v-model="userInfo.gender">女
+      <input type="radio" name="gender" value="1" v-model="userInfo.gender" number>男
+      <input type="radio" name="gender" value="0" v-model="userInfo.gender" number>女
     </div>
   </div>
   <div class="p-item">
