@@ -46,13 +46,18 @@
 </div>
 <button class="btn btn-reserve" v-show="show" @click.prevent="edit">编辑</button>
 <button class="btn btn-reserve" @click.prevent="save" v-else>保存</button>
+<loading :show="loading.show"></loading>
 </template>
 <script>
 import utils from '../js/utils'
 import toast from '../js/toast'
+import Loading from '../components/Loading'
 export default {
   data () {
     return {
+      loading: {
+        show: true
+      }
       userInfo: {nickName: '', gender: '', email: '', mobile: ''},
       token: '',
       show: true
@@ -61,8 +66,10 @@ export default {
   created () {
     let self = this
     self.token = localStorage.token
+    self.loading.show = true
     if (self.token) {
       self.$http.post(window.ctx + '/api/customer/t/detail', {}, {headers: {token: self.token}}).then((response) => {
+        self.loading.show = false
         let res = response.data
         if (res.code === 0) {
           self.$set('userInfo', res.result)
@@ -74,6 +81,7 @@ export default {
         }
       })
     }else {
+      self.loading.show = false
       toast('请先登录')
       setTimeout(function () {
         window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
@@ -96,7 +104,9 @@ export default {
           toast('请填写正确的邮箱地址')
           return false
         }
+        self.loading.show = true
         self.$http.post(window.ctx + '/api/customer/t/edit', {nickName: self.userInfo.nickName, gender: self.userInfo.gender, email: self.userInfo.email}, {headers: {token: self.token}}).then((response) => {
+          self.loading.show = false
           let res = response.data
           if (res.code === 0) {
             self.show = true
@@ -115,6 +125,9 @@ export default {
         }, 1000)
       }
     }
+  },
+  components: {
+    Loading
   }
 }
 </script>
