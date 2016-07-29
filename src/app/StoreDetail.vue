@@ -1,11 +1,19 @@
 <style lang="sass">
-  @import '../assets/css/style.scss'
+  @import '../assets/css/style.scss';
+  @import '../assets/css/swiper.scss'
 </style>
 <template>
   <div class="store-detail">
     <div v-if="storeDetail" class="store-info">
       <div class="store-info-img">
-        <img :src="imageDomain + storeDetail.logo">
+        <div class="swiper-container swiper-box">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide" v-for="item in storeDetail.photoList">
+              <img :src="imageDomain + item">
+            </div>
+          </div>
+        </div>
+        <!-- <img :src="imageDomain + storeDetail.logo"> -->
         <p class="store-info-name">{{storeDetail.name}}</p>
       </div>
       <div class="store-info-text">
@@ -27,7 +35,7 @@
   import StoreMember from '../components/StoreMember'
   import Loading from '../components/Loading'
   import utils from '../js/utils'
-
+  import Swiper from 'swiper'
   export default {
     data () {
       return {
@@ -112,6 +120,15 @@
           let res = response.data
           if (res.code === 0) {
             this.$set('storeDetail', res.result)
+            this.$nextTick(function () {
+              /* eslint-disable no-new */
+              new Swiper('.swiper-box', {
+                speed: 1000,
+                autoplay: 2500,
+                loop: true,
+                autoplayDisableOnInteraction: false
+              })
+            })
           }
         }, (response) => {
           this.loading.show = false
@@ -128,6 +145,12 @@
 <style>
 body {
   background: #eaeaea;
+}
+.swiper-box {
+  width: 100%;
+  margin: 0;
+  z-index: 2;
+  top: 0;
 }
 .store-detail {
   padding-bottom: 50px;

@@ -20,7 +20,7 @@
   <div class="swiper-container swiper-box">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="item in items">
-        <img :src="imageDomain + item.imgUrl">
+        <a :href="item.url"><img :src="imageDomain + item.imgUrl"></a>
       </div>
     </div>
     <div class="swiper-pagination swiper-pagination-white"></div>
