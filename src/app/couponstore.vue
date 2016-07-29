@@ -206,7 +206,7 @@ export default {
         if (res.code === 0) {
           let tempFilter = {
             'name': '项目',
-            'param': 'productId',
+            'param': 'projectId',
             'values': res.result
           }
           this.searchItems.filters.$set(2, tempFilter)
