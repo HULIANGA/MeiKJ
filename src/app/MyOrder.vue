@@ -67,7 +67,6 @@ import TabSet from '../components/TabSet'
 import OrderItem from '../components/OrderItem'
 import DetailModal from '../components/DetailModal'
 import Loading from '../components/Loading'
-import NoResult from '../components/NoResult'
 import toast from '../js/toast'
 
 export default {
@@ -76,7 +75,6 @@ export default {
       loading: {
         show: true
       },
-      noresult: false,
       waitPay: null,
       waitService: null,
       orderDone: null,
@@ -218,8 +216,7 @@ export default {
     TabSet,
     OrderItem,
     DetailModal,
-    Loading,
-    NoResult
+    Loading
   }
 }
 </script>

@@ -1,7 +1,9 @@
 <template>
   <div v-show="show" id="wxloading" class="loading">
     <div class="loading-inner">
-      <i class="loading-icon"></i>{{text}}
+      <i class="loading-icon"></i>
+      <span v-if="showText">{{showText}}</span>
+      <span v-else>加载中</span>
     </div>
   </div>
 </template>
@@ -10,15 +12,6 @@ export default {
   props: {
     show: Boolean,
     showText: String
-  },
-  computed: {
-    text: function () {
-      if (this.showText) {
-        return this.showText
-      }else {
-        return '加载中'
-      }
-    }
   }
 }
 </script>
