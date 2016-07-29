@@ -34,7 +34,6 @@ module.exports = {
     resetPwd: './src/entrys/resetpwd.js',
     apointment: './src/entrys/apointment.js',
     evaluationList: './src/entrys/evaluationList.js'
-      // base: './src/entrys/base.js'
   },
   output: {
     path: distPath, //输出文件目录
@@ -53,11 +52,11 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin("css/[name].[hash].css"), //css单独输出到dist下
-    new webpack.optimize.CommonsChunkPlugin('js/common.js'),
-    new AddScriptPathPlugin({
+    new webpack.optimize.CommonsChunkPlugin('js/common.js'), //提取所有的app组件公用的js(vue和vue-resource)
+    new AddScriptPathPlugin({//传入需要拼接到每个html页面末尾的js路径
       paths: [resourcePath + 'js/base', resourcePath + 'js/common'],
     }),
-    new CopyWebpackPlugin([
+    new CopyWebpackPlugin([//base.js定义了全局的ctx和imageDomain，将他复制到打包目录中
       // {output}/to/file.txt
       {
         from: './src/js/base.js',
