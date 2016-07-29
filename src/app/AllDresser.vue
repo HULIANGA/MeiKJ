@@ -92,8 +92,10 @@ export default {
           if (!res.result.result || res.result.result.length === 0) {
             self.noresult = true
           }else if (res.result.result.length < self.baseRequsetData.pageSize) {
+            self.noresult = false
             self.hasMoreData = false
           }else {
+            self.noresult = false
             self.hasMoreData = true
           }
         }else {

@@ -79,8 +79,10 @@ export default {
             self.noresult = true
             self.hasMoreData = false
           }else if (res.result.result.length < self.searchPageParam.pageSize) {
+            self.noresult = false
             self.hasMoreData = false
           }else {
+            self.noresult = false
             self.hasMoreData = true
           }
         }else {
