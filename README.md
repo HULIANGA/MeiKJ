@@ -35,5 +35,5 @@ npm test
 10、myorder.html           订单列表
 11、regist.html            注册
 12、storedetail.html       门店详情
-13、shopbarber.html        门店发型师
+13、shopDresser.html       门店发型师
 14、apointment.html        下单预约

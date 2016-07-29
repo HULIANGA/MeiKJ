@@ -42,7 +42,7 @@ export default {
   methods: {
     showMore () {
       let storeId = utils.getUrlParam('id')
-      window.location.href = 'shopbarber.html?id=' + storeId
+      window.location.href = 'shopDresser.html?id=' + storeId
     },
     detail (id) {
       window.location.href = 'dresserDetail.html?id=' + id

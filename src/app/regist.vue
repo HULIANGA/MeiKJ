@@ -128,6 +128,7 @@ export default {
               localStorage.token = response.data.result.token
               self.showModal = true
             }else {
+              toast(response.data.message)
               self.loading.show = false
             }
           }, (response) => {

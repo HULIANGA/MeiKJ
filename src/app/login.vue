@@ -77,6 +77,7 @@ export default {
             window.location.href = 'main.html'
           }
         }else {
+          toast(response.data.message)
           self.loading.show = false
         }
       }, (response) => {
