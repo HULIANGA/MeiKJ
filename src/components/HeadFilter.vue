@@ -1,6 +1,6 @@
 <template lang="html">
-  <div class="head-filter flex">
-    <div class="one-filter flex-grow" @click="showSelect(filterIndex)" v-for="(filterIndex,searchItem) in searchitems.filters" track-by="$index" v-if="searchItem">
+  <div class="head-filter">
+    <div class="one-filter" @click="showSelect(filterIndex)" v-for="(filterIndex,searchItem) in searchitems.filters" track-by="$index" v-if="searchItem">
       <div :class="['filter-content', showIndex === filterIndex ? 'active' : '']">
         <span>{{searchItem.name }}</span>
       </div>
@@ -11,7 +11,7 @@
         </div>
       </div>
     </div>
-    <div v-if="searchitems.search" class="filter-search flex-no-shrink" @click="showSearchPage()">
+    <div v-if="searchitems.search" class="filter-search" @click="showSearchPage()">
       <img src="../assets/img/hearFilter/search.png" alt="搜索" />
     </div>
   </div>
@@ -92,9 +92,6 @@ export default {
 }
 </script>
 
-<style>
-@import "../assets/css/flex.scss";
-</style>
 <style scoped>
 .head-filter{
   height: 38px;
@@ -105,15 +102,17 @@ export default {
   width: 100%;
   background: #ffffff;
   z-index: 1;
+  display: flex;
 }
 .one-filter{
   text-align: center;
   position: relative;
+  padding: 9px 0;
+  flex-grow: 1;
 }
 .filter-content{
   height: 20px;
   line-height: 20px;
-  margin-top: 9px;
   border-left: 1px solid #eaeaea;
 }
 .filter-content.active span{
@@ -167,6 +166,7 @@ export default {
 .filter-search{
   background: #ff6251;
   width: 39px;
+  flex-shrink: 0;
 }
 .filter-search img{
   width: 22px;
