@@ -120,7 +120,6 @@ export default {
         this.orderInfo.productIds = data.productIds
       }else if (data.fromStep === 'store') { // 在选择门店点下一步
         window.location.hash = 'time'
-        this.$broadcast('time-show')
         this.shopId = data.shopId
         this.getTime({'shopId': data.shopId})
         this.orderInfo.shopName = data.shopName
@@ -258,7 +257,6 @@ export default {
 <style>
 html, body {
   height: 100%;
-  overflow-y: auto;
 }
 body {
   background: #eaeaea;

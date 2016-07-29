@@ -1,10 +1,10 @@
 <template>
-<div class="select-item">
+<div class="select-item-container">
   <div v-if="maxHours" class="select-notice">
     <img src="../assets/img/notice.png">尊敬的用户 您选择的项目需要大约{{maxHours}}个小时
   </div>
   <div v-if="maxHours" class="notice-placeholder"></div>
-  <div class="project-list">
+  <div :class="['project-list', maxHours ? 'has-notice' : '']">
     <div class="project-item" v-for="(projectIndex, item) in items">
       <div class="project-item-title">
         {{item.name}}
@@ -106,6 +106,10 @@ export default {
 }
 </script>
 <style scoped>
+.select-item-container {
+  height: 100%;
+  position: relative;
+}
 .select-notice {
   font-size: 1.2rem;
   background-color: #fff;
@@ -114,6 +118,7 @@ export default {
   align-items: center;
   justify-content: center;
   position: fixed;
+  z-index: 2;
   width: 100%;
   top: 0;
   border-bottom: 1px solid #eaeaea;
@@ -174,6 +179,16 @@ export default {
   background-size: contain;
 }
 .project-list{
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling:touch;
+  position: absolute;
+  top: 0;
   padding-bottom: 50px;
+  box-sizing: border-box;
+}
+.project-list.has-notice {
+  padding-top: 49px;
 }
 </style>

@@ -63,13 +63,14 @@
   .change-city span{
     position: absolute;
     right: 2px;
-    top: 2px
+    top: 2px;
+    font-size: 1rem;
   }
   .change-city img{
     position: absolute;
-    width: 10px;
-    top: 22px;
-    right: 5px;
+    width: 8px;
+    top: 20px;
+    right: 3px;
   }
 </style>
 <template>

@@ -1,7 +1,9 @@
 <template>
-  <div class="choose-time">
-    <header-date></header-date>
-    <time-item :costhours="hours"></time-item>
+  <div class="choose-time-container">
+    <div class="choose-time">
+      <header-date></header-date>
+      <time-item :costhours="hours"></time-item>
+    </div>
     <button class="btn btn-reserve" @click="next()">已选好</button>
   </div>
 </template>
@@ -42,3 +44,19 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .choose-time-container {
+    height: 100%;
+    position: relative;
+  }
+  .choose-time {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling:touch;
+    position: absolute;
+    top: 0;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+  }
+</style>

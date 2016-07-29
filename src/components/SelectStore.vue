@@ -1,12 +1,14 @@
 <template>
   <div class="store-list-container">
-    <div class="store-list">
-      <head-filter :searchitems="searchItems"></head-filter>
-      <store-one @click="selectStore(item)" :class="selectId === item.id ? 'active' : ''" v-for="item in storeItems" :item="item"></store-one>
-      <no-result v-show="noresult" :text=""></no-result>
-      <button class="btn btn-reserve" @click="next()">已选好</button>
-      <loading :show="loading.show"></loading>
+    <head-filter :searchitems="searchItems"></head-filter>
+    <div class="store-list-wrapper">
+      <div class="store-list">
+        <store-one @click="selectStore(item)" :class="selectId === item.id ? 'active' : ''" v-for="item in storeItems" :item="item"></store-one>
+        <no-result v-show="noresult" :text=""></no-result>
+      </div>
     </div>
+    <button class="btn btn-reserve" @click="next()">已选好</button>
+    <loading :show="loading.show"></loading>
   </div>
 </template>
 <script>
@@ -70,8 +72,8 @@ export default {
   },
   ready: function () {
     let self = this
-    document.querySelector('.store-list-container').onscroll = function () {
-      if (self.hasMoreData && (document.querySelector('.store-list-container').scrollTop + document.querySelector('.store-list-container').offsetHeight - 50) >= document.querySelector('.store-list').offsetHeight) {
+    document.querySelector('.store-list-wrapper').onscroll = function () {
+      if (self.hasMoreData && (document.querySelector('.store-list-wrapper').scrollTop + document.querySelector('.store-list-wrapper').offsetHeight - 50) >= document.querySelector('.store-list').offsetHeight) {
         self.setMoreData()
       }
     }
@@ -125,13 +127,13 @@ export default {
       console.log(self.baseRequsetData)
       self.loading.show = true
       // 获取门店列表
-      document.querySelector('.store-list-container').style.overflowY = 'hidden'
+      document.querySelector('.store-list-wrapper').style.overflowY = 'hidden'
       self.$http.get(window.ctx + '/api/order/selectShop', extendRequestData).then(function (response) {
-        document.querySelector('.store-list-container').style.overflowY = 'auto'
+        document.querySelector('.store-list-wrapper').style.overflowY = 'auto'
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {
-          document.querySelector('.store-list-container').scrollTop = 0
+          document.querySelector('.store-list-wrapper').scrollTop = 0
           self.storeItems = res.result.result
           if (!res.result.result || res.result.result.length === 0) {
             self.noresult = true
@@ -147,7 +149,7 @@ export default {
         }
       }, function (response) {
         self.loading.show = false
-        document.querySelector('.store-list-container').style.overflowY = 'auto'
+        document.querySelector('.store-list-wrapper').style.overflowY = 'auto'
         self.noresult = true
         toast('获取门店失败')
       })
@@ -233,10 +235,19 @@ export default {
 }
 </script>
 <style scoped>
-.store-list-container{
-  padding-bottom: 50px;
+.store-list-container {
   height: 100%;
+  position: relative;
+}
+.store-list-wrapper {
+  height: 100%;
+  width: 100%;
   overflow-y: auto;
+  -webkit-overflow-scrolling:touch;
+  position: absolute;
+  top: 0;
+  padding-top: 39px;
+  padding-bottom: 50px;
   box-sizing: border-box;
 }
 </style>
