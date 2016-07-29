@@ -144,6 +144,7 @@ export default {
             this.orderInfo.orderSubmit.barberId = utils.getUrlParam('personId')
             this.orderInfo.barberName = decodeURIComponent(utils.getUrlParam('personName'))
             this.orderInfo.orderSubmit.price = 0
+            this.orderInfo.orderSubmit.realPrice = 0
             for (let i = 0; i < this.orderInfo.orderSubmit.productList.length; i++) {
               let productInfo = this.orderInfo.orderSubmit.productList[i]
               this.orderInfo.orderSubmit.price += parseFloat(productInfo.price, 10)
@@ -162,6 +163,7 @@ export default {
         this.orderInfo.orderSubmit.barberId = data.personId
         this.orderInfo.barberName = data.personName
         this.orderInfo.orderSubmit.price = 0
+        this.orderInfo.orderSubmit.realPrice = 0
         for (let i = 0; i < this.orderInfo.orderSubmit.productList.length; i++) {
           let productInfo = this.orderInfo.orderSubmit.productList[i]
           this.orderInfo.orderSubmit.price += parseFloat(productInfo.price, 10)
