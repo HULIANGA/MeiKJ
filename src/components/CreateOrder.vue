@@ -1,89 +1,91 @@
 <template>
-<div class="order">
-  <div class="order-reserve-detail">
-    <div class="reserve-detail-item">
-      <img src="../assets/img/order-store.png">
-      <span>预约门店：<span>
-      <span class="value">{{order.shopName}}</span>
-    </div>
-    <div class="reserve-detail-item">
-      <img src="../assets/img/order-hair.png">
-      <span>预约发型师：</span>
-      <span class="value">{{order.barberName}}</span>
-    </div>
-    <div class="reserve-detail-item">
-      <img src="../assets/img/order-project.png">
-      <span>预约项目：</span>
-      <span class="value">{{order.productNames}}</span>
-    </div>
-    <div class="reserve-detail-item">
-      <img src="../assets/img/order-time.png">
-      <span>预约时间：</span>
-      <span class="value">{{order.timeString}}</span>
-    </div>
-  </div>
-  <div class="user-info">
-    <div class="user-info-item">
-      <div class="user-info-hd">
-        <label>真实姓名：</label>
+<div class="order-container">
+  <div class="order">
+    <div class="order-reserve-detail">
+      <div class="reserve-detail-item">
+        <img src="../assets/img/order-store.png">
+        <span>预约门店：<span>
+        <span class="value">{{order.shopName}}</span>
       </div>
-      <div class="user-info-bd">
-        <input type="text" v-model="order.orderSubmit.customerName" placeholder="请输入您的真实姓名">
+      <div class="reserve-detail-item">
+        <img src="../assets/img/order-hair.png">
+        <span>预约发型师：</span>
+        <span class="value">{{order.barberName}}</span>
+      </div>
+      <div class="reserve-detail-item">
+        <img src="../assets/img/order-project.png">
+        <span>预约项目：</span>
+        <span class="value">{{order.productNames}}</span>
+      </div>
+      <div class="reserve-detail-item">
+        <img src="../assets/img/order-time.png">
+        <span>预约时间：</span>
+        <span class="value">{{order.timeString}}</span>
       </div>
     </div>
-    <div class="user-info-item">
-      <div class="user-info-hd">
-        <label>手机号码：</label>
+    <div class="user-info">
+      <div class="user-info-item">
+        <div class="user-info-hd">
+          <label>真实姓名：</label>
+        </div>
+        <div class="user-info-bd">
+          <input type="text" v-model="order.orderSubmit.customerName" placeholder="请输入您的真实姓名">
+        </div>
       </div>
-      <div class="user-info-bd">
-        <input type="tel" v-model="order.orderSubmit.customerPhone" placeholder="请输入您的手机号码">
-      </div>
-    </div>
-  </div>
-  <div class="user-coupon" @click="showCoupon()">
-    <a class="user-info-item">
-      <div class="user-info-hd">
-        <label>优惠券</label>
-      </div>
-      <div class="user-info-bd">
-        <p class="u-info-text">
-          <span v-if="couponName">{{couponName}}</span>
-          <span v-else>{{order.couponItem.length}}张可用</span>
-        </p>
-      </div>
-    </a>
-  </div>
-  <!-- pay  -->
-  <div class="order-pay">
-    <div class="order-pay-title">付款方式</div>
-    <div class="o-pay-item">
-      <div class="o-pay-hd">
-        <img src="../assets/img/wechat-pay.png">
-      </div>
-      <div class="o-pay-bd">
-        <p>微信支付</p>
-      </div>
-      <div class="o-pay-ft">
-        <input type="radio" name="pay" v-model="order.orderSubmit.payType" value='1'>
+      <div class="user-info-item">
+        <div class="user-info-hd">
+          <label>手机号码：</label>
+        </div>
+        <div class="user-info-bd">
+          <input type="tel" v-model="order.orderSubmit.customerPhone" placeholder="请输入您的手机号码">
+        </div>
       </div>
     </div>
-    <!-- <div class="o-pay-item">
-      <div class="o-pay-hd">
-        <img src="../assets/img/alipay.png">
+    <div class="user-coupon" @click="showCoupon()">
+      <a class="user-info-item">
+        <div class="user-info-hd">
+          <label>优惠券</label>
+        </div>
+        <div class="user-info-bd">
+          <p class="u-info-text">
+            <span v-if="couponName">{{couponName}}</span>
+            <span v-else>{{order.couponItem.length}}张可用</span>
+          </p>
+        </div>
+      </a>
+    </div>
+    <!-- pay  -->
+    <div class="order-pay">
+      <div class="order-pay-title">付款方式</div>
+      <div class="o-pay-item">
+        <div class="o-pay-hd">
+          <img src="../assets/img/wechat-pay.png">
+        </div>
+        <div class="o-pay-bd">
+          <p>微信支付</p>
+        </div>
+        <div class="o-pay-ft">
+          <input type="radio" name="pay" v-model="order.orderSubmit.payType" value='1'>
+        </div>
       </div>
-      <div class="o-pay-bd">
-        <p>支付宝</p>
-      </div>
-      <div class="o-pay-ft">
-        <input type="radio" name="pay" v-model="order.orderSubmit.payType" value="2">
-      </div>
-    </div> -->
-  </div>
-  <!-- remark -->
-  <div class="order-remark">
-    <div class="order-remark-item">
-      <div class="o-remark-bd">
-        <textarea rows="3" placeholder="在这里填上您的备注说明" v-model="order.orderSubmit.memo"></textarea>
+      <!-- <div class="o-pay-item">
+        <div class="o-pay-hd">
+          <img src="../assets/img/alipay.png">
+        </div>
+        <div class="o-pay-bd">
+          <p>支付宝</p>
+        </div>
+        <div class="o-pay-ft">
+          <input type="radio" name="pay" v-model="order.orderSubmit.payType" value="2">
+        </div>
+      </div> -->
+    </div>
+    <!-- remark -->
+    <div class="order-remark">
+      <div class="order-remark-item">
+        <div class="o-remark-bd">
+          <textarea rows="3" placeholder="在这里填上您的备注说明" v-model="order.orderSubmit.memo"></textarea>
+        </div>
       </div>
     </div>
   </div>
@@ -183,8 +185,19 @@
   }
 </script>
 <style scoped>
+.order-container {
+  height: 100%;
+  position: relative;
+}
 .order{
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling:touch;
+  position: absolute;
+  top: 0;
   padding-bottom: 50px;
+  box-sizing: border-box;
 }
 .order-reserve-detail {
   background-image: url(../assets/img/order-back.png);

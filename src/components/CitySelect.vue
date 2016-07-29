@@ -119,6 +119,7 @@ export default {
   top: 0;
   left: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling:touch;
   z-index: 999;
   background: #ffffff;
   font-size: 1.2rem;

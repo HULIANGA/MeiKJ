@@ -142,6 +142,7 @@ export default {
   border-left: 1px solid #eaeaea;
   max-height: 300px;
   overflow-y: auto;
+  -webkit-overflow-scrolling:touch;
 }
 .filter-select.active{
   display: block;
