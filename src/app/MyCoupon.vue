@@ -265,6 +265,7 @@ body {
 }
 .coupon-subitem {
   flex: 4;
+  width: 80%;
   display: flex;
   padding: 10px 0;
   border-top-left-radius: 8px;
@@ -273,6 +274,7 @@ body {
 }
 .coupon-control {
   flex: 1;
+  width: 20%;
   border-radius: 4px;
 }
 .coupon-control .btn-coupon {
@@ -295,6 +297,7 @@ body {
 }
 .coupon-subitem .c-left {
   flex: 1;
+  width: 33.333%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -317,9 +320,12 @@ body {
 }
 .coupon-subitem .c-right {
   position: relative;
-  -webkit-box-flex:2;
   flex: 2;
-  -webkit-flex:2;
+  width: 66.666%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   padding: 10px 0;
   border-left: 1px dashed #a7a7a7;
 }
@@ -344,7 +350,7 @@ body {
   text-align: center;
 }
 .c-right>h3 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   text-align: center;
 }
 .c-right .coupon-time {

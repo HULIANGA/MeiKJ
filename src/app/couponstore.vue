@@ -287,9 +287,11 @@ body {
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   background-color: #fff;
+  width: 80%;
 }
 .coupon-control {
   flex: 1;
+  width: 20%;
   background-color: #ff6251;
   border-radius: 4px;
 }
@@ -305,6 +307,7 @@ body {
 }
 .coupon-subitem .c-left {
   flex: 1;
+  width: 33.3333%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -325,6 +328,11 @@ body {
 .coupon-subitem .c-right {
   position: relative;
   flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 66.6666%;
   padding: 10px 0;
   border-left: 1px dashed #a7a7a7;
 }
@@ -349,7 +357,7 @@ body {
   text-align: center;
 }
 .c-right>h3 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   text-align: center;
 }
 .c-right .coupon-time {
