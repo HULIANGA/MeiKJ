@@ -15,7 +15,7 @@
   }
   .header-menu>ul>li>a {
     display: block;
-    padding-top: 2.5rem;
+    padding-top: 2.7rem;
     text-align: center;
     color: #fff;
     box-sizing: border-box;

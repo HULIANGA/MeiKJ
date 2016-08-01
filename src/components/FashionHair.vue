@@ -2,7 +2,8 @@
   <div class="hair-list">
     <div class="hair-item" v-for="(index, item) in hairitems" @click.prevent="detail(item)">
       <a>
-        <img src="../assets/img/one-px.jpg" class="lazy-img" :real-src="imageDomain + item.coverImg" @load="showImage(index)">
+        <img src="../assets/img/one-px.jpg">
+        <div class="lazy-img" :style="{backgroundImage: 'url(' + imageDomain + item.coverImg + ')'}"></div>
       </a>
       <div v-if="item.praiseNum" class="hair-like">
         {{item.praiseNum}}
@@ -34,23 +35,24 @@ export default {
         hairId = item.id
       }
       window.location.href = 'hairDetail.html?id=' + hairId
-    },
-    showImage (index) {
-      let lazyImg = document.querySelectorAll('.lazy-img')[index]
-      lazyImg.setAttribute('src', lazyImg.getAttribute('real-src'))
     }
   }
 }
 </script>
 <style>
-  .hair-list {
+  .hair-list::after {
+    content: '';
+    display: block;
+    clear: both;
   }
   .hair-item {
     position: relative;
     display: inline-block;
     width: 50%;
     border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
     box-sizing: border-box;
+    float: left;
   }
   .hair-item:nth-child(even) {
     border-left: 1px solid #fff;
@@ -61,6 +63,17 @@ export default {
   }
   .hair-item>a {
     display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .hair-item>a .lazy-img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
   .hair-like {
     position: absolute;

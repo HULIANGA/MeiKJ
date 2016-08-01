@@ -95,7 +95,7 @@ export default {
     color: #fff;
     justify-content: center;
     align-items: flex-end;
-    padding: 3px 0;
+    padding: 0;
   }
   footer>a:nth-child(1) {
     background-image: url(../assets/img/index-icon.png);
@@ -111,7 +111,7 @@ export default {
   }
   footer>a.reserve{
     font-size: 1.4rem;
-    padding-bottom: 2px;
+    padding-bottom: 0;
   }
   footer>a.reserve>span{
     position: absolute;

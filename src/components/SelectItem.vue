@@ -12,7 +12,8 @@
       <div class="project-sublist">
         <div :class="['project-subitem', 'project'+sub.projectId, 'product'+sub.productId]" @click="selectProduct('project'+sub.projectId, 'product'+sub.productId)" v-for="sub in item.productList">
           <div class="p-item-hd">
-              {{sub.name}}<span v-if="sub.positionName">（{{sub.positionName}}）</span>
+              {{sub.name}}
+              <!-- <span v-if="sub.positionName">（{{sub.positionName}}）</span> -->
           </div>
           <div class="p-item-bd">
             <span>&yen;{{sub.price}}</span>
