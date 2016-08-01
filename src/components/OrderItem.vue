@@ -171,6 +171,7 @@ export default {
 }
 .order-control button {
   font-size: 1.3rem;
+  display: block;
   width: 50%;
   line-height: 25px
 }

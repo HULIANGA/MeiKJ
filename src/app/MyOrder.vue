@@ -5,36 +5,20 @@
   <div class="order-list">
     <tab-set :active="0" v-on:child-msg="handleLink">
       <Tab header="待付款">
-        <template v-if="waitPay && waitPay.length === 0">
-          <no-result></no-result>
-        </template>
-        <template v-if="waitPay && waitPay.length > 0">
-          <order-item :items="waitPay" v-on:detail-msg="showDetailModal"></order-item>
-        </template>
+        <no-result v-if="waitPay && waitPay.length === 0"></no-result>
+        <order-item v-else :items="waitPay" v-on:detail-msg="showDetailModal"></order-item>
       </Tab>
       <Tab header="待服务">
-        <template v-if="waitService && waitService.length === 0">
-          <no-result></no-result>
-        </template>
-        <template v-if="waitService && waitService.length > 0">
-          <order-item :items="waitService" v-on:detail-msg="showDetailModal"></order-item>
-        </template>
+        <no-result v-if="waitService && waitService.length === 0"></no-result>
+        <order-item v-else :items="waitService" v-on:detail-msg="showDetailModal"></order-item>
       </Tab>
       <Tab header="已完成">
-        <template v-if="orderDone && orderDone.length === 0">
-          <no-result></no-result>
-        </template>
-        <template v-if="orderDone && orderDone.length > 0">
-          <order-item :items="orderDone" v-on:detail-msg="showDetailModal"></order-item>
-        </template>
+        <no-result v-if="orderDone && orderDone.length === 0"></no-result>
+        <order-item v-else :items="orderDone" v-on:detail-msg="showDetailModal"></order-item>
       </Tab>
       <Tab header="已取消">
-        <template v-if="orderCanceled && orderCanceled.length === 0">
-          <no-result></no-result>
-        </template>
-        <template v-if="orderCanceled && orderCanceled.length > 0">
-          <order-item :items="orderCanceled" v-on:detail-msg="showDetailModal"></order-item>
-        </template>
+        <no-result v-if="orderCanceled && orderCanceled.length === 0"></no-result>
+        <order-item v-else :items="orderCanceled" v-on:detail-msg="showDetailModal"></order-item>
       </Tab>
     </tab-set>
     <!-- 详情modal -->
@@ -106,7 +90,6 @@ export default {
   },
   methods: {
     handleLink (active) {
-      console.log(active)
       let self = this
       let state
       let pageNo = 1
