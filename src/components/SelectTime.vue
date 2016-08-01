@@ -26,7 +26,7 @@ export default {
     'select-date': function (date) {
       this.$broadcast('get-time-list', {
         shopId: this.shopid,
-        barberId: utils.getUrlParam('personId'),
+        barberId: utils.getUrlParam('personId') ? utils.getUrlParam('personId') : '',
         date: date
       })
     }
