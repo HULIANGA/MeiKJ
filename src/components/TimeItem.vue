@@ -40,6 +40,9 @@ export default {
           let endTime = tempList.endTime
           let endHour = parseInt(endTime.split(':')[0], 10)
           this.timelist = []
+          let nowDate = new Date()
+          nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate())
+          let nowTime = nowDate.getTime()
           for (let i = 0; i <= (endHour - startHour); i++) {
             let tempItem = {}
             tempItem.status = tempList['time' + (i + 1)]
@@ -48,7 +51,7 @@ export default {
             }else {
               tempItem.hour = (startHour + i).toString() + ':00'
             }
-            if ((startHour + i) <= new Date().getHours()) {
+            if (nowTime === requestData.date && (startHour + i) <= new Date().getHours()) {
               tempItem.status = 2
             }
             this.timelist.push(tempItem)
