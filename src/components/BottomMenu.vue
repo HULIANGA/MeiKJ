@@ -53,14 +53,22 @@ export default {
     },
     goApointment: function () {
       if (this.active !== 'apointment') {
-        if (this.token) {
-          window.location.href = 'apointment.html'
-        }else {
+        this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+          let res = response.data
+          if (res.code === 0) {
+            window.location.href = 'apointment.html'
+          }else {
+            toast('请先登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }
+        }, function () {
           toast('请先登录')
           setTimeout(function () {
             window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
           }, 1000)
-        }
+        })
       }
     }
   }

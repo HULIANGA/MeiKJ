@@ -35,11 +35,13 @@
   import StoreMember from '../components/StoreMember'
   import Loading from '../components/Loading'
   import utils from '../js/utils'
+  import toast from '../js/toast'
   import Swiper from 'swiper'
   export default {
     data () {
       return {
         imageDomain: window.imageDomain,
+        token: localStorage.token,
         loading: {
           show: true
         },
@@ -111,7 +113,23 @@
         }, {enableHighAccuracy: true})
       },
       goApointment: function () {
-        window.location.href = 'apointment.html?shopId=' + this.storeDetail.id + '&shopName=' + this.storeDetail.name
+        this.loading.show = true
+        this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+          let res = response.data
+          if (res.code === 0) {
+            window.location.href = 'apointment.html?shopId=' + this.storeDetail.id + '&shopName=' + this.storeDetail.name
+          }else {
+            toast('请先登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }
+        }, function () {
+          toast('请先登录')
+          setTimeout(function () {
+            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          }, 1000)
+        })
       },
       getData: function () {
         // 门店详情

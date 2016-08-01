@@ -110,18 +110,27 @@
     },
     methods: {
       goApointment: function () {
-        if (this.token) {
-          window.location.href =
-          'apointment.html?personId=' + this.hairDresser.id +
-          '&personName=' + this.hairDresser.stageName +
-          '&shopId=' + this.hairDresser.shopId +
-          '&shopName=' + this.hairDresser.shopName
-        }else {
+        this.loading.show = true
+        this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+          let res = response.data
+          if (res.code === 0) {
+            window.location.href =
+            'apointment.html?personId=' + this.hairDresser.id +
+            '&personName=' + this.hairDresser.stageName +
+            '&shopId=' + this.hairDresser.shopId +
+            '&shopName=' + this.hairDresser.shopName
+          }else {
+            toast('请先登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }
+        }, function () {
           toast('请先登录')
           setTimeout(function () {
             window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
           }, 1000)
-        }
+        })
       },
       goEvaList () {
         window.location.href = 'evaluationList.html?id=' + this.barberId
