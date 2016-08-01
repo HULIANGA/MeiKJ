@@ -129,8 +129,8 @@
             toast('请填写您的手机号')
             return false
           }else if (!this.order.orderSubmit.memo) {
-            toast('请填写备注说明')
-            return false
+            // toast('请填写备注说明')
+            // return false
           }
           this.$parent.loading.show = true
           if (this.order.orderSubmit.realPrice === 0) {
