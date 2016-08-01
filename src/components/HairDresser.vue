@@ -50,6 +50,7 @@ export default {
 }
 .hair-dresser-item .hair-dresser-img {
   width: 90px;
+  height: 90px;
   border-radius: 50%;
   margin: 0 20px 0 10px;
   overflow: hidden;

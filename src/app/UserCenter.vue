@@ -74,7 +74,7 @@
     <div class="center-item">
       <a class="center-item-link" :href="userCenter.aboutUrl">
         <div class="ct-link-hd">
-          <img src="../assets/img/center-service.png">
+          <img src="../assets/img/center-about.png">
         </div>
         <div class="ct-link-bd">
           关于我们

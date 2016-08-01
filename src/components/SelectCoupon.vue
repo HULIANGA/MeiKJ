@@ -88,6 +88,7 @@ body {
 }
 .coupon-subitem {
   flex: 4;
+  width: 80%;
   display: flex;
   padding: 10px 0;
   border-top-left-radius: 8px;
@@ -96,6 +97,7 @@ body {
 }
 .coupon-control {
   flex: 1;
+  width: 20%;
   border-radius: 4px;
 }
 .coupon-control .btn-coupon {
@@ -119,6 +121,7 @@ body {
 .coupon-subitem .c-left {
   flex: 1;
   display: flex;
+  width: 33.33333%;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -141,6 +144,7 @@ body {
 .coupon-subitem .c-right {
   position: relative;
   flex: 2;
+  width: 66.66666%;
   padding: 10px 0;
   border-left: 1px dashed #a7a7a7;
 }

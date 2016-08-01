@@ -115,6 +115,7 @@ export default {
           this.$broadcast('get-store-data')
         }
         this.maxHours = data.maxHours
+        this.orderInfo.orderSubmit.hours = data.maxHours
         this.orderInfo.orderSubmit.productList = data.productItems
         let productNameString = ''
         for (let index = 0; index < data.productItems.length; index++) {
