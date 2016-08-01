@@ -133,6 +133,12 @@
             return false
           }
           this.$parent.loading.show = true
+          if (this.order.orderSubmit.realPrice === 0) {
+            this.order.orderSubmit.realPrice = 0.01
+          }
+          if (this.order.orderSubmit.price === 0) {
+            this.order.orderSubmit.price = 0.01
+          }
           this.$http.post(window.ctx + '/api/order/t/save', this.order.orderSubmit, {headers: {token: this.token}}).then(function (response) {
             let res = response.data
             if (res.code === 0) {

@@ -24,10 +24,6 @@ export default {
     hairitems: Array
   },
   ready () {
-    const lazyImgs = document.querySelectorAll('.lazy-img')
-    for (let i = 0; i < lazyImgs.length; i++) {
-      lazyImgs[i].setAttribute('src', lazyImgs[i].getAttribute('real-src'))
-    }
   },
   methods: {
     detail (item) {
