@@ -100,9 +100,16 @@ export default {
         if (utils.getUrlParam('shopId')) { // 从门店预约和从发型师预约
           window.location.hash = 'time'
           this.shopId = parseInt(utils.getUrlParam('shopId'), 10)
-          this.getTime({'shopId': this.shopId})
           this.orderInfo.shopName = decodeURIComponent(utils.getUrlParam('shopName'))
           this.orderInfo.orderSubmit.shopId = this.shopId
+          let nowDate = new Date()
+          nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate())
+          let nowTime = nowDate.getTime()
+          if (utils.getUrlParam('personId')) {
+            this.getTime({'shopId': this.shopId, 'barberId': utils.getUrlParam('personId'), date: nowTime})
+          }else {
+            this.getTime({'shopId': this.shopId, date: nowTime})
+          }
         }else {
           window.location.hash = 'store'
           this.$broadcast('get-store-data')
@@ -121,7 +128,10 @@ export default {
       }else if (data.fromStep === 'store') { // 在选择门店点下一步
         window.location.hash = 'time'
         this.shopId = data.shopId
-        this.getTime({'shopId': data.shopId})
+        let nowDate = new Date()
+        nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate())
+        let nowTime = nowDate.getTime()
+        this.getTime({'shopId': data.shopId, data: nowTime})
         this.orderInfo.shopName = data.shopName
         this.orderInfo.orderSubmit.shopId = data.shopId
       }else if (data.fromStep === 'time') { // 在选择时间点下一步

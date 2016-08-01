@@ -10,6 +10,7 @@
 <script>
 import HeaderDate from '../components/HeaderDate'
 import TimeItem from '../components/TimeItem'
+import utils from '../js/utils'
 
 export default {
   data () {
@@ -25,6 +26,7 @@ export default {
     'select-date': function (date) {
       this.$broadcast('get-time-list', {
         shopId: this.shopid,
+        barberId: utils.getUrlParam('personId'),
         date: date
       })
     }

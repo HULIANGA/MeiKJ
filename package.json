@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "webpack-dev-server --host localhost --port 8080 --inline --hot --config build/webpack.dev.config.js",
-    "dev-port": "webpack-dev-server --host 192.168.1.93 --port 8080 --inline --hot --config build/webpack.dev.config.js",
+    "dev-port": "webpack-dev-server --host 192.168.1.134 --port 8080 --inline --hot --config build/webpack.dev.config.js",
     "build": "webpack --progress --hide-modules --config build/webpack.prod.config.js",
     "test": "karma start build/karma.conf.js"
   },

@@ -1,8 +1,8 @@
 <template>
   <div class="hair-list">
-    <div class="hair-item" v-for="item in hairitems" @click.prevent="detail(item)">
+    <div class="hair-item" v-for="(index, item) in hairitems" @click.prevent="detail(item)">
       <a>
-        <img :src="imageDomain + item.coverImg">
+        <img src="../assets/img/one-px.jpg" class="lazy-img" :real-src="imageDomain + item.coverImg" @load="showImage(index)">
       </a>
       <div v-if="item.praiseNum" class="hair-like">
         {{item.praiseNum}}
@@ -23,6 +23,12 @@ export default {
   props: {
     hairitems: Array
   },
+  ready () {
+    const lazyImgs = document.querySelectorAll('.lazy-img')
+    for (let i = 0; i < lazyImgs.length; i++) {
+      lazyImgs[i].setAttribute('src', lazyImgs[i].getAttribute('real-src'))
+    }
+  },
   methods: {
     detail (item) {
       let hairId
@@ -32,6 +38,10 @@ export default {
         hairId = item.id
       }
       window.location.href = 'hairDetail.html?id=' + hairId
+    },
+    showImage (index) {
+      let lazyImg = document.querySelectorAll('.lazy-img')[index]
+      lazyImg.setAttribute('src', lazyImg.getAttribute('real-src'))
     }
   }
 }
