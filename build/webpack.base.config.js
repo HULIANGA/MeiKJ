@@ -6,9 +6,9 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var distPath = './dist'; //输出文件目录
 
-var resourcePath = 'http://172.26.64.12:8080/dist/'; //js和css的引用路径；开发debugger
+// var resourcePath = 'http://172.26.64.12:8080/dist/'; //js和css的引用路径；开发debugger
 // var resourcePath = 'http://localhost:8080/dist/'; //js和css的引用路径；开发debugger
-// var resourcePath = '../';//js和 css的引用路径；生产
+var resourcePath = '../';//js和 css的引用路径；生产
 
 module.exports = {
   debug: true,
@@ -33,7 +33,9 @@ module.exports = {
     collection: './src/entrys/collection.js',
     resetPwd: './src/entrys/resetpwd.js',
     apointment: './src/entrys/apointment.js',
-    evaluationList: './src/entrys/evaluationList.js'
+    evaluationList: './src/entrys/evaluationList.js',
+    aboutUs: './src/entrys/aboutUs.js',
+    afterSale: './src/entrys/afterSale.js'
   },
   output: {
     path: distPath, //输出文件目录
@@ -168,6 +170,16 @@ module.exports = {
       template: 'src/html/writeComment.html',
       filename: 'html/writeComment.html',
       chunks: ['comment']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/aboutUs.html',
+      filename: 'html/aboutUs.html',
+      chunks: ['aboutUs']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/afterSale.html',
+      filename: 'html/afterSale.html',
+      chunks: ['afterSale']
     })
   ],
   module: {

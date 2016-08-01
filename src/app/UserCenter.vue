@@ -62,7 +62,7 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link">
+      <a class="center-item-link" :href="userCenter.salesUrl">
         <div class="ct-link-hd">
           <img src="../assets/img/center-sale.png">
         </div>
@@ -72,12 +72,12 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link">
+      <a class="center-item-link" :href="userCenter.aboutUrl">
         <div class="ct-link-hd">
           <img src="../assets/img/center-service.png">
         </div>
         <div class="ct-link-bd">
-          联系客服
+          关于我们
         </div>
       </a>
     </div>
@@ -101,7 +101,9 @@
           personalUrl: 'personalData.html',
           collectionUrl: 'collection.html',
           resetUrl: 'resetPwd.html',
-          couponUrl: 'myCoupon.html'
+          couponUrl: 'myCoupon.html',
+          aboutUrl: 'aboutUs.html',
+          salesUrl: 'afterSale.html'
         },
         token: ''
       }
@@ -139,10 +141,12 @@
   }
 </script>
 <style>
-  .user-center {
+  body {
     background-image: url(../assets/img/center-back.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+  }
+  .user-center {
     padding-bottom: 100px;
   }
   .user-center-hd {
