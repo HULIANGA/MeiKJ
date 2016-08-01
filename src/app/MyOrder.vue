@@ -53,7 +53,7 @@
           <h5><i></i>预约项目</h5>
           <p><span v-for="(index,pro) in orderDetail.productList">{{pro.productName}}<i v-if="index != (orderDetail.productList.length-1)">、</i></span></p>
           <h5><i></i>预约时间</h5>
-          <p>{{orderDetail.time}}</p>
+          <p>{{new Date(orderDetail.date).getFullYear() + '-' + (new Date(orderDetail.date).getMonth() + 1) + '-' + new Date(orderDetail.date).getDate()}} {{orderDetail.time}}</p>
         </div>
       </div>
     </detail-modal>
@@ -67,6 +67,7 @@ import TabSet from '../components/TabSet'
 import OrderItem from '../components/OrderItem'
 import DetailModal from '../components/DetailModal'
 import Loading from '../components/Loading'
+import NoResult from '../components/NoResult'
 import toast from '../js/toast'
 
 export default {
@@ -216,7 +217,8 @@ export default {
     TabSet,
     OrderItem,
     DetailModal,
-    Loading
+    Loading,
+    NoResult
   }
 }
 </script>

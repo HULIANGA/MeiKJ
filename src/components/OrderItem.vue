@@ -3,7 +3,7 @@
     <p class="order-paytime" v-if="item.processState == 1">剩余支付时间：<span>00</span>:<span>{{Math.floor((item.createTime + paytime - nowtime)/1000/60) | dtime}}</span>:<span>{{Math.floor((item.createTime + paytime - nowtime)/1000)%60 | dtime}}</span></p>
     <p class="orderno">订单编号：{{item.id}} <span>金额：{{item.price}}元</span></p>
     <p>预约门店：{{item.shopName}}</p>
-    <p>预约时间：{{item.time}}</p>
+    <p>预约时间：{{new Date(item.date).getFullYear() + '-' + (new Date(item.date).getMonth() + 1) + '-' + new Date(item.date).getDate()}} {{item.time}}</p>
     <p class="clearfix">
       <span class="pull-l">预约项目：<span v-for="(index,pro) in item.productList" v-show="$index < 1">{{pro.productName}}<i v-show="item.productList.length > 1">...</i></span></span>
       <span class="pull-r">预约发型师：{{item.barberName}}</span>
