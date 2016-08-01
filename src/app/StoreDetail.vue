@@ -178,6 +178,7 @@ body {
 }
 .store-info-name {
   position: absolute;
+  z-index: 2;
   left: 0;
   right: 0;
   bottom:0;
@@ -195,6 +196,11 @@ body {
 }
 .store-info-text>p {
   line-height: 28px;
+}
+.store-info-text>p::after {
+  content: '';
+  display: block;
+  clear: both;
 }
 .store-address {
   background-image: url(../assets/img/address-icon.png);

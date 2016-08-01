@@ -3,7 +3,7 @@
   <h3 class="item-title"><i></i>发型师<span>({{totalCount}})</span></h3>
   <div class="s-member-list">
     <div class="s-member-item" v-for="(index, item) in storemember" v-if="index < 4" @click.prevent="detail(item.id)">
-      <div class="s-member-img">
+      <div class="s-member-img" :style="{height: (screenWidth - 30) / 4 - 14 + 'px'}">
         <img :src="imageDomain + item.logo">
       </div>
       <p class="s-member-name">{{item.stageName}}</p>
@@ -28,6 +28,7 @@ import utils from '../js/utils'
 export default {
   data () {
     return {
+      screenWidth: window.screen.width,
       imageDomain: window.imageDomain
     }
   },
@@ -80,12 +81,12 @@ export default {
   width: 25%;
   padding: 5px;
   font-size: 1.3rem;
+  box-sizing: border-box;
 }
 .s-member-item .s-member-img {
-  width: 90%;
   border-radius: 50%;
   overflow: hidden;
-  margin: 0 auto 10px;
+  margin: 0 2px 10px;
 }
 .s-member-item>p {
   text-align: center;

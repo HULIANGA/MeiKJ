@@ -90,6 +90,7 @@ export default {
 }
 .service-subitem-first .service-name,.service-subitem-second .service-name {
   float: left;
+  text-align: left;
 }
 .service-subitem-first .service-name>i,.service-subitem-second .service-name>i {
   display: inline-block;

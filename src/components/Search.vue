@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="searchPage" v-if="show">
     <div>
-      <input id="searchValue" v-model="searchValue" placeholder="请输入关键字">
+      <input id="searchValue" v-model="searchValue" @keyup.enter="search()" placeholder="请输入关键字">
       <button type="button" name="button" class="btn-primary" @click="search()">点击搜索</button>
     </div>
   </div>
