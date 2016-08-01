@@ -167,8 +167,10 @@ export default {
     },
     delCoupon (couponId, index) {
       let self = this
-      self.$http.post(window.ctx + '/api/coupon/t/deleteCoupon', {couponId: couponId}, {headers: {token: self.token}}).then((response) => {
+      self.loading.show = true
+      self.$http.post(window.ctx + '/api/coupon/t/deleteCoupon', {couponId: couponId}, {headers: {token: self.token}, emulateJSON: true}).then((response) => {
         let res = response.data
+        self.loading.show = false
         if (res.code === 0) {
           toast('删除成功')
           self.items.$remove(self.items[index])
@@ -176,17 +178,22 @@ export default {
           toast('删除失败')
         }
       }, (response) => {
+        self.loading.show = false
         toast('删除失败')
       })
     },
     showCouponDetail (couponId) {
       let self = this
+      self.loading.show = true
       self.$http.post(window.ctx + '/api/coupon/detail', {couponId: couponId}).then((response) => {
+        self.loading.show = false
         let res = response.data
         if (res.code === 0) {
           self.$set('couponDetail', res.result)
           self.showDetail = true
         }
+      }, function (response) {
+        self.loading.show = false
       })
     },
     useCoupon (couponId, applyShop) {
