@@ -72,12 +72,12 @@ export default {
           localStorage.loginphone = this.phone
           localStorage.loginname = response.data.result.nickName
           localStorage.token = response.data.result.token
-          // if (utils.getUrlParam('fromUrl')) {
-          //   window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
-          // }else {
-          //   window.location.href = 'main.html'
-          // }
-          window.location.href = 'main.html'
+          if (utils.getUrlParam('fromUrl')) {
+            window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+          }else {
+            window.location.href = 'main.html'
+          }
+          // window.location.href = 'main.html'
         }else {
           toast(response.data.message)
           self.loading.show = false

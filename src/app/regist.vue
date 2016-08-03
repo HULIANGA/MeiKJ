@@ -194,12 +194,12 @@ export default {
         if (res.code === 0) {
           toast('保存成功')
           self.showModal = false
-          // if (utils.getUrlParam('fromUrl')) {
-          //   window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
-          // }else {
-          //   window.location.href = 'main.html'
-          // }
-          window.location.href = 'main.html'
+          if (utils.getUrlParam('fromUrl')) {
+            window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+          }else {
+            window.location.href = 'main.html'
+          }
+          // window.location.href = 'main.html'
         }
       })
     },
