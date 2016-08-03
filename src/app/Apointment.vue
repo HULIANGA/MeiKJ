@@ -43,7 +43,7 @@ export default {
           productList: [], // 产品信息
           payType: 1, // 支付方式
           shopId: null, // 门店id
-          customerName: null, // 用户名称
+          customerName: localStorage.loginname, // 用户名称
           customerPhone: localStorage.loginphone, // 用户手机号
           date: null, // 预约日期
           time: null, // 预约时间
