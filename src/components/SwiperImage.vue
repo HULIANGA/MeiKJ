@@ -1,11 +1,5 @@
-<style>
-  @import '../assets/css/swiper.scss';
-  .swiper-box .swiper-pagination-white .swiper-pagination-bullet {
-    background-color:#000;
-  }
-  .swiper-box .swiper-pagination-white .swiper-pagination-bullet-active {
-    background-color:#008757;
-  }
+<style lang="sass">
+  @import '../assets/css/swiper.scss'
 </style>
 <style scoped>
   .swiper-box {

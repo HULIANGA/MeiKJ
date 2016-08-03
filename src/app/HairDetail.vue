@@ -51,7 +51,9 @@ export default {
       self.loading.show = false
       if (res.code === 0) {
         self.$set('hairData', res.result)
-        self.$broadcast('init-swiper')
+        if (self.hairData.photoList && self.hairData.photoList.length > 1) {
+          self.$broadcast('init-swiper')
+        }
       }
     }, (response) => {
       self.loading.show = false
