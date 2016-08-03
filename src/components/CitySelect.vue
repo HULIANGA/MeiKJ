@@ -30,8 +30,6 @@
 </template>
 
 <script>
-import cityJson from '../libs/area.js'
-
 export default {
   data: function () {
     return {
@@ -46,28 +44,32 @@ export default {
     }
   },
   created: function () {
-    var citys = cityJson.data.row
-    var tempCityData = {
-      hotData: [],
-      firData: [],
-      secData: {}
-    }
-    for (var i = 0; i < citys.length; i++) {
-      var city = citys[i]
-      if (city.parent_id === '0') {// 一级城市，Array
-        tempCityData.firData.push(city)
-        if (city.area_id === '310000' || city.area_id === '110000' || city.area_id === '440000') {
-          tempCityData.hotData.push(city)
+    this.$http.get(window.ctx + '/api/area/list').then(function (response) {
+      if (response.data.code === 0) {
+        var citys = response.data.result
+        var tempCityData = {
+          hotData: [],
+          firData: [],
+          secData: {}
         }
-      }else if (city.parent_id.slice(2, 6) === '0000' && city.area_id.slice(4, 6) === '00') {// 二级城市，JSON，key是parentid，value为parentid相同的city
-        if (tempCityData.secData[city.parent_id]) {
-          tempCityData.secData[city.parent_id].push(city)
-        }else {
-          tempCityData.secData[city.parent_id] = [city]
+        for (var i = 0; i < citys.length; i++) {
+          var city = citys[i]
+          if (typeof (city.parent_id) !== 'undefined' && city.parent_id.toString() === '0') {// 一级城市，Array
+            tempCityData.firData.push(city)
+            if (city.area_id.toString() === '310000' || city.area_id.toString() === '110000' || city.area_id.toString() === '440000') {
+              tempCityData.hotData.push(city)
+            }
+          }else if (city.parent_id && city.parent_id.toString().slice(2, 6) === '0000' && city.area_id.toString().slice(4, 6) === '00') {// 二级城市，JSON，key是parentid，value为parentid相同的city
+            if (tempCityData.secData[city.parent_id.toString()]) {
+              tempCityData.secData[city.parent_id.toString()].push(city)
+            }else {
+              tempCityData.secData[city.parent_id.toString()] = [city]
+            }
+          }
         }
+        this.cityData = tempCityData
       }
-    }
-    this.cityData = tempCityData
+    })
   },
   ready: function () {
     this.hashChange()

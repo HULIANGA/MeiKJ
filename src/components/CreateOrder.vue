@@ -183,6 +183,12 @@
         }
         this.order.orderSubmit.couponId = id
         this.couponName = name
+      },
+      'cancel-select-coupon': function () {
+        this.couponPrice = 0
+        this.order.orderSubmit.realPrice = this.order.orderSubmit.price
+        this.couponName = ''
+        this.order.orderSubmit.couponId = ''
       }
     },
     props: {

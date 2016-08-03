@@ -125,7 +125,7 @@ export default {
             if (response.data.code === 0) {
               localStorage.loginid = response.data.result.id
               localStorage.loginphone = this.phone
-              localStorage.loginname = response.data.result.nickName
+              localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
               localStorage.token = response.data.result.token
               self.showModal = true
             }else {

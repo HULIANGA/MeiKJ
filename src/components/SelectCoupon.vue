@@ -1,5 +1,6 @@
 <template>
 <div class="my-coupon-list">
+  <button class="btn btn-default btn-cancel" @click.prevent="cancelCoupon">不使用优惠券</button>
   <div class="coupon-item-wrap" v-for="(index,item) in items">
     <div class="coupon-item">
       <div class="coupon-subitem">
@@ -47,6 +48,9 @@ export default {
         money = item.quota
       }
       this.$dispatch('select-coupon', item.id, item.name, item.type, money)
+    },
+    cancelCoupon: function () {
+      this.$dispatch('cancel-select-coupon')
     }
   },
   components: {
@@ -57,6 +61,12 @@ export default {
 <style>
 body {
   background-color: #eaeaea;
+}
+.btn-cancel {
+  display: block;
+  font-size: 1.4rem;
+  width: 50%;
+  margin: 0 auto 10px;
 }
 .my-coupon-list {
   margin-left: 15px;

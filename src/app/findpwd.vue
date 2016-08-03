@@ -100,7 +100,7 @@ export default {
             self.loading.show = false
             if (response.data.code === 0) {
               localStorage.loginid = response.data.result.id
-              localStorage.loginname = response.data.result.nickName
+              localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
               localStorage.loginphone = this.phone
               localStorage.token = response.data.result.token
               if (utils.getUrlParam('fromUrl')) {
