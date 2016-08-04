@@ -83,10 +83,14 @@ export default {
 .service-item .service-subitem-second {
   padding-left: 60px;
   color: #555555;
-  display: none;
+  height: 0;
+  border-width: 0;
+  overflow: hidden;
+  transition: all 0.2s;
 }
 .service-subitem.active .service-subitem-second {
-  display: block;
+  border-width: 1px;
+  height: 30px;
 }
 .service-subitem-first .service-name,.service-subitem-second .service-name {
   float: left;
@@ -94,11 +98,16 @@ export default {
 }
 .service-subitem-first .service-name>i,.service-subitem-second .service-name>i {
   display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1px solid #333333;
+  width: 16px;
+  height: 16px;
   vertical-align: middle;
-  margin-right: 10px;
+  background-image: url(../assets/img/arrow-right.png);
+  background-size: 6px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  transition: transform 0.2s;
+}
+.service-subitem.active .service-subitem-first .service-name>i {
+  transform: rotate(90deg);
 }
 </style>
