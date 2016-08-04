@@ -18,7 +18,6 @@ import NoResult from '../components/NoResult'
 import Loading from '../components/Loading'
 import utils from '../js/utils'
 import toast from '../js/toast'
-import provinceCity from '../libs/province_city.js'
 
 export default {
   data () {
@@ -212,21 +211,31 @@ export default {
       }, {enableHighAccuracy: true})
     },
     getAreaList: function (cityCode) {
-      for (let i = 0; i < provinceCity.data.length; i++) { // 根据定位的城市名匹配citycode
-        for (let j = 0; j < provinceCity.data[i].cities.length; j++) {
-          if (parseInt(provinceCity.data[i].cities[j].city_code, 10) === parseInt(cityCode, 10)) {
-            let tempFilter = {
-              // 'name': localStorage.cityName,
-              'name': '区域',
-              'param': 'cityCode',
-              'values': provinceCity.data[i].cities[j].areas
+      this.$http.get(window.ctx + '/api/area/list').then(function (response) {
+        let res = response.data
+        if (res.code === 0) {
+          let cityJson = res.result
+          let provinceCitys = []
+          for (let i = 0; i < cityJson.length; i++) {
+            if (typeof (cityJson[i].parent_id) !== 'undefined' && cityJson[i].parent_id.toString() === cityCode) {
+              let provinceCity = {
+                'id': cityJson[i].area_id,
+                'name': cityJson[i].area_name
+              }
+              provinceCitys.push(provinceCity)
             }
-            console.log(tempFilter)
-            this.searchItems.filters.$set(1, tempFilter)
-            return false
           }
+          let tempFilter = {
+            // 'name': localStorage.cityName,
+            'name': '区域',
+            'param': 'cityCode',
+            'values': provinceCitys
+          }
+          this.searchItems.filters.$set(1, tempFilter)
         }
-      }
+      }, function (response) {
+
+      })
     }
   },
   components: {

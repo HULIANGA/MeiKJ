@@ -35,8 +35,7 @@ export default {
         pageNo: 1,
         pageSize: 20
       },
-      hasMoreData: true,
-      cityJson: []
+      hasMoreData: true
     }
   },
   created: function () {
@@ -121,28 +120,29 @@ export default {
       let self = this
       self.$http.get(window.ctx + '/api/area/list').then(function (response) {
         if (response.data.code === 0) {
-          self.cityJson = response.data.result
-        }
-      })
-      new BaiduMap.LocalCity().get((result) => {
-        let cityName = result.name
-        let cityCode = 310000
-        for (let i = 0; i < provinceCity.data.length; i++) { // 根据定位的城市名匹配citycode
-          for (let j = 0; j < provinceCity.data[i].cities.length; j++) {
-            if (provinceCity.data[i].cities[j].city === cityName) {
-              cityCode = parseInt(provinceCity.data[i].cities[j].city_code, 10)
-              for (let i = 0; i < self.cityJson.length; i++) { // 根据citycode匹配城市简称
-                if (parseInt(self.cityJson[i].area_id, 10) === cityCode) {
-                  this.localCity = self.cityJson[i].area_name
-                  localStorage.cityName = self.cityJson[i].area_name
-                  localStorage.cityCode = cityCode
-                  return false
+          let cityJson = response.data.result
+          new BaiduMap.LocalCity().get((result) => {
+            let cityName = result.name
+            let cityCode = 310000
+            for (let i = 0; i < provinceCity.data.length; i++) { // 根据定位的城市名匹配citycode
+              for (let j = 0; j < provinceCity.data[i].cities.length; j++) {
+                if (provinceCity.data[i].cities[j].city === cityName) {
+                  cityCode = parseInt(provinceCity.data[i].cities[j].city_code, 10)
+                  for (let i = 0; i < cityJson.length; i++) { // 根据citycode匹配城市简称
+                    if (parseInt(cityJson[i].area_id, 10) === cityCode) {
+                      this.localCity = cityJson[i].area_name
+                      localStorage.cityName = cityJson[i].area_name
+                      localStorage.cityCode = cityCode
+                      return false
+                    }
+                  }
                 }
               }
             }
-          }
+          })
         }
       })
+
     }
   },
   events: {
