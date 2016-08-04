@@ -19,7 +19,6 @@ import FashionHair from '../components/FashionHair'
 import BottomMenu from '../components/BottomMenu'
 import CitySelect from '../components/CitySelect'
 import Loading from '../components/Loading'
-import cityJson from '../libs/area.js'
 import provinceCity from '../libs/province_city.js'
 import toast from '../js/toast.js'
 
@@ -36,7 +35,8 @@ export default {
         pageNo: 1,
         pageSize: 20
       },
-      hasMoreData: true
+      hasMoreData: true,
+      cityJson: []
     }
   },
   created: function () {
@@ -118,6 +118,12 @@ export default {
     },
     getCity: function () {
       let BaiduMap = window.BMap
+      let self = this
+      self.$http.get(window.ctx + '/api/area/list').then(function (response) {
+        if (response.data.code === 0) {
+          self.cityJson = response.data.result
+        }
+      })
       new BaiduMap.LocalCity().get((result) => {
         let cityName = result.name
         let cityCode = 310000
@@ -125,10 +131,10 @@ export default {
           for (let j = 0; j < provinceCity.data[i].cities.length; j++) {
             if (provinceCity.data[i].cities[j].city === cityName) {
               cityCode = parseInt(provinceCity.data[i].cities[j].city_code, 10)
-              for (let i = 0; i < cityJson.data.row.length; i++) { // 根据citycode匹配城市简称
-                if (parseInt(cityJson.data.row[i].area_id, 10) === cityCode) {
-                  this.localCity = cityJson.data.row[i].area_name
-                  localStorage.cityName = cityJson.data.row[i].area_name
+              for (let i = 0; i < self.cityJson.length; i++) { // 根据citycode匹配城市简称
+                if (parseInt(self.cityJson[i].area_id, 10) === cityCode) {
+                  this.localCity = self.cityJson[i].area_name
+                  localStorage.cityName = self.cityJson[i].area_name
                   localStorage.cityCode = cityCode
                   return false
                 }

@@ -216,7 +216,8 @@ export default {
         for (let j = 0; j < provinceCity.data[i].cities.length; j++) {
           if (parseInt(provinceCity.data[i].cities[j].city_code, 10) === parseInt(cityCode, 10)) {
             let tempFilter = {
-              'name': localStorage.cityName,
+              // 'name': localStorage.cityName,
+              'name': '区域',
               'param': 'cityCode',
               'values': provinceCity.data[i].cities[j].areas
             }

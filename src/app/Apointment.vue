@@ -43,7 +43,7 @@ export default {
           productList: [], // 产品信息
           payType: 1, // 支付方式
           shopId: null, // 门店id
-          customerName: localStorage.loginname, // 用户名称
+          customerName: localStorage.loginname ? localStorage.loginname : '', // 用户名称
           customerPhone: localStorage.loginphone, // 用户手机号
           date: null, // 预约日期
           time: null, // 预约时间
@@ -185,6 +185,10 @@ export default {
     'select-coupon': function (id, name, type, money) {
       window.location.hash = 'order'
       this.$broadcast('select-coupon', id, name, type, money)
+    },
+    'cancel-select-coupon': function () {
+      window.location.hash = 'order'
+      this.$broadcast('cancel-select-coupon')
     }
   },
   methods: {
