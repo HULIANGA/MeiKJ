@@ -142,7 +142,6 @@ export default {
           })
         }
       })
-
     }
   },
   events: {

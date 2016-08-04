@@ -234,6 +234,23 @@ export default {
           var res = response.data
           if (res.code === 0) {
             this.orderInfo.couponItem = res.result
+            // 如果是从优惠券使用进入预约，默认选中使用的优惠券
+            if (utils.getUrlParam('couponId')) {
+              let couponId = utils.getUrlParam('couponId')
+              for (let i = 0; i < this.orderInfo.couponItem.length; i++) {
+                this.orderInfo.couponItem[i].id.toString() === couponId
+                let item = this.orderInfo.couponItem[i]
+                let money
+                if (item.type === 1) { // 折扣
+                  money = item.discount / 10
+                }else if (item.type === 2) {
+                  money = item.money
+                }else if (item.type === 3) {
+                  money = item.quota
+                }
+                this.$broadcast('select-coupon', item.id, item.name, item.type, money)
+              }
+            }
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
