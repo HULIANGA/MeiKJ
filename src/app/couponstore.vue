@@ -227,7 +227,7 @@ export default {
           let res = response.data
           self.loading.show = false
           if (res.code === 0) {
-            toast('领取成功')
+            toast('领取成功，请到“我的>我的优惠券”使用')
           }else if (res.code === -1) {
             toast(res.message)
           } else if (res.code === 10007) {
