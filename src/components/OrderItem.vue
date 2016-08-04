@@ -1,6 +1,6 @@
 <template>
   <div class="order-item" v-for="(index, item) in items" @click.prevent="detailModal(item)">
-    <p class="order-paytime" v-if="item.processState == 1">剩余支付时间：<span>00</span>:<span>{{Math.floor((item.createTime + paytime - nowtime)/1000/60) | dtime}}</span>:<span>{{Math.floor((item.createTime + paytime - nowtime)/1000)%60 | dtime}}</span></p>
+    <p class="order-paytime" v-if="item.processState == 1">剩余支付时间：<count-time :ctime="item.createTime"></count-time></p>
     <p class="orderno">订单编号：{{item.id}} <span>金额：{{item.price}}元</span></p>
     <p>预约门店：{{item.shopName}}</p>
     <p>预约时间：{{new Date(item.date).getFullYear() + '-' + (new Date(item.date).getMonth() + 1) + '-' + new Date(item.date).getDate()}} {{item.time}}</p>
@@ -44,12 +44,11 @@
 
 <script>
 import toast from '../js/toast'
+import CountTime from '../components/CountTime'
 export default {
   data () {
     return {
-      token: localStorage.getItem('token'),
-      paytime: 900000,
-      nowtime: new Date().getTime()
+      token: localStorage.getItem('token')
     }
   },
   props: {
@@ -133,6 +132,9 @@ export default {
         }, 1000)
       }
     }
+  },
+  components: {
+    CountTime
   }
 }
 </script>
