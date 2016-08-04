@@ -2,7 +2,7 @@
   <div class="bottom-menu">
     <footer>
       <a :class="active === 'main' ? 'current' : ''" @click.prevent="goMain">首页</a>
-      <a href="http://m.bigaka.com/page/main.do?id=4430&salesid=&storeid=2056">商城</a>
+      <a href="http://mkj002.bigaka.com/mkj/page/main.do?id=4430&salesid=&storeid=2056">商城</a>
       <a @click.prevent="goApointment" class="reserve"><span></span>预约</a>
       <a :class="active === 'order' ? 'current' : ''" @click.prevent="goOrder">订单</a>
       <a :class="active === 'usercenter' ? 'current' : ''" @click.prevent="goCenter">我的</a>
