@@ -18,7 +18,7 @@
       </p>
     </div>
     <div class="eva-pic clearfix">
-        <div class="pic-item" v-bind:style="{backgroundImage: 'url('+imageDomain+image.photoPath+')'}" v-for="image in evaluation.photoList"></div>
+        <div class="pic-item" @click="showImg(image.photoPath)" v-bind:style="{backgroundImage: 'url('+imageDomain+image.photoPath+')'}" v-for="image in evaluation.photoList"></div>
     </div>
     <div class="eva-body">
       {{evaluation.content}}
@@ -33,12 +33,14 @@
      </h4>
     </div>
   </dialog>
+  <!-- comment pic-->
+  <comment-pic :show.sync="showPic" :image-path="commentPic"></comment-pic>
 </div>
 </template>
 <script>
 import Dialog from '../components/Dialog'
 import toast from '../js/toast'
-
+import CommentPic from './CommentPic'
 export default {
   props: {
     evaluation: Object
@@ -49,7 +51,9 @@ export default {
       token: '',
       delCommentId: '',
       delDialog: false,
-      imageDomain: 'http://meimeidou.qiniudn.com/'
+      imageDomain: 'http://meimeidou.qiniudn.com/',
+      commentPic: null,
+      showPic: false
     }
   },
   created () {
@@ -86,10 +90,15 @@ export default {
           window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
         }, 1000)
       }
+    },
+    showImg (path) {
+      this.commentPic = path
+      this.showPic = true
     }
   },
   components: {
-    Dialog
+    Dialog,
+    CommentPic
   }
 }
 </script>
