@@ -120,7 +120,7 @@ export default {
           self.loading.show = false
           toast('注册成功')
           self.loading.show = true
-          self.$http.post('/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
+          self.$http.post(window.ctx + '/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
             self.loading.show = false
             if (response.data.code === 0) {
               localStorage.loginid = response.data.result.id

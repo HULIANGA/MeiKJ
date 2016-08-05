@@ -4,7 +4,11 @@
 <template>
 <div class="user-center">
   <div class="user-center-hd">
-    <div class="user-center-avatar">
+    <div class="user-center-avatar" v-bind:style="{backgroundImage: 'url('+imageDomain + userInfo.logo+')'}" v-if="userInfo.logo">
+      <input type="file" name="file" @change="avaChange">
+    </div>
+    <div class="user-center-avatar" v-else>
+      <input type="file" name="file" @change="avaChange">
       <img src="../assets/img/center-avatar.png">
     </div>
     <p>{{userInfo.nickName}}</p>
@@ -91,11 +95,15 @@
 <script>
   import BottomMenu from '../components/BottomMenu'
   import toast from '../js/toast'
-
+  import Loading from '../components/Loading'
   export default {
     data () {
       return {
         userInfo: {},
+        loading: {
+          show: true
+        },
+        imageDomain: 'http://meimeidou.qiniudn.com/',
         userCenter: {
           orderUrl: 'myOrder.html',
           personalUrl: 'personalData.html',
@@ -108,7 +116,7 @@
         token: ''
       }
     },
-    ready () {
+    created () {
       let self = this
       self.token = localStorage.token
       if (!self.token) {
@@ -133,10 +141,44 @@
         localStorage.setItem('token', '')
         self.token = localStorage.getItem('token')
         window.location.href = 'main.html'
+      },
+      avaChange (e) {
+        let files = e.target.files || e.dataTransfer.files
+        if (!files.length) {
+          return
+        }
+        this._upload(files[0])
+      },
+      _upload (file) {
+        let self = this
+        let data = new FormData()
+        data.append('file', file)
+        self.loading.show = true
+        self.$http.post(window.ctx + '/api/common/uploadW', data).then((response) => {
+          let res = response.data
+          self.loading.show = false
+          if (res.code === 0) {
+            self.$set('userInfo.logo', res.result.key)
+            self.$http.post(window.ctx + '/api/customer/t/logo', {path: self.userInfo.logo}, {headers: {token: self.token}}).then((response) => {
+              if (response.data.code === 0) {
+                toast('上传成功')
+              } else {
+                toast('上传失败')
+              }
+            }, (response) => {
+              toast('上传失败')
+            })
+          } else {
+            toast('上传失败')
+          }
+        }, (response) => {
+          toast('上传失败')
+        })
       }
     },
     components: {
-      BottomMenu
+      BottomMenu,
+      Loading
     }
   }
 </script>
@@ -161,6 +203,19 @@
     border:2px solid #fff;
     overflow: hidden;
     margin: 10px auto;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .user-center-avatar input[type=file] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 1;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
   .user-center-avatar>img {
     display: block;

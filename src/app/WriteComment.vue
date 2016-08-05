@@ -94,16 +94,7 @@ export default {
       data.append('file', file)
       if (self.photoList.length < 6) {
         self.loading.show = true
-        self.$http.post(window.ctx + '/api/common/uploadW', data, {
-          upload: {
-            onprogress: (e) => {
-              if (e.lengthComputable) {
-                // this.progress[this.count].loaded = e.loaded
-                // this.progress[this.count].total = e.total
-              }
-            }
-          }
-        }).then((response) => {
+        self.$http.post(window.ctx + '/api/common/uploadW', data).then((response) => {
           let res = response.data
           self.loading.show = false
           if (res.code === 0) {

@@ -3,7 +3,10 @@
   <div class="evaluation-info">
     <div class="eva-header">
       <p class="eva-user-info">
-        <span class="eva-img"><img src="../assets/img/avatar.png"></span>
+        <span class="eva-img">
+          <img :src="imageDomain + evaluation.customerLogo" v-if="evaluation.customerLogo">
+          <img src="../assets/img/avatar.png" v-else>
+        </span>
         {{evaluation.customerName}}
         <span class="eva-time">{{evaluation.createTime | datetime}}</span>
       </p>
