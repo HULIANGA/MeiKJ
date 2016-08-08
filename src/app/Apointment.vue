@@ -28,6 +28,7 @@ export default {
       },
       maxHours: null, // 消耗时间
       shopId: null, // 门店id
+      positionId: null, // 职位id
       serviceItem: null, // 项目数据
       timeItem: null, // 时间数据
       personItem: null, // 发型师数据
@@ -114,6 +115,7 @@ export default {
           window.location.hash = 'store'
           this.$broadcast('get-store-data')
         }
+        this.positionId = data.positionId
         this.maxHours = data.maxHours
         this.orderInfo.orderSubmit.hours = data.maxHours
         this.orderInfo.orderSubmit.productList = data.productItems
@@ -163,7 +165,7 @@ export default {
             this.getAvilCoupon({'barberId': this.orderInfo.orderSubmit.barberId, 'productIds': this.orderInfo.productIds, 'money': this.orderInfo.orderSubmit.price})
           }else {
             window.location.hash = 'person'
-            this.getPerson({'date': parseInt(tempDate, 10), 'time': tempTime, 'hours': this.maxHours, shopId: this.shopId})
+            this.getPerson({'date': parseInt(tempDate, 10), 'time': tempTime, 'hours': this.maxHours, shopId: this.shopId, 'positionId': this.positionId})
           }
         }else {
           toast('请选择时间')

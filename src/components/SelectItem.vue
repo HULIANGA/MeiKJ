@@ -17,7 +17,7 @@
           </div>
           <div class="p-item-bd">
             <span>&yen;{{sub.price}}</span>
-            <input type="checkbox" @click.stop="selectCheckbox('project'+sub.projectId, 'product'+sub.productId)" :data-hours="item.hours" :data-id="sub.productId" :data-name="sub.name" :data-price="sub.price" class="product-check">
+            <input type="checkbox" @click.stop="selectCheckbox('project'+sub.projectId, 'product'+sub.productId)" :data-hours="item.hours" :data-id="sub.productId" :data-name="sub.name" :data-price="sub.price" :data-position="sub.positionId" class="product-check">
           </div>
         </div>
       </div>
@@ -33,7 +33,8 @@ export default {
     return {
       selectedItem: [], // 选中的产品取耗时最长的
       costHours: [], // 所有勾选的产品的等待时间数组
-      productIds: ''
+      productIds: '',
+      positionId: []
     }
   },
   computed: {
@@ -50,7 +51,7 @@ export default {
   methods: {
     next: function () {
       if (document.querySelectorAll('.product-check:checked').length > 0) {
-        this.$dispatch('next', {'fromStep': 'service', 'maxHours': this.maxHours, 'productItems': this.selectedItem, 'productIds': this.productIds})
+        this.$dispatch('next', {'fromStep': 'service', 'maxHours': this.maxHours, 'productItems': this.selectedItem, 'productIds': this.productIds, 'positionId': this.positionId[0]})
       }else {
         toast('请至少选择一个产品')
       }
@@ -84,6 +85,7 @@ export default {
       this.costHours = []
       this.selectedItem = []
       this.productIds = ''
+      this.positionId = []
       for (let index = 0; index < document.getElementsByClassName('product-check').length; index++) {
         if (document.getElementsByClassName('product-check').hasOwnProperty(index)) {
           if (document.getElementsByClassName('product-check')[index].checked === true) {
@@ -92,6 +94,7 @@ export default {
               'productName': document.getElementsByClassName('product-check')[index].getAttribute('data-name'),
               'price': document.getElementsByClassName('product-check')[index].getAttribute('data-price')
             })
+            this.positionId.push(document.getElementsByClassName('product-check')[index].getAttribute('data-position'))
             if (index > 0) {
               this.productIds += ','
             }
