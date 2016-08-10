@@ -4,7 +4,6 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin"); //提取css到�
 var HtmlWebpackPlugin = require('html-webpack-plugin'); //自动生成html
 var AddScriptPathPlugin = require('./addScriptPath');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-require('shelljs/global') //让node.js可以使用Linux命令，比如文件夹操作
 
 var distPath = path.resolve(__dirname, '../dist'); //输出文件目录
 var entryPath = path.resolve(__dirname, '../src/entrys') //入口js目录
@@ -12,9 +11,6 @@ var entryPath = path.resolve(__dirname, '../src/entrys') //入口js目录
 // var resourcePath = 'http://172.26.64.12:8080/dist/'; //js和css的引用路径；开发debugger
  var resourcePath = 'http://localhost:8080/dist/'; //js和css的引用路径；开发debugger
 //var resourcePath = '../';//js和 css的引用路径；生产
-
-rm('-rf', distPath)
-mkdir('-p', distPath)
 
 module.exports = {
   debug: true,

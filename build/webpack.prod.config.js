@@ -1,5 +1,11 @@
 var webpack = require('webpack')
+var path = require('path')
+require('shelljs/global') //让node.js可以使用Linux命令，比如文件夹操作
 var config = require('./webpack.base.config')
+
+var distPath = path.resolve(__dirname, '../dist'); //输出文件目录
+rm('-rf', distPath)
+mkdir('-p', distPath)
 
 config.plugins = (config.plugins || []).concat([
   // this allows uglify to strip all warnings
