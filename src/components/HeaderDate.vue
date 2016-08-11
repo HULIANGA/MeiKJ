@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="swiper-slide">
-        <div :class="['date-item', index === currentIndex ? 'active' : '']" data-time="dateItem.time" @click="selectDay(index, dateItem.time)" v-for="(index, dateItem) in dateItems" v-if="index >= 5">
+        <div :class="['date-item', index === currentIndex ? 'active' : '']" :data-time="dateItem.time" @click="selectDay(index, dateItem.time)" v-for="(index, dateItem) in dateItems" v-if="index >= 5">
           <p>{{dateItem.dayStr}}</p>
           <p>{{dateItem.dateStr}}</p>
         </div>
