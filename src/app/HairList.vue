@@ -4,8 +4,8 @@
 
 <template>
   <div class="hair-filter">
-    <a :class="currentClassId === 1 ? 'active' : ''" @click="setHairFirstData(1)">男士</a>
     <a :class="currentClassId === 2 ? 'active' : ''" @click="setHairFirstData(2)">女士</a>
+    <a :class="currentClassId === 1 ? 'active' : ''" @click="setHairFirstData(1)">男士</a>
     <a :class="currentClassId === 3 ? 'active' : ''" @click="setHairFirstData(3)">儿童</a>
     <a :class="currentClassId === 4 ? 'active' : ''" @click="setHairFirstData(4)">明星</a>
   </div>
@@ -40,7 +40,7 @@ export default {
     }
   },
   created () {
-    this.setHairFirstData(1)
+    this.setHairFirstData(2)
   },
   ready: function () {
     let self = this

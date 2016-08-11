@@ -1,10 +1,11 @@
 <template>
 <div class="select-item-container">
-  <div v-if="maxHours" class="select-notice">
+  <!-- <div v-if="maxHours" class="select-notice">
     <img src="../assets/img/notice.png">尊敬的用户 您选择的项目需要大约{{maxHours}}个小时
-  </div>
+  </div> -->
   <div v-if="maxHours" class="notice-placeholder"></div>
-  <div :class="['project-list', maxHours ? 'has-notice' : '']">
+  <!-- <div :class="['project-list', maxHours ? 'has-notice' : '']"> -->
+  <div :class="['project-list']">
     <div class="project-item" v-for="(projectIndex, item) in items">
       <div class="project-item-title">
         {{item.name}}
