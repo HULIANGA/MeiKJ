@@ -190,7 +190,7 @@ export default {
         toast('请填写正确的邮箱地址')
         return
       }
-      self.$http.post('/api/customer/t/edit', {nickName: self.userInfo.nickName, gender: self.userInfo.gender, email: self.userInfo.email}, {headers: {token: self.token}}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/t/edit', {nickName: self.userInfo.nickName, gender: self.userInfo.gender, email: self.userInfo.email}, {headers: {token: self.token}}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           toast('保存成功')
