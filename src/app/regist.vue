@@ -56,6 +56,7 @@
       </div>
       <div slot="modal-footer" class="modal-footer">
         <button type="button" class="btn btn-ok" @click.prevent="confirmInfo">确认</button>
+        <button type="button" class="btn btn-close" @click.prevent="goMain">跳过</button>
       </div>
   </modal>
 </template>
@@ -75,9 +76,9 @@ export default {
         show: false
       },
       userInfo: {
-        nickName: null,
+        nickName: '',
         gender: 1,
-        email: null
+        email: ''
       },
       disabled: false,
       count: 60,
@@ -177,15 +178,15 @@ export default {
     confirmInfo () {
       let self = this
       self.token = localStorage.getItem('token')
-      if (self.userInfo.nickName && self.userInfo.nickName.trim() === '') {
+      if (self.userInfo.nickName.trim() === '') {
         toast('请填写昵称')
         return
       }
-      if (self.userInfo.email && self.userInfo.email.trim() === '') {
+      if (self.userInfo.email.trim() === '') {
         toast('请填写邮箱')
         return
       }
-      if (self.userInfo.email && !utils.getCheck.checkEmail(self.userInfo.email.trim())) {
+      if (!utils.getCheck.checkEmail(self.userInfo.email.trim())) {
         toast('请填写正确的邮箱地址')
         return
       }
@@ -205,7 +206,11 @@ export default {
     },
     goMain () {
       this.showModal = false
-      window.location.href = 'main.html'
+      if (utils.getUrlParam('fromUrl')) {
+        window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+      }else {
+        window.location.href = 'main.html'
+      }
     }
   },
   components: {
@@ -236,6 +241,7 @@ export default {
   padding: 10px 15px;
   border-bottom: 1px solid #eaeaea;
   align-items: center;
+  -webkit-filter: blur(0);
 }
 .p-item .p-item-hd {
   font-size: 1.6rem;
@@ -273,5 +279,10 @@ export default {
 }
 .p-item-bd>input[type=radio]:checked {
   background-color: #ff6251;
+}
+.btn-close {
+  background-color:#fff;
+  color: #333;
+	border:1px solid #eaeaea;
 }
 </style>
