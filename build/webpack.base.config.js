@@ -37,7 +37,8 @@ module.exports = {
     apointment: entryPath + '/apointment.js',
     evaluationList: entryPath + '/evaluationList.js',
     aboutUs: entryPath + '/aboutUs.js',
-    afterSale: entryPath + '/afterSale.js'
+    afterSale: entryPath + '/afterSale.js',
+    oldRegist: entryPath + '/oldRegist.js'
   },
   output: {
     path: distPath, //输出文件目录
@@ -182,6 +183,11 @@ module.exports = {
       template: 'src/html/afterSale.html',
       filename: 'html/afterSale.html',
       chunks: ['afterSale']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/oldRegist.html',
+      filename: 'html/oldRegist.html',
+      chunks: ['oldRegist']
     })
   ],
   module: {

@@ -40,7 +40,12 @@ export default {
     }
   },
   created () {
-    this.setHairFirstData(2)
+    const hairType = Number(sessionStorage.getItem('hairType'))
+    if (hairType) {
+      this.setHairFirstData(hairType)
+    } else {
+      this.setHairFirstData(2)
+    }
   },
   ready: function () {
     let self = this
@@ -56,6 +61,7 @@ export default {
   methods: {
     setHairFirstData: function (id, getMoreData) {
       let self = this
+      sessionStorage.setItem('hairType', id)
       self.loading.show = true
       self.noresult = false
       self.hasMoreData = true
@@ -75,6 +81,15 @@ export default {
         if (res.code === 0) {
           document.querySelector('body').scrollTop = 0
           self.$set('hairItems', res.result.result)
+          const scrollTop = Number(sessionStorage.getItem('hairScrollTop'))
+          if (scrollTop) {
+            self.$nextTick(() => {
+              window.scrollTo(0, scrollTop)
+            })
+          }
+          if (Number(sessionStorage.getItem('hairPageNum')) === self.searchPageParam.pageNo) {
+            sessionStorage.removeItem('hairScrollTop')
+          }
           if (!res.result.result || res.result.result.length === 0) {
             self.noresult = true
             self.hasMoreData = false
@@ -105,6 +120,15 @@ export default {
         let res = response.data
         if (res.code === 0) {
           self.hairItems = self.hairItems.concat(res.result.result)
+          const scrollTop = Number(sessionStorage.getItem('hairScrollTop'))
+          if (scrollTop) {
+            self.$nextTick(() => {
+              window.scrollTo(0, scrollTop)
+            })
+          }
+          if (Number(sessionStorage.getItem('hairPageNum')) === self.searchPageParam.pageNo) {
+            sessionStorage.removeItem('hairScrollTop')
+          }
           if (!res.result.result || res.result.result.length === 0) {
             toast('没有更多数据了')
             self.hasMoreData = false
