@@ -252,6 +252,8 @@ export default {
                 }
                 this.$broadcast('select-coupon', item.id, item.name, item.type, money)
               }
+            } else {
+              this.$broadcast('cancel-select-coupon')
             }
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')

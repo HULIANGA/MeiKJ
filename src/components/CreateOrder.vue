@@ -176,10 +176,10 @@
           this.order.orderSubmit.realPrice = this.order.orderSubmit.price * (money * 10) / 100
         }else if (type === 2) {
           this.couponPrice = money
-          this.order.orderSubmit.realPrice = (this.order.orderSubmit.price * 100 - money * 100) / 100
+          this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 100 - money * 100) / 100) <= 0 ? 0.01 : (this.order.orderSubmit.price * 100 - money * 100) / 100
         }else if (type === 3) {
           this.couponPrice = money
-          this.order.orderSubmit.realPrice = (this.order.orderSubmit.price * 100 - money * 100) / 100
+          this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 100 - money * 100) / 100) <= 0 ? 0.01 : (this.order.orderSubmit.price * 100 - money * 100) / 100
         }
         this.order.orderSubmit.couponId = id
         this.couponName = name
