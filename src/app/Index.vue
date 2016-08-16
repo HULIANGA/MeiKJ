@@ -56,6 +56,15 @@ export default {
       let res = response.data
       if (res.code === 0) {
         self.$set('hairItems', res.result.result)
+        const scrollTop = Number(sessionStorage.getItem('hairScrollTop'))
+        if (scrollTop) {
+          self.$nextTick(() => {
+            window.scrollTo(0, scrollTop)
+          })
+        }
+        if (Number(sessionStorage.getItem('hairPageNum')) === self.searchPageParam.pageNo) {
+          sessionStorage.removeItem('hairScrollTop')
+        }
         if (!res.result.result || res.result.result.length === 0) {
           self.hasMoreData = false
         }else if (res.result.result.length < self.searchPageParam.pageSize) {
@@ -100,6 +109,15 @@ export default {
         let res = response.data
         if (res.code === 0) {
           self.hairItems = self.hairItems.concat(res.result.result)
+          const scrollTop = Number(sessionStorage.getItem('hairScrollTop'))
+          if (scrollTop) {
+            self.$nextTick(() => {
+              window.scrollTo(0, scrollTop)
+            })
+          }
+          if (Number(sessionStorage.getItem('hairPageNum')) === self.searchPageParam.pageNo) {
+            sessionStorage.removeItem('hairScrollTop')
+          }
           if (!res.result.result || res.result.result.length === 0) {
             toast('没有更多数据了')
             self.hasMoreData = false
