@@ -29,47 +29,45 @@ export default {
     },
     goCenter: function () {
       if (this.active !== 'usercenter') {
-        if (this.token) {
-          window.location.href = 'userCenter.html'
-        } else {
-          toast('请先登录')
-          setTimeout(function () {
-            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
-          }, 1000)
-        }
+        this.autoLogin('userCenter.html')
       }
     },
     goOrder: function () {
       if (this.active !== 'order') {
-        if (this.token) {
-          window.location.href = 'myOrder.html'
-        }else {
-          toast('请先登录')
-          setTimeout(function () {
-            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
-          }, 1000)
-        }
+        this.autoLogin('myOrder.html')
       }
     },
     goApointment: function () {
       if (this.active !== 'apointment') {
-        this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
-          let res = response.data
-          if (res.code === 0) {
-            window.location.href = 'apointment.html'
-          }else {
-            toast('请先登录')
-            setTimeout(function () {
-              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
-            }, 1000)
-          }
-        }, function () {
-          toast('请先登录')
-          setTimeout(function () {
-            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
-          }, 1000)
-        })
+        this.autoLogin('apointment.html')
       }
+    },
+    autoLogin: function (url) {
+      this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+        let res = response.data
+        if (res.code === 0) {
+          window.location.href = url
+        }else {
+          this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
+            if (response.data.code === 0) {
+              localStorage.loginid = response.data.result.id
+              localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
+              localStorage.token = response.data.result.token
+              window.location.href = url
+            } else {
+              toast('请先登录')
+              setTimeout(function () {
+                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              }, 1000)
+            }
+          })
+        }
+      }, function () {
+        toast('请先登录')
+        setTimeout(function () {
+          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        }, 1000)
+      })
     }
   }
 }

@@ -120,10 +120,23 @@
             '&shopId=' + this.hairDresser.shopId +
             '&shopName=' + this.hairDresser.shopName
           }else {
-            toast('请先登录')
-            setTimeout(function () {
-              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
-            }, 1000)
+            this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
+              if (response.data.code === 0) {
+                localStorage.loginid = response.data.result.id
+                localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
+                localStorage.token = response.data.result.token
+                window.location.href =
+                'apointment.html?personId=' + this.hairDresser.id +
+                '&personName=' + this.hairDresser.stageName +
+                '&shopId=' + this.hairDresser.shopId +
+                '&shopName=' + this.hairDresser.shopName
+              } else {
+                toast('请先登录')
+                setTimeout(function () {
+                  window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+                }, 1000)
+              }
+            })
           }
         }, function () {
           toast('请先登录')
