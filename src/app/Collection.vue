@@ -95,12 +95,10 @@ export default {
 .collection .hair-item {
   padding: 5px;
 }
-.collection .hair-like {
+.collection .hair-name {
   position: absolute;
   right: 5px;
   bottom: 5px;
-  background-color: rgba(0,0,0,.4);
-  color: #fff;
-  background-image: url(../assets/img/good-white.png);
+  left: 5px;
 }
 </style>
