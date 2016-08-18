@@ -5,11 +5,14 @@
         <img src="../assets/img/one-px.jpg">
         <div class="lazy-img" :style="{backgroundImage: 'url(' + imageDomain + item.coverImg + ')'}"></div>
       </a>
-      <div v-if="item.praiseNum" class="hair-like">
-        {{item.praiseNum}}
-      </div>
-      <div v-else class="hair-like">
-        0
+      <div class="hair-name">
+        <span>{{item.albumName}}</span>
+        <div v-if="item.praiseNum" class="hair-like">
+          {{item.praiseNum}}
+        </div>
+        <div v-else class="hair-like">
+          0
+        </div>
       </div>
     </div>
   </div>
@@ -77,14 +80,26 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
   }
+  .hair-name {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 24px;
+    line-height: 24px;
+    background-color: rgba(0,0,0,.5);
+    color: #fff;
+    font-size: 1.3rem;
+    padding-left: 4px;
+  }
   .hair-like {
     position: absolute;
     right: 0;
     bottom: 0;
-    background-color: #fff;
-    height: 20px;
-    line-height: 20px;
-    background-image: url(../assets/img/good.png);
+    background-color: transparent;
+    height: 24px;
+    line-height: 24px;
+    background-image: url(../assets/img/good-white.png);
     background-repeat: no-repeat;
     background-size: 10px auto;
     background-position: 7px center;

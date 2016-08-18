@@ -236,6 +236,7 @@ export default {
           var res = response.data
           if (res.code === 0) {
             this.orderInfo.couponItem = res.result
+            this.$broadcast('cancel-select-coupon')
             // 如果是从优惠券使用进入预约，默认选中使用的优惠券
             if (utils.getUrlParam('couponId')) {
               let couponId = utils.getUrlParam('couponId')
@@ -252,8 +253,6 @@ export default {
                 }
                 this.$broadcast('select-coupon', item.id, item.name, item.type, money)
               }
-            } else {
-              this.$broadcast('cancel-select-coupon')
             }
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')

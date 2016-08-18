@@ -198,12 +198,9 @@ export default {
 .all-hair .hair-item {
   padding:5px;
 }
-.all-hair .hair-like {
-  position: absolute;
+.all-hair .hair-name {
+  left: 5px;
   right: 5px;
   bottom: 5px;
-  background-color: rgba(0,0,0,.4);
-  color: #fff;
-  background-image: url(../assets/img/good-white.png);
 }
 </style>

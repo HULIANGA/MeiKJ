@@ -44,6 +44,9 @@ export default {
             toast('重置成功')
             self.oldpwd = ''
             self.password = ''
+            setTimeout(function () {
+              window.location.href = 'userCenter.html'
+            }, 1000)
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {

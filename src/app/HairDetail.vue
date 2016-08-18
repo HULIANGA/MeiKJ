@@ -7,7 +7,7 @@
       <swiper-hair :items="hairData.photoList"></swiper-hair>
     </div>
     <div v-if="hairData.introduction" class="hairstyle-intro">
-      发型简介：{{hairData.introduction}}
+      <span class="hairstyle-name">{{hairData.albumName}}</span>：{{hairData.introduction}}
     </div>
   </div>
   <div class="hairstyle-control">
@@ -213,6 +213,9 @@ export default {
   line-height: 24px;
   margin-top: 15px;
   padding: 0 10px;
+}
+.hairstyle-intro .hairstyle-name {
+  color: #ff7162;
 }
 .hairstyle-control {
   display: flex;
