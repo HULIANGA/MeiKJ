@@ -15,7 +15,7 @@
       </div>
       <button class="btn btn-confirm" @click.prevent="login">登录</button>
     </div>
-    <p class="clearfix login-link"><a class="pull-l" :href="regist">注册</a><a class="pull-l old-regist" :href="oldRegist">(老用户点此)</a><a class="pull-r" :href="forgetPwd">忘记密码？</a></p>
+    <p class="clearfix login-link"><a class="pull-l" :href="regist">注册</a><a class="old-regist" :href="oldRegist">(老用户点此)</a><a class="pull-r" :href="forgetPwd">忘记密码？</a></p>
   </div>
   <loading :show="loading.show" :show-text="loading.showText"></loading>
 </template>
@@ -106,6 +106,7 @@ export default {
 }
 .login-link {
   padding: 20px 8%;
+  text-align: center;
 }
 .login-link>a {
   font-size: 1.4rem;
@@ -117,16 +118,8 @@ export default {
   margin-right: 8px;
 }
 .old-regist {
+  display: inline-block;
   margin-left: 8px;
-}
-.old-regist::before {
-  content: '';
-  position: absolute;
-  width: 1px;
-  height: 20px;
-  background-color: #eaeaea;
-  top: 5px;
-  left: -8px;
 }
 .input-item > input {
   text-align: center;

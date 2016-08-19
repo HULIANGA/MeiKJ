@@ -45,14 +45,6 @@
             <input type="radio" name="gender" value="0" v-model="userInfo.gender">女
           </div>
         </div>
-        <div class="p-item">
-          <div class="p-item-hd">
-            <label>我的邮箱</label>
-          </div>
-          <div class="p-item-bd">
-            <input type="text" placeholder="我的邮箱" v-model="userInfo.email">
-          </div>
-        </div>
       </div>
       <div slot="modal-footer" class="modal-footer">
         <button type="button" class="btn btn-ok" @click.prevent="confirmInfo">确认</button>
@@ -180,14 +172,6 @@ export default {
       self.token = localStorage.getItem('token')
       if (self.userInfo.nickName.trim() === '') {
         toast('请填写昵称')
-        return
-      }
-      if (self.userInfo.email.trim() === '') {
-        toast('请填写邮箱')
-        return
-      }
-      if (!utils.getCheck.checkEmail(self.userInfo.email.trim())) {
-        toast('请填写正确的邮箱地址')
         return
       }
       self.$http.post(window.ctx + '/api/customer/t/edit', {nickName: self.userInfo.nickName, gender: self.userInfo.gender, email: self.userInfo.email}, {headers: {token: self.token}}).then((response) => {
