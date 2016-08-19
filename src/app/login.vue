@@ -31,8 +31,12 @@ export default {
         show: false
       },
       phone: '',
-      password: ''
+      password: '',
+      token: localStorage.getItem('token')
     }
+  },
+  created () {
+    this.autoLogin()
   },
   computed: {
     regist: function () {
@@ -92,6 +96,14 @@ export default {
       }, (response) => {
         toast('登录失败')
         self.loading.show = false
+      })
+    },
+    autoLogin: function () {
+      this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+        let res = response.data
+        if (res.code === 0) {
+          window.location.href = 'main.html'
+        }
       })
     }
   },
