@@ -134,7 +134,7 @@ export default {
         let nowDate = new Date()
         nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate())
         let nowTime = nowDate.getTime()
-        this.getTime({'shopId': data.shopId, date: nowTime})
+        this.getTime({'shopId': data.shopId, date: nowTime, positionId: this.positionId})
         this.orderInfo.shopName = data.shopName
         this.orderInfo.orderSubmit.shopId = data.shopId
       }else if (data.fromStep === 'time') { // 在选择时间点下一步
