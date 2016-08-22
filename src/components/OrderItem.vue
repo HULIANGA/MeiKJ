@@ -1,7 +1,7 @@
 <template>
   <div class="order-item" v-for="(index, item) in items" @click.prevent="detailModal(item)">
     <p class="order-paytime" v-if="item.processState == 1">剩余支付时间：<count-time :ctime="item.createTime"></count-time></p>
-    <p class="orderno">订单编号：{{item.id}} <span>金额：{{item.price}}元</span></p>
+    <p class="orderno">订单编号：{{item.id}} <span>金额：{{item.realPrice}}元</span></p>
     <p>预约门店：{{item.shopName}}</p>
     <p>预约时间：{{new Date(item.date).getFullYear() + '-' + (new Date(item.date).getMonth() + 1) + '-' + new Date(item.date).getDate()}} {{item.time}}</p>
     <p class="clearfix">

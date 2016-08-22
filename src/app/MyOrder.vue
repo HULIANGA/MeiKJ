@@ -25,7 +25,7 @@
     <detail-modal :show.sync="showDetail">
       <div slot="detail-modal-header" class="detail-modal-header">
         <h4 class="detail-modal-title">
-          订单编号：{{orderDetail.id}}<span>金额：{{orderDetail.price}}元</span>
+          订单编号：{{orderDetail.id}}<span>金额：{{orderDetail.realPrice}}元</span>
         </h4>
       </div>
       <div slot="detail-modal-body" class="detail-modal-body">
