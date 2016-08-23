@@ -27,7 +27,8 @@ export default {
       this.$broadcast('get-time-list', {
         shopId: this.shopid,
         barberId: utils.getUrlParam('personId') ? utils.getUrlParam('personId') : '',
-        date: date
+        date: date,
+        positionId: this.$parent.positionId
       })
     }
   },
