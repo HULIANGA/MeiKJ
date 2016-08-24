@@ -130,7 +130,7 @@ export default {
   margin-right: 8px;
 }
 .old-regist {
-  display: inline-block;
+  display: none;
   margin-left: 8px;
 }
 .input-item > input {
