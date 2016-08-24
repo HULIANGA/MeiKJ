@@ -73,6 +73,7 @@ export default {
         let res = response.data
         if (res.code === 0) {
           self.$set('userInfo', res.result)
+          localStorage.loginname = self.userInfo.nickName ? self.userInfo.nickName : ''
         }else if (res.code === 10007) {
           toast('登录已过期，请重新登录')
           setTimeout(function () {

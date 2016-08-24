@@ -179,6 +179,7 @@ export default {
         if (res.code === 0) {
           toast('保存成功')
           self.showModal = false
+          localStorage.loginname = self.userInfo.nickName ? self.userInfo.nickName : ''
           if (utils.getUrlParam('fromUrl')) {
             window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
           }else {
