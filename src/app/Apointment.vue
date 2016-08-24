@@ -98,6 +98,7 @@ export default {
   events: {
     'next': function (data) {
       if (data.fromStep === 'service') { // 在项目选择点下一步
+        this.positionId = data.positionId
         if (utils.getUrlParam('shopId')) { // 从门店预约和从发型师预约
           window.location.hash = 'time'
           this.shopId = parseInt(utils.getUrlParam('shopId'), 10)
@@ -107,15 +108,14 @@ export default {
           nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate())
           let nowTime = nowDate.getTime()
           if (utils.getUrlParam('personId')) {
-            this.getTime({'shopId': this.shopId, 'barberId': utils.getUrlParam('personId'), date: nowTime})
+            this.getTime({'shopId': this.shopId, 'barberId': utils.getUrlParam('personId'), date: nowTime, positionId: this.positionId})
           }else {
-            this.getTime({'shopId': this.shopId, date: nowTime})
+            this.getTime({'shopId': this.shopId, date: nowTime, positionId: this.positionId})
           }
         }else {
           window.location.hash = 'store'
           this.$broadcast('get-store-data')
         }
-        this.positionId = data.positionId
         this.maxHours = data.maxHours
         this.orderInfo.orderSubmit.hours = data.maxHours
         this.orderInfo.orderSubmit.productList = data.productItems
