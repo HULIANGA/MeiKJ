@@ -33,7 +33,9 @@ export default {
     detail (item) {
       let hairId
       sessionStorage.setItem('hairScrollTop', window.scrollY)
-      sessionStorage.setItem('hairPageNum', this.$parent.searchPageParam.pageNo)
+      if (this.$parent.searchPageParam) {
+        sessionStorage.setItem('hairPageNum', this.$parent.searchPageParam.pageNo)
+      }
       if (item.hairstyleId) {
         hairId = item.hairstyleId
       } else {

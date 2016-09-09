@@ -15,7 +15,11 @@
       </div>
       <button class="btn btn-confirm" @click.prevent="login">登录</button>
     </div>
-    <p class="clearfix login-link"><a class="pull-l" :href="regist">注册</a><a class="old-regist" :href="oldRegist">(老用户点此)</a><a class="pull-r" :href="forgetPwd">忘记密码？</a></p>
+    <p class="clearfix login-link">
+      <a class="pull-l" :href="regist">注册</a>
+      <!-- <a class="old-regist" :href="oldRegist">(老用户点此)</a> -->
+      <a class="pull-r" :href="forgetPwd">忘记密码？</a>
+    </p>
   </div>
   <loading :show="loading.show" :show-text="loading.showText"></loading>
 </template>
