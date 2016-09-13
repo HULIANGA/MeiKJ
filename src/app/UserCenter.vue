@@ -13,6 +13,7 @@
     </div>
     <p>{{userInfo.nickName}}</p>
     <p>{{userInfo.mobile}}</p>
+    <button class="btn btn-info" @click.prevent="changePhone">修改手机号</button>
   </div>
   <div class="user-center-bd">
     <div class="center-item">
@@ -87,15 +88,25 @@
     </div>
   </div>
   <div class="user-center-ft">
-    <button class="btn btn-logout" @click.prevent="logout">退出登录</button>
+    <button class="btn btn-logout" v-show="!isweixin" @click.prevent="logout">退出登录</button>
   </div>
 </div>
 <bottom-menu :active="'usercenter'"></bottom-menu>
+<modal :show.sync="phoneModal" title="修改手机号">
+  <div slot="modal-body" class="modal-body">
+    <input type="input" maxlength="11" class="phone-num" v-model="phoneNum" placeholder="请填写手机号">
+  </div>
+  <div class="modal-footer" slot="modal-footer">
+    <button class="btn btn-primary" @click.prevent="confirmPhone">确认</button>
+  </div>
+</modal>
 </template>
 <script>
   import BottomMenu from '../components/BottomMenu'
   import toast from '../js/toast'
   import Loading from '../components/Loading'
+  import Modal from '../components/Modal'
+  import {getCheck} from '../js/utils'
   export default {
     data () {
       return {
@@ -103,6 +114,7 @@
         loading: {
           show: true
         },
+        isweixin: /MicroMessenger/i.test(navigator.userAgent),
         imageDomain: 'http://meimeidou.qiniudn.com/',
         userCenter: {
           orderUrl: 'myOrder.html',
@@ -113,7 +125,9 @@
           aboutUrl: 'aboutUs.html',
           salesUrl: 'afterSale.html'
         },
-        token: ''
+        token: '',
+        phoneModal: false,
+        phoneNum: ''
       }
     },
     created () {
@@ -137,6 +151,30 @@
       }
     },
     methods: {
+      changePhone () {
+        this.phoneModal = true
+      },
+      confirmPhone () {
+        const phone = this.phoneNum.trim()
+        if (!getCheck.checkPhone(phone)) {
+          toast('请填写正确的手机号')
+          return
+        }
+        this.$http.post(window.ctx + '/api/customer/t/changeMobile', {mobile: phone}, {headers: {token: this.token}}).then((response) => {
+          let res = response.data
+          if (res.code === 0) {
+            toast('修改成功')
+            this.phoneModal = false
+          } else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }
+        }, (response) => {
+          toast('修改失败')
+        })
+      },
       logout () {
         localStorage.setItem('token', '')
         self.token = localStorage.getItem('token')
@@ -178,7 +216,8 @@
     },
     components: {
       BottomMenu,
-      Loading
+      Loading,
+      Modal
     }
   }
 </script>
@@ -192,8 +231,17 @@
     padding-bottom: 100px;
   }
   .user-center-hd {
+    position: relative;
     padding: 15px 0;
     background-color: rgba(0,0,0,.5);
+  }
+  .user-center-hd .btn-info {
+    position: absolute;
+    bottom: 25px;
+    right: 15px;
+    font-size: 1.2rem;
+    line-height: 24px;
+    padding: 0 4px;
   }
   .user-center-hd .user-center-avatar {
     width: 80px;
@@ -313,5 +361,15 @@
     height: 40px;
     line-height: 40px;
     background-color: rgba(0,0,0,.5);
+  }
+  .phone-num {
+    display: block;
+    height: 36px;
+    line-height: 36px;
+    border-bottom: 1px solid #eaeaea;
+    width: 80%;
+    margin: 30px auto;
+    text-align: center;
+    -webkit-filter: blur(0);
   }
 </style>

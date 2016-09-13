@@ -37,24 +37,38 @@ export default {
           let tempList = res.result
           let startTime = tempList.startTime
           let startHour = parseInt(startTime.split(':')[0], 10)
+          let startMinute = parseInt(startTime.split(':')[1], 10)
           let endTime = tempList.endTime
           let endHour = parseInt(endTime.split(':')[0], 10)
+          let curMinute = startMinute
+          let curHour = startHour
           this.timelist = []
           let nowDate = new Date()
           nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate())
           let nowTime = nowDate.getTime()
-          for (let i = 0; i <= (endHour - startHour); i++) {
+          for (let i = 0; i <= (endHour - startHour) * 2; i++) {
             let tempItem = {}
             tempItem.status = tempList['time' + (i + 1)]
-            if ((startHour + i) < 10) {
-              tempItem.hour = '0' + (startHour + i).toString() + ':00'
-            }else {
-              tempItem.hour = (startHour + i).toString() + ':00'
+            if (curMinute === 60) {
+              curMinute = 0
+              curHour++
             }
-            if (nowTime === requestData.date && (startHour + i) <= new Date().getHours()) {
+            if (curHour < 10) {
+              tempItem.hour = '0' + curHour.toString() + ':' + ((curMinute === 0) ? '00' : curMinute.toString())
+            }else {
+              tempItem.hour = curHour.toString() + ':' + ((curMinute === 0) ? '00' : curMinute.toString())
+            }
+
+            // if ((startHour + i) < 10) {
+            //   tempItem.hour = '0' + (startHour + i).toString() + ':00'
+            // }else {
+            //   tempItem.hour = (startHour + i).toString() + ':00'
+            // }
+            if (nowTime === requestData.date && curHour <= new Date().getHours() && curMinute <= new Date().getMinutes()) {
               tempItem.status = 2
             }
             this.timelist.push(tempItem)
+            curMinute += 30
           }
           this.resetList()
         }
@@ -74,7 +88,7 @@ export default {
       if (status === 0) {
         if (this.currentIndex.indexOf(index) === -1) {
           this.currentIndex = []
-          for (var i = 0; i < this.costhours; i++) {
+          for (var i = 0; i < (this.costhours * 2 + 1); i++) {
             this.currentIndex.push(index + i)
           }
         }else {
@@ -84,10 +98,10 @@ export default {
     },
     resetList: function () {
       for (let i = 0; i < this.timelist.length; i++) {
-        if (i > (this.timelist.length - this.costhours)) { // 加上消耗的时间超过了结束时间，不可预约
+        if (i > (this.timelist.length - (this.costhours * 2 + 1))) { // 加上消耗的时间超过了结束时间，不可预约
           this.timelist[i].status = 2
         }else {
-          for (let j = 0; j < this.costhours; j++) { // 预约时间起之后costhour个小时有不可预约的时间，不可预约
+          for (let j = 0; j < (this.costhours * 2 + 1); j++) { // 预约时间起之后costhour个小时有不可预约的时间，不可预约
             if (this.timelist[i].status === 0 && this.timelist[i + j].status !== 0) {
               this.timelist[i].status = 2
             }

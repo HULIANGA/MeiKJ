@@ -4,6 +4,7 @@
 <template>
 <div class="my-coupon-list">
   <button class="btn btn-primary btn-exchange" @click.prevent="exchangeCoupon">去兑换</button>
+  <p class="del-info"><em>*</em>向左滑动可删除优惠券</p>
   <div class="coupon-item-wrap" v-for="(index,item) in items">
     <div class="behind">
       <button class="btn btn-del" @click.prevent="delCoupon(item.id,$index)">删除</button>
@@ -245,6 +246,13 @@ body {
   font-size: 1.4rem;
   width: 50%;
   margin: 0 auto 10px;
+}
+.del-info {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+.del-info>em {
+  color: #ff6251;
 }
 .coupon-item-wrap {
   position: relative;
