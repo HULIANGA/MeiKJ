@@ -35,8 +35,8 @@ export default {
       baseRequsetData: {
         pageNo: 1,
         pageSize: 20,
-        longitude: null,
-        latitude: null
+        longitude: localStorage.longitude,
+        latitude: localStorage.latitude
       },
       hasMoreData: true
     }
@@ -197,18 +197,21 @@ export default {
     // BMAP_STATUS_SERVICE_UNAVAILABLE	服务不可用。对应数值“7”。(自 1.1 新增)
     // BMAP_STATUS_TIMEOUT	超时。对应数值“8”。(自 1.1 新增)
       var geolocation = new window.BMap.Geolocation()
-      geolocation.getCurrentPosition(function (r) {// 支持h5定位
-        console.log(r)
-        // if (r.accuracy) {// 获取到了精确位置
-        if (this.getStatus() === window.BMAP_STATUS_SUCCESS) {
-          self.baseRequsetData.latitude = r.point.lat
-          self.baseRequsetData.longitude = r.point.lng
-        }
-        self.getFirstStore()
-        // }
-      }, function () {// 不支持h5定位
-        self.getFirstStore()
-      }, {enableHighAccuracy: true})
+      if (!(localStorage.longitude && localStorage.latitude)) {
+        geolocation.getCurrentPosition(function (r) {// 支持h5定位
+          console.log(r)
+          // if (r.accuracy) {// 获取到了精确位置
+          if (this.getStatus() === window.BMAP_STATUS_SUCCESS) {
+            localStorage.latitude = r.point.lat
+            localStorage.longitude = r.point.lng
+          }
+          // self.getFirstStore()
+          // }
+        }, function () {// 不支持h5定位
+          // self.getFirstStore()
+        }, {enableHighAccuracy: true})
+      }
+      self.getFirstStore()
     },
     getAreaList: function (cityCode) {
       this.$http.get(window.ctx + '/api/area/list').then(function (response) {

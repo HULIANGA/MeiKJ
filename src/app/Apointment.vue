@@ -214,7 +214,7 @@ export default {
     },
     getPerson: function (requestData) {
       this.loading.show = true
-      this.$http.get(window.ctx + '/api/order/selectBarber', requestData).then(function (response) {
+      this.$http.get(window.ctx + '/api/order/selectSortBarber', requestData).then(function (response) {
         this.loading.show = false
         var res = response.data
         if (res.code === 0) {
