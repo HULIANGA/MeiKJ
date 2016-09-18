@@ -164,6 +164,8 @@
           let res = response.data
           if (res.code === 0) {
             toast('修改成功')
+            this.userInfo.mobile = phone
+            this.phoneNum = ''
             this.phoneModal = false
           } else if (res.code === 10007) {
             toast('登录已过期，请重新登录')

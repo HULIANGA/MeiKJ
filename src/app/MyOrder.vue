@@ -38,6 +38,10 @@
           <p><span v-for="(index,pro) in orderDetail.productList">{{pro.productName}}<i v-if="index != (orderDetail.productList.length-1)">、</i></span></p>
           <h5><i></i>预约时间</h5>
           <p>{{new Date(orderDetail.date).getFullYear() + '-' + (new Date(orderDetail.date).getMonth() + 1) + '-' + new Date(orderDetail.date).getDate()}} {{orderDetail.time}}</p>
+          <div v-if="orderDetail.dealGroupCode">
+            <h5><i></i>团购券码</h5>
+            <p>{{orderDetail.dealGroupCode}}</p>
+          </div>
         </div>
       </div>
     </detail-modal>

@@ -250,6 +250,8 @@ body {
 .del-info {
   font-size: 1.2rem;
   margin-bottom: 10px;
+  color: #828282;
+  text-align: center;
 }
 .del-info>em {
   color: #ff6251;
