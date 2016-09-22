@@ -87,6 +87,7 @@ export default {
       this.selectedItem = []
       this.productIds = ''
       this.positionId = []
+      let checkedProjects = []
       for (let index = 0; index < document.getElementsByClassName('product-check').length; index++) {
         if (document.getElementsByClassName('product-check').hasOwnProperty(index)) {
           if (document.getElementsByClassName('product-check')[index].checked === true) {
@@ -96,13 +97,11 @@ export default {
               'price': document.getElementsByClassName('product-check')[index].getAttribute('data-price')
             })
             this.positionId.push(document.getElementsByClassName('product-check')[index].getAttribute('data-position'))
-            if (index > 0) {
-              this.productIds += ','
-            }
-            this.productIds += document.getElementsByClassName('product-check')[index].getAttribute('data-id')
+            checkedProjects.push(document.getElementsByClassName('product-check')[index].getAttribute('data-id'))
           }
         }
       }
+      this.productIds = checkedProjects.join(',')
     }
   },
   props: {

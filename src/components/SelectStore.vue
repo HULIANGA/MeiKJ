@@ -36,7 +36,8 @@ export default {
         pageNo: 1,
         pageSize: 20,
         longitude: localStorage.longitude,
-        latitude: localStorage.latitude
+        latitude: localStorage.latitude,
+        productIds: ''
       },
       hasMoreData: true
     }
@@ -78,8 +79,9 @@ export default {
     }
   },
   events: {
-    'get-store-data': function () {
+    'get-store-data': function (data) {
       this.loading.show = true
+      this.baseRequsetData.productIds = data
       // 根据条件获取门店列表
       // 百度地图api放在最后加载，判断api加载完成后获取城市
       let getCityInterval = setInterval(() => {

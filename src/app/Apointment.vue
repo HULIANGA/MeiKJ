@@ -114,7 +114,7 @@ export default {
           }
         }else {
           window.location.hash = 'store'
-          this.$broadcast('get-store-data')
+          this.$broadcast('get-store-data', data.productIds)
         }
         this.maxHours = data.maxHours
         this.orderInfo.orderSubmit.hours = data.maxHours
