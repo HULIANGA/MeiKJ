@@ -79,3 +79,8 @@ npm test
 19.storeDetail.html            门店详情
 20.userCenter.html             个人中心
 21.writeComment.html           填写评论
+
+五、不同环境配置
+1、打包发环境时resourcePath配置为../
+2、本地resourcePath配置为本地服务器的绝对地址
+3、本地调用接口配置proxy地址
