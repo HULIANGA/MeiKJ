@@ -186,7 +186,7 @@ export default {
     showCouponDetail (couponId) {
       let self = this
       self.loading.show = true
-      self.$http.post(window.ctx + '/api/coupon/detail', {couponId: couponId}).then((response) => {
+      self.$http.post(window.ctx + '/api/coupon/detail', {couponId: couponId}, {emulateJSON: true}).then((response) => {
         self.loading.show = false
         let res = response.data
         if (res.code === 0) {
