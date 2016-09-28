@@ -251,7 +251,9 @@ export default {
                 }else if (item.type === 3) {
                   money = item.quota
                 }
-                this.$broadcast('select-coupon', item.id, item.name, item.type, money)
+                if (couponId === item.id.toString()) {
+                  this.$broadcast('select-coupon', item.id, item.name, item.type, money)
+                }
               }
             }
           }else if (res.code === 10007) {
