@@ -69,8 +69,10 @@ body {
   margin: 0 auto 10px;
 }
 .my-coupon-list {
-  margin-left: 15px;
-  margin-top: 10px;
+  overflow: auto;
+  padding: 10px 0 0 15px;
+  height: 100%;
+  box-sizing: border-box;
 }
 .coupon-item-wrap {
   position: relative;
