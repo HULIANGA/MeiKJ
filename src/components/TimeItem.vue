@@ -40,35 +40,34 @@ export default {
           let startMinute = parseInt(startTime.split(':')[1], 10)
           let endTime = tempList.endTime
           let endHour = parseInt(endTime.split(':')[0], 10)
-          let curMinute = startMinute
-          let curHour = startHour
+          let endMinute = parseInt(endTime.split(':')[1], 10)
+          let startHalfHourCount = startHour * 2 + startMinute / 30 // 开始时间是第几个半小时
+          let endHalfHourCount = endHour * 2 + endMinute / 30 // 结束时间是第几个半小时
+
           this.timelist = []
           let nowDate = new Date()
           nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate())
-          let nowTime = nowDate.getTime()
-          for (let i = 0; i <= (endHour - startHour) * 2; i++) {
+          let nowTime = nowDate.getTime() // 当前日期的时间戳
+          let tempHalfHourCount = startHalfHourCount
+          for (let i = 0; i <= (endHalfHourCount - startHalfHourCount); i++) {
             let tempItem = {}
             tempItem.status = tempList['time' + (i + 1)]
-            if (curMinute === 60) {
-              curMinute = 0
-              curHour++
-            }
+            let curHour = parseInt(tempHalfHourCount / 2, 10)
+            let curMinute = tempHalfHourCount % 2 === 1 ? '30' : '00'
             if (curHour < 10) {
-              tempItem.hour = '0' + curHour.toString() + ':' + ((curMinute === 0) ? '00' : curMinute.toString())
+              tempItem.hour = '0' + curHour.toString() + ':' + curMinute
             }else {
-              tempItem.hour = curHour.toString() + ':' + ((curMinute === 0) ? '00' : curMinute.toString())
+              tempItem.hour = curHour.toString() + ':' + curMinute
             }
-
-            // if ((startHour + i) < 10) {
-            //   tempItem.hour = '0' + (startHour + i).toString() + ':00'
-            // }else {
-            //   tempItem.hour = (startHour + i).toString() + ':00'
-            // }
-            if (nowTime === requestData.date && curHour <= new Date().getHours() && curMinute <= new Date().getMinutes()) {
+            let curHalfHourCount = new Date().getHours() * 2
+            if (new Date().getMinutes() % 30 > 0) {
+              curHalfHourCount++
+            }
+            if (nowTime === requestData.date && tempHalfHourCount <= curHalfHourCount) {
               tempItem.status = 2
             }
             this.timelist.push(tempItem)
-            curMinute += 30
+            tempHalfHourCount++
           }
           this.resetList()
         }
