@@ -172,14 +172,17 @@
     events: {
       'select-coupon': function (id, name, type, money) {
         if (type === 1) { // 折扣
-          this.couponPrice = this.order.orderSubmit.price * (100 - money * 10) / 100
-          this.order.orderSubmit.realPrice = this.order.orderSubmit.price * (money * 10) / 100
+          this.couponPrice = this.order.orderSubmit.price * (100 - money * 10) / 10 / 10
+          this.order.orderSubmit.realPrice = this.order.orderSubmit.price * (money * 10) / 10 / 10
         }else if (type === 2) {
           this.couponPrice = money
           this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
         }else if (type === 3) {
           this.couponPrice = money
           this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
+        }
+        if (this.order.orderSubmit.realPrice.toString().indexOf('.') > 0) {
+          this.order.orderSubmit.realPrice = parseFloat(this.order.orderSubmit.realPrice.toFixed(2))
         }
         this.order.orderSubmit.couponId = id
         this.couponName = name
