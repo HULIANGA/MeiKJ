@@ -139,6 +139,9 @@ export default {
               self.noresult = true
             }
           }
+        }, function () {
+          self.loading.show = false
+          toast('获取数据失败，请刷新重试')
         })
       }else {
         toast('请先登录')
@@ -176,7 +179,7 @@ export default {
           toast('删除成功')
           self.items.$remove(self.items[index])
         } else {
-          toast('删除失败')
+          toast(res.message)
         }
       }, (response) => {
         self.loading.show = false
