@@ -10,7 +10,8 @@ config.devServer = {
       // target: 'http://139.196.87.99/mkj', // 测试环境
       // target: 'http://192.168.1.114:8080/mkj',
       // target: 'http://192.168.1.94:8080/mkj',
-      target: 'http://data.old.bigaka.com/yanghb', 
+      // target: 'http://data.old.bigaka.com/yanghb',
+      target: 'http://mkj001.bigaka.com/mkj',
       secure: false
     },
     '/json/*': {

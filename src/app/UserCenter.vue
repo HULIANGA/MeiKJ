@@ -94,7 +94,13 @@
 <bottom-menu :active="'usercenter'"></bottom-menu>
 <modal :show.sync="phoneModal" title="修改手机号">
   <div slot="modal-body" class="modal-body">
-    <input type="input" maxlength="11" class="phone-num" v-model="phoneNum" placeholder="请填写手机号">
+    <div class="input-item">
+      <input class="phone-num" type="tel" maxlength="11" placeholder="请输入手机号" v-model="phoneNum">
+    </div>
+    <div class="input-item input-code">
+      <input class="phone-code" type="tel" maxlength="11" placeholder="请输入验证码" v-model="verifyCode">
+      <button class="btn btn-code" @click.prevent="getVerifyCode" :disabled="disabled">{{disabled ? count : '获取验证码'}}</button>
+    </div>
   </div>
   <div class="modal-footer" slot="modal-footer">
     <button class="btn btn-primary" @click.prevent="confirmPhone">确认</button>
@@ -127,7 +133,10 @@
         },
         token: '',
         phoneModal: false,
-        phoneNum: ''
+        phoneNum: '',
+        verifyCode: '',
+        disabled: false,
+        count: 60
       }
     },
     created () {
@@ -151,6 +160,35 @@
       }
     },
     methods: {
+      getVerifyCode () {
+        let self = this
+        if (self.phoneNum.trim() === '') {
+          toast('请输入手机号')
+          return
+        }
+        if (!getCheck.checkPhone(self.phoneNum.trim())) {
+          toast('请输入正确的手机号')
+          return
+        }
+        self.disabled = true
+        self.$http.post(window.ctx + '/api/customer/verifyCode', {mobile: self.phoneNum, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
+          let res = response.data
+          if (res.code === 0) {
+            toast('发送成功')
+            const countTime = setInterval(function () {
+              self.count = self.count - 1
+              if (self.count === 0) {
+                self.disabled = false
+                self.count = 60
+                clearInterval(countTime)
+              }
+            }, 1000)
+          }
+        }, (response) => {
+          toast('发送失败')
+          self.disabled = false
+        })
+      },
       changePhone () {
         this.phoneModal = true
       },
@@ -160,7 +198,11 @@
           toast('请填写正确的手机号')
           return
         }
-        this.$http.post(window.ctx + '/api/customer/t/changeMobile', {mobile: phone}, {headers: {token: this.token}}).then((response) => {
+        if (!this.verifyCode.trim()) {
+          toast('请填写短信验证码')
+          return
+        }
+        this.$http.post(window.ctx + '/api/customer/t/changeMobile', {mobile: phone}, {headers: {token: this.token, code: this.verifyCode}}).then((response) => {
           let res = response.data
           if (res.code === 0) {
             toast('修改成功')
@@ -172,6 +214,8 @@
             setTimeout(function () {
               window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
             }, 1000)
+          } else {
+            toast(res.message)
           }
         }, (response) => {
           toast('修改失败')
@@ -364,14 +408,15 @@
     line-height: 40px;
     background-color: rgba(0,0,0,.5);
   }
+  .input-item {
+    margin: 15px 15px 0;
+    line-height: 35px;
+  }
+  .input-item > input {
+    font-size: 1.4rem;
+    padding: 0 15px;
+  }
   .phone-num {
-    display: block;
-    height: 36px;
-    line-height: 36px;
-    border-bottom: 1px solid #eaeaea;
-    width: 80%;
-    margin: 30px auto;
-    text-align: center;
-    -webkit-filter: blur(0);
+
   }
 </style>

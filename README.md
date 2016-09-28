@@ -58,9 +58,9 @@ run unit tests
 npm test
 
 四、html说明
-1.main.html               首页
+1.main.html                    首页
 2.allDresser.html              所有发型师列表
-3.allStore.html.html                所有门店
+3.allStore.html.html           所有门店
 4.apointment.html              预约
 5.collection.html              我的收藏
 6.couponStore.html             优惠专区
