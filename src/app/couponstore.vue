@@ -228,13 +228,13 @@ export default {
           self.loading.show = false
           if (res.code === 0) {
             toast('领取成功，请到“我的>我的优惠券”使用')
-          }else if (res.code === -1) {
-            toast(res.message)
-          } else if (res.code === 10007) {
+          }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
               window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
             }, 1000)
+          }else {
+            toast(res.message)
           }
         }, (response) => {
           self.loading.show = false
