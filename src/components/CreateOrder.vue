@@ -155,8 +155,12 @@
                 window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
               }, 1000)
             }else {
+              this.$parent.loading.show = false
               toast('订单提交失败')
             }
+          }, function (response) {
+            this.$parent.loading.show = false
+            toast('订单提交失败')
           })
         }else {
           toast('请先登录')
@@ -171,21 +175,48 @@
     },
     events: {
       'select-coupon': function (id, name, type, money) {
-        if (type === 1) { // 折扣
-          this.couponPrice = this.order.orderSubmit.price * (100 - money * 10) / 10 / 10
-          this.order.orderSubmit.realPrice = this.order.orderSubmit.price * (money * 10) / 10 / 10
-        }else if (type === 2) {
-          this.couponPrice = money
-          this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
-        }else if (type === 3) {
-          this.couponPrice = money
-          this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
+        let couponPriceData = {
+          couponId: id,
+          productIds: this.order.productIds
         }
-        if (this.order.orderSubmit.realPrice.toString().indexOf('.') > 0) {
-          this.order.orderSubmit.realPrice = parseFloat(this.order.orderSubmit.realPrice.toFixed(2))
-        }
-        this.order.orderSubmit.couponId = id
-        this.couponName = name
+        this.$parent.loading.show = true
+        this.$http.post(window.ctx + '/api/coupon/t/computePrice', couponPriceData, {headers: {token: this.token}}).then(function (response) {
+          let res = response.data
+          if (res.code === 0) {
+            this.$parent.loading.show = false
+            this.order.orderSubmit.couponId = id
+            this.couponName = name
+            money = res.result
+            this.couponPrice = money
+            this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            }, 1000)
+          }else {
+            this.$parent.loading.show = false
+            toast('抱歉，优惠券使用出错')
+          }
+        }, function (response) {
+          this.$parent.loading.show = false
+          toast('抱歉，优惠券使用出错')
+        })
+        // if (type === 1) { // 折扣
+        //   this.couponPrice = this.order.orderSubmit.price * (100 - money * 10) / 10 / 10
+        //   this.order.orderSubmit.realPrice = this.order.orderSubmit.price * (money * 10) / 10 / 10
+        // }else if (type === 2) {
+        //   this.couponPrice = money
+        //   this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
+        // }else if (type === 3) {
+        //   this.couponPrice = money
+        //   this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
+        // }
+        // if (this.order.orderSubmit.realPrice.toString().indexOf('.') > 0) {
+        //   this.order.orderSubmit.realPrice = parseFloat(this.order.orderSubmit.realPrice.toFixed(2))
+        // }
+        // this.order.orderSubmit.couponId = id
+        // this.couponName = name
       },
       'cancel-select-coupon': function () {
         this.couponPrice = 0
