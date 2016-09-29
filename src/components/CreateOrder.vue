@@ -188,7 +188,7 @@
             this.couponName = name
             money = res.result
             this.order.orderSubmit.realPrice = money
-            this.couponPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
+            this.couponPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 100) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 100
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
