@@ -180,15 +180,15 @@
           productIds: this.order.productIds
         }
         this.$parent.loading.show = true
-        this.$http.post(window.ctx + '/api/coupon/t/computePrice', couponPriceData, {headers: {token: this.token}}).then(function (response) {
+        this.$http.post(window.ctx + '/api/coupon/t/computePrice', couponPriceData, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
           let res = response.data
           if (res.code === 0) {
             this.$parent.loading.show = false
             this.order.orderSubmit.couponId = id
             this.couponName = name
             money = res.result
-            this.couponPrice = money
-            this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
+            this.order.orderSubmit.realPrice = money
+            this.couponPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
