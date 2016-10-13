@@ -43,7 +43,7 @@ export default {
       }
     },
     autoLogin: function (url) {
-      this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+      this.(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
         let res = response.data
         if (res.code === 0) {
           window.location.href = url
