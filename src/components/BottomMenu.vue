@@ -72,6 +72,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
   .bottom-menu {
     position: fixed;
