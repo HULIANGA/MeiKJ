@@ -10,12 +10,16 @@
         <input class="user-phone" type="tel" placeholder="请输入手机号" autocomplete="off" v-model="phone" maxlength="11" @keyup.enter="login">
       </div>
       <!-- <div class="input-item">
-        <input style="display:none"><!-- for disable autocomplete on chrome -->
+        <input style="display:none"><! for disable autocomplete on chrome -->
         <!-- <input class="user-pwd" type="password" placeholder="请输入密码" autocomplete="off" v-model="password" @keyup.enter="login"> -->
       <!-- </div> -->
       <div class="input-item input-code">
         <input class="user-code" type="tel" placeholder="请输入验证码" v-model="verifyCode" @keyup.enter="login">
         <button class="btn btn-code" @click.prevent="getVerifyCode" :disabled="disabled">{{disabled ? count : '获取验证码'}}</button>
+      </div>
+      <div class="input-item input-image-code" >
+        <input style="display:none"><!-- for disable autocomplete on chrome -->
+        <input class="user-imageCode" type="tel" placeholder="请输入图片验证码" v-model="imageCode"  @keyup.enter="login">
       </div>
       <button class="btn btn-confirm" @click.prevent="login">登录</button>
     </div>
@@ -40,6 +44,7 @@ export default {
         show: false
       },
       phone: '',
+      imageCode: '',
       userInfo: {
         nickName: '',
         gender: 1,
@@ -94,6 +99,10 @@ export default {
       }
       if (self.verifyCode.trim() === '') {
         toast('请输入验证码')
+        return
+      }
+      if (self.imageCode.trim() === '') {
+        toast('请输入图片验证码')
         return
       }
       // if (self.password.trim() === '') {
