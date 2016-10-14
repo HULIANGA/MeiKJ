@@ -56,13 +56,13 @@ export default {
     this.autoLogin()
   },
   computed: {
-    login: function () {
-      if (utils.getUrlParam('fromUrl')) {
-        return 'login.html?fromUrl=' + utils.getUrlParam('fromUrl')
-      }else {
-        return 'login.html'
-      }
-    }
+    // login: function () {
+    //   if (utils.getUrlParam('fromUrl')) {
+    //     return 'login.html?fromUrl=' + utils.getUrlParam('fromUrl')
+    //   }else {
+    //     return 'login.html'
+    //   }
+    // }
     // regist: function () {
     //   if (utils.getUrlParam('fromUrl')) {
     //     return 'regist.html?fromUrl=' + utils.getUrlParam('fromUrl')
@@ -105,12 +105,13 @@ export default {
         return
       }
       self.loading.show = true
-      self.$http.post(window.ctx + '/api/customer/login', {mobile: self.phone, verifyCode: self.verifyCode}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
         if (response.data.code === 0) {
           localStorage.loginid = response.data.result.id
           localStorage.loginphone = this.phone
           localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
           localStorage.token = response.data.result.token
+          self.showModal = true
           if (utils.getUrlParam('fromUrl')) {
             window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
           }else {
@@ -165,8 +166,7 @@ export default {
     }
   },
   components: {
-    Loading，
-    Modal
+    Loading
   }
 }
 </script>
