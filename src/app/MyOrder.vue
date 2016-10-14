@@ -47,6 +47,8 @@
     </detail-modal>
   </div>
   <loading :show="loading.show"></loading>
+  <dialog :show.sync="dialog.show" :title="dialog.title" :ok-text="dialog.okText" :cancel-text="dialog.cancelText" :callback="dialog.callback"></dialog>
+
 </template>
 <script>
 
@@ -57,12 +59,20 @@ import DetailModal from '../components/DetailModal'
 import Loading from '../components/Loading'
 import NoResult from '../components/NoResult'
 import toast from '../js/toast'
+import Dialog from '../components/Dialog'
 
 export default {
   data () {
     return {
       loading: {
         show: true
+      },
+      dialog: {
+        show: false,
+        title: '您确定要取消这笔订单吗?',
+        okText: '确定',
+        cancelText: '取消',
+        callback: null
       },
       waitPay: null,
       waitService: null,
@@ -205,7 +215,8 @@ export default {
     OrderItem,
     DetailModal,
     Loading,
-    NoResult
+    NoResult,
+    Dialog
   }
 }
 </script>

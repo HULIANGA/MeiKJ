@@ -109,21 +109,31 @@ export default {
     },
     cancelOrder (orderId, index) {
       let self = this
-      self.$parent.$parent.$parent.loading.show = true
+      // 弹出提示框:确定取消？
+      self.$parent.$parent.$parent.dialog.show = true
+      self.$parent.$parent.$parent.dialog.transitionName = 'fade'
       if (self.token) {
-        self.$http.post(window.ctx + '/api/order/t/cancel', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
-          let res = response.data
-          self.$parent.$parent.$parent.loading.show = false
-          if (res.code === 0) {
-            toast('取消成功')
-            self.items.$remove(self.items[index])
-          }else if (res.code === 10007) {
-            toast('登录已过期，请重新登录')
-            setTimeout(function () {
-              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
-            }, 1000)
-          }
-        })
+        self.$parent.$parent.$parent.dialog.callback = function () {
+          self.$parent.$parent.$parent.loading.show = true
+          self.$http.post(window.ctx + '/api/order/t/cancel', {orderId: orderId}, {headers: {token: self.token}}).then((response) => {
+            let res = response.data
+            self.$parent.$parent.$parent.loading.show = false
+            self.$parent.$parent.$parent.dialog.show = false
+            if (res.code === 0) {
+              toast('取消成功')
+              self.items.$remove(self.items[index])
+            }else if (res.code === 10007) {
+              toast('登录已过期，请重新登录')
+              setTimeout(function () {
+                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              }, 1000)
+            }
+          }, (response) => {
+            self.$parent.$parent.$parent.loading.show = false
+            self.$parent.$parent.$parent.dialog.show = false
+            toast('取消失败')
+          })
+        }
       }else {
         toast('请先登录')
         self.$parent.$parent.$parent.loading.show = false

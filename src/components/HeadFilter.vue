@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="head-filter">
-    <div class="one-filter" @click="showSelect(filterIndex)" v-for="(filterIndex,searchItem) in searchitems.filters" track-by="$index" v-if="searchItem">
+    <div class="one-filter" @click="showSelect(filterIndex)" v-for="(filterIndex,searchItem) in searchitems.filters" track-by="$index" v-show="searchItem">
       <div :class="['filter-content', showIndex === filterIndex ? 'active' : '']">
         <span>{{searchItem.name }}</span>
       </div>

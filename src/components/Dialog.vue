@@ -16,8 +16,8 @@
           </slot>
 
 					<div class="dialog-footer">
-						<button type="button" class="btn btn-ok" v-on:click="close">{{ okText}}</button>
-						<button type="button" class="btn btn-close" v-on:click="callback">{{ cancelText}}</button>
+						<button type="button" class="btn btn-ok" v-on:click="callback">{{ okText}}</button>
+						<button type="button" class="btn btn-close" v-on:click="close">{{ cancelText}}</button>
 					</div>
 				</div>
 			</div>
