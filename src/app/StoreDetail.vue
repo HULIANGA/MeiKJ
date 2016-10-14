@@ -25,7 +25,7 @@
       </div>
     </div>
     <service-item :serviceitem="serviceItem"></service-item>
-    <store-member :storemember="storeMember"></store-member>
+    <store-member :storemember="storeMember" :storemembercount="storemembercount"></store-member>
     <button class="btn btn-reserve" @click.prevent="goApointment()">预约</button>
     <loading :show="loading.show" :show-text=""></loading>
   </div>
@@ -48,6 +48,7 @@
         storeDetail: null,
         serviceItem: [],
         storeMember: [],
+        storemembercount: null,
         storeId: null,
         latitude: localStorage.latitude,
         longitude: localStorage.longitude
@@ -79,6 +80,7 @@
         let res = response.data
         if (res.code === 0) {
           self.$set('storeMember', res.result.result)
+          self.$set('storemembercount', res.result.totalCount)
         }
       }, (response) => {
         // self.loading.show = false
