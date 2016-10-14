@@ -1,8 +1,8 @@
 <template>
 <div class="store-member">
-  <h3 class="item-title"><i></i>发型师<span>({{totalCount}})</span></h3>
+  <h3 class="item-title"><i></i>发型师<span>({{storemembercount}})</span></h3>
   <div class="s-member-list">
-    <div class="s-member-item" v-for="(index, item) in storemember" v-if="index < 4" @click.prevent="detail(item.id)">
+    <div class="s-member-item" v-for="(index, item) in storemember | limitBy 4" @click.prevent="detail(item.id)">
       <div class="s-member-img" :style="{height: (screenWidth - 30) / 4 - 14 + 'px'}">
         <img :src="imageDomain + item.logo">
       </div>
@@ -18,7 +18,7 @@
       </p>
     </div>
   </div>
-  <p class="s-member-more" v-if="totalCount > 4">
+  <p class="s-member-more" v-if="storemembercount > 4">
     <a @click.prevent="showMore">查看更多</a>
   </p>
 </div>
@@ -33,12 +33,8 @@ export default {
     }
   },
   props: {
-    storemember: Array
-  },
-  computed: {
-    totalCount: function () {
-      return this.storemember.length
-    }
+    storemember: Array,
+    storemembercount: Number
   },
   methods: {
     showMore () {
