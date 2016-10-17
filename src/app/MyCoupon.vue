@@ -169,10 +169,10 @@ export default {
       }
       e.currentTarget.style.left = newLeft
     },
-    delCoupon (couponId, index) {
+    delCoupon (customerCouponId, index) {
       let self = this
       self.loading.show = true
-      self.$http.post(window.ctx + '/api/coupon/t/deleteCoupon', {couponId: couponId}, {headers: {token: self.token}, emulateJSON: true}).then((response) => {
+      self.$http.post(window.ctx + '/api/coupon/t/deleteCoupon', {customerCouponId: customerCouponId}, {headers: {token: self.token}, emulateJSON: true}).then((response) => {
         let res = response.data
         self.loading.show = false
         if (res.code === 0) {
