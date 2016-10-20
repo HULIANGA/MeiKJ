@@ -105,7 +105,7 @@ export default {
     changeCodeImage (e) {
       let self = this
       e.preventDefault()
-      self.codeImage = window.ctx + '/api/customer/picVerifyCode' + '/?c=' + new Date().getTime()
+      self.codeImage = window.ctx + '/api/customer/picVerifyCode' + '?c=' + new Date().getTime()
     },
     getVerifyCode () {
       let self = this
