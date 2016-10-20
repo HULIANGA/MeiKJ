@@ -138,7 +138,7 @@ img {
   line-height: 36px;
   width: 100%;
   padding: 0 30px;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   box-sizing: border-box;
 }
 .user-phone {
@@ -164,6 +164,19 @@ img {
   background-repeat: no-repeat;
   background-position: left center;
   background-size: 16px auto;
+}
+.input-image-code{
+  position: relative;
+}
+.checkCodeImage{
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  min-width: 80px;
+  height: 35px;
+  font-size: 0.1rem;
 }
 .input-code {
   position: relative;
