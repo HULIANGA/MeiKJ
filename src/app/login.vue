@@ -13,13 +13,14 @@
         <input style="display:none"><! for disable autocomplete on chrome -->
         <!-- <input class="user-pwd" type="password" placeholder="请输入密码" autocomplete="off" v-model="password" @keyup.enter="login"> -->
       <!-- </div> -->
-      <div class="input-item input-code">
-        <input class="user-code" type="tel" placeholder="请输入验证码" v-model="verifyCode" @keyup.enter="login">
-        <button class="btn btn-code" @click.prevent="getVerifyCode" :disabled="disabled">{{disabled ? count : '获取验证码'}}</button>
-      </div>
       <div class="input-item input-image-code" >
         <input style="display:none"><!-- for disable autocomplete on chrome -->
         <input class="user-imageCode" type="tel" placeholder="请输入图片验证码" v-model="imageCode"  @keyup.enter="login">
+				<img class="checkCodeImage" @click.prevent="changeCodeImage" :src="codeImage" alt="看不清?点击图片换一张">
+      </div>
+      <div class="input-item input-code">
+        <input class="user-code" type="tel" placeholder="请输入验证码" v-model="sendVerifyCode" @keyup.enter="login">
+        <button class="btn btn-code" @click.prevent="getVerifyCode" :disabled="disabled">{{disabled ? count : '获取验证码'}}</button>
       </div>
       <button class="btn btn-confirm" @click.prevent="login">登录</button>
     </div>
@@ -43,6 +44,7 @@ export default {
       loading: {
         show: false
       },
+      codeImage: window.ctx + '/api/customer/picVerifyCode',
       phone: '',
       imageCode: '',
       userInfo: {
@@ -50,45 +52,15 @@ export default {
         gender: 1,
         email: ''
       },
-      verifyCode: '',
+      sendVerifyCode: '',
       disabled: false,
       count: 60,
-      // password: '',
       token: localStorage.getItem('token')
     }
   },
   created () {
-    this.autoLogin()
   },
   computed: {
-    // login: function () {
-    //   if (utils.getUrlParam('fromUrl')) {
-    //     return 'login.html?fromUrl=' + utils.getUrlParam('fromUrl')
-    //   }else {
-    //     return 'login.html'
-    //   }
-    // }
-    // regist: function () {
-    //   if (utils.getUrlParam('fromUrl')) {
-    //     return 'regist.html?fromUrl=' + utils.getUrlParam('fromUrl')
-    //   }else {
-    //     return 'regist.html'
-    //   }
-    // },
-    // oldRegist: function () {
-    //   if (utils.getUrlParam('fromUrl')) {
-    //     return 'oldRegist.html?fromUrl=' + utils.getUrlParam('fromUrl')
-    //   }else {
-    //     return 'oldRegist.html'
-    //   }
-    // },
-    // forgetPwd: function () {
-    //   if (utils.getUrlParam('fromUrl')) {
-    //     return 'findPwd.html?fromUrl=' + utils.getUrlParam('fromUrl')
-    //   }else {
-    //     return 'findPwd.html'
-    //   }
-    // }
   },
   methods: {
     login () {
@@ -97,36 +69,30 @@ export default {
         toast('请输入手机号')
         return
       }
-      if (self.verifyCode.trim() === '') {
-        toast('请输入验证码')
-        return
-      }
       if (self.imageCode.trim() === '') {
         toast('请输入图片验证码')
         return
       }
-      // if (self.password.trim() === '') {
-      //   toast('请输入密码')
-      //   return false
-      // }
+      if (self.sendVerifyCode.trim() === '') {
+        toast('请输入验证码')
+        return
+      }
       if (!utils.getCheck.checkPhone(self.phone.trim())) {
         toast('请输入正确的手机号')
         return
       }
       self.loading.show = true
-      self.$http.post(window.ctx + '/api/customer/login', {mobile: self.phone, password: self.password}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/codeLogin', {mobile: self.phone, code: self.sendVerifyCode}).then((response) => {
         if (response.data.code === 0) {
           localStorage.loginid = response.data.result.id
           localStorage.loginphone = this.phone
           localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
           localStorage.token = response.data.result.token
-          self.showModal = true
           if (utils.getUrlParam('fromUrl')) {
             window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
           }else {
             window.location.href = 'main.html'
           }
-          // window.location.href = 'main.html'
         }else {
           toast(response.data.message)
           self.loading.show = false
@@ -136,10 +102,19 @@ export default {
         self.loading.show = false
       })
     },
+    changeCodeImage (e) {
+      let self = this
+      e.preventDefault()
+      self.codeImage = window.ctx + '/api/customer/picVerifyCode' + '/?c=' + new Date().getTime()
+    },
     getVerifyCode () {
       let self = this
       if (self.phone.trim() === '') {
         toast('请输入手机号')
+        return
+      }
+      if (self.imageCode.trim() === '') {
+        toast('请输入图片验证码')
         return
       }
       if (!utils.getCheck.checkPhone(self.phone.trim())) {
@@ -147,7 +122,7 @@ export default {
         return
       }
       self.disabled = true
-      self.$http.post(window.ctx + '/api/customer/verifyCode', {mobile: self.phone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/sendVerifyCode', {picText: self.imageCode, mobile: self.phone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           toast('发送成功')
@@ -159,18 +134,13 @@ export default {
               clearInterval(countTime)
             }
           }, 1000)
+        }else {
+          toast(response.data.message)
+          self.disabled = false
         }
       }, (response) => {
         toast('发送失败')
         self.disabled = false
-      })
-    },
-    autoLogin: function () {
-      this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
-        let res = response.data
-        if (res.code === 0) {
-          window.location.href = 'main.html'
-        }
       })
     }
   },
@@ -201,6 +171,6 @@ export default {
   margin-left: 8px;
 }
 .input-item > input {
-  text-align: center;
+  text-align: left;
 }
 </style>
