@@ -44,7 +44,7 @@ export default {
       loading: {
         show: false
       },
-      codeImage: window.ctx + '/api/customer/picVerifyCode',
+      codeImage: '',
       phone: '',
       imageCode: '',
       userInfo: {
@@ -60,6 +60,7 @@ export default {
     }
   },
   created () {
+    this.changeCodeImage()
   },
   computed: {
   },
@@ -83,7 +84,7 @@ export default {
         return
       }
       self.loading.show = true
-      self.$http.post(window.ctx + '/api/customer/codeLogin', {mobile: self.phone, code: self.sendVerifyCode}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/codeLogin', {mobile: self.phone}, {headers: {code: self.sendVerifyCode}}).then((response) => {
         if (response.data.code === 0) {
           localStorage.loginid = response.data.result.id
           localStorage.loginphone = this.phone
@@ -103,9 +104,8 @@ export default {
         self.loading.show = false
       })
     },
-    changeCodeImage (e) {
+    changeCodeImage () {
       let self = this
-      e.preventDefault()
       this.ran = Math.random()
       self.codeImage = window.ctx + '/api/customer/picVerifyCode' + '?c=' + this.ran
     },
