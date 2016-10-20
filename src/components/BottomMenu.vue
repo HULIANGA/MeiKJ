@@ -24,7 +24,7 @@ export default {
   methods: {
     goMain: function () {
       if (this.active !== 'main') {
-        window.location.href = 'main.html'
+        window.goPage('main.html')
       }
     },
     goCenter: function () {
@@ -46,18 +46,18 @@ export default {
       this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
         let res = response.data
         if (res.code === 0) {
-          window.location.href = url
+          window.goPage(url)
         }else {
           this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
             if (response.data.code === 0) {
               localStorage.loginid = response.data.result.id
               localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
               localStorage.token = response.data.result.token
-              window.location.href = url
+              window.goPage(url)
             } else {
               toast('请先登录')
               setTimeout(function () {
-                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }
           })
@@ -66,7 +66,7 @@ export default {
         toast('请先登录')
         setTimeout(function () {
           window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-          // window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
         }, 1000)
       })
     }

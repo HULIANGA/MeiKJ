@@ -104,9 +104,9 @@ export default {
               localStorage.loginphone = this.phone
               localStorage.token = response.data.result.token
               if (utils.getUrlParam('fromUrl')) {
-                window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+                window.goPage(decodeURIComponent(utils.getUrlParam('fromUrl')))
               }else {
-                window.location.href = 'main.html'
+                window.goPage('main.html')
               }
             }else {
               self.loading.show = false

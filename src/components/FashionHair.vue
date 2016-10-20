@@ -41,7 +41,7 @@ export default {
       } else {
         hairId = item.id
       }
-      window.location.href = 'hairDetail.html?id=' + hairId
+      window.goPage('hairDetail.html?id=' + hairId)
     }
   }
 }

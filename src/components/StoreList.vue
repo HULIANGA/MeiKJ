@@ -25,7 +25,7 @@ export default {
   methods: {
     viewDetail (item) {
       let storeId = item.id
-      window.location.href = 'storeDetail.html?id=' + storeId
+      window.goPage('storeDetail.html?id=' + storeId)
     }
   }
 }

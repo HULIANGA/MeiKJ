@@ -196,20 +196,20 @@ export default {
           toast('保存成功')
           self.showModal = false
           if (utils.getUrlParam('fromUrl')) {
-            window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+            window.goPage(decodeURIComponent(utils.getUrlParam('fromUrl')))
           }else {
-            window.location.href = 'main.html'
+            window.goPage('main.html')
           }
-          // window.location.href = 'main.html'
+          // window.goPage('main.html')
         }
       })
     },
     goMain () {
       this.showModal = false
       if (utils.getUrlParam('fromUrl')) {
-        window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+        window.goPage(decodeURIComponent(utils.getUrlParam('fromUrl')))
       }else {
-        window.location.href = 'main.html'
+        window.goPage('main.html')
       }
     }
   },

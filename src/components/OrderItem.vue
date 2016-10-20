@@ -67,7 +67,7 @@ export default {
       console.log(item)
       this.$parent.$parent.$parent.loading.show = true
       this.$http.post(window.ctx + '/api/pay/wechat-pay', item, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
-        window.location.href = response.data
+        window.goPage(response.data)
       }, function (response) {
         this.$parent.$parent.$parent.loading.show = false
         toast('支付失败')
@@ -77,10 +77,10 @@ export default {
       this.$emit('detail-msg', item.id)
     },
     goComment (orderId) {
-      window.location.href = 'writeComment.html?orderId=' + orderId
+      window.goPage('writeComment.html?orderId=' + orderId)
     },
     viewComment (barberId) {
-      window.location.href = 'dresserDetail.html?id=' + barberId
+      window.goPage('dresserDetail.html?id=' + barberId)
     },
     confirmService (orderId, index) {
       let self = this
@@ -95,7 +95,7 @@ export default {
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
-              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
           }
         })
@@ -103,7 +103,7 @@ export default {
         self.$parent.$parent.$parent.loading.show = false
         toast('请先登录')
         setTimeout(function () {
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
         }, 1000)
       }
     },
@@ -125,7 +125,7 @@ export default {
             }else if (res.code === 10007) {
               toast('登录已过期，请重新登录')
               setTimeout(function () {
-                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }
           }, (response) => {
@@ -138,7 +138,7 @@ export default {
         toast('请先登录')
         self.$parent.$parent.$parent.loading.show = false
         setTimeout(function () {
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
         }, 1000)
       }
     }

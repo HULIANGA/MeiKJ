@@ -35,7 +35,7 @@ export default {
   methods: {
     detail (item) {
       let barberId = item.id
-      window.location.href = 'dresserDetail.html?id=' + barberId
+      window.goPage('dresserDetail.html?id=' + barberId)
     }
   }
 }

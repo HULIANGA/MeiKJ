@@ -144,7 +144,7 @@
             if (res.code === 0) {
               toast('订单提交成功，请在15分钟内完成付款')
               this.$http.post(window.ctx + '/api/pay/wechat-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
-                window.location.href = response.data
+                window.goPage(response.data)
               }, function (response) {
                 this.$parent.loading.show = false
                 toast('支付失败')
@@ -152,7 +152,7 @@
             }else if (res.code === 10007) {
               toast('登录已过期，请重新登录')
               setTimeout(function () {
-                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }else {
               this.$parent.loading.show = false
@@ -165,7 +165,7 @@
         }else {
           toast('请先登录')
           setTimeout(function () {
-            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
           }, 1000)
         }
       },
@@ -193,7 +193,7 @@
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
-              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
           }else {
             this.$parent.loading.show = false

@@ -55,7 +55,8 @@ export default {
       sendVerifyCode: '',
       disabled: false,
       count: 60,
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      ran: ''
     }
   },
   created () {
@@ -89,9 +90,9 @@ export default {
           localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
           localStorage.token = response.data.result.token
           if (utils.getUrlParam('fromUrl')) {
-            window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+            window.goPage(decodeURIComponent(utils.getUrlParam('fromUrl')))
           }else {
-            window.location.href = 'main.html'
+            window.goPage('main.html')
           }
         }else {
           toast(response.data.message)
@@ -105,7 +106,8 @@ export default {
     changeCodeImage (e) {
       let self = this
       e.preventDefault()
-      self.codeImage = window.ctx + '/api/customer/picVerifyCode' + '?c=' + new Date().getTime()
+      this.ran = Math.random()
+      self.codeImage = window.ctx + '/api/customer/picVerifyCode' + '?c=' + this.ran
     },
     getVerifyCode () {
       let self = this
@@ -122,7 +124,7 @@ export default {
         return
       }
       self.disabled = true
-      self.$http.post(window.ctx + '/api/customer/sendVerifyCode', {picText: self.imageCode, mobile: self.phone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/sendVerifyCode', {picText: self.imageCode, c: this.ran, mobile: self.phone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}).then((response) => {
         let res = response.data
         if (res.code === 0) {
           toast('发送成功')

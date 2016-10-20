@@ -132,7 +132,7 @@ export default {
             if (res.code === 10007) {
               toast('登录已过期，请重新登录')
               setTimeout(function () {
-                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }
             if (pageNo === 1) {
@@ -146,7 +146,7 @@ export default {
       }else {
         toast('请先登录')
         setTimeout(function () {
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
         }, 1000)
       }
     },
@@ -201,7 +201,7 @@ export default {
       })
     },
     useCoupon (couponId, applyShop) {
-      window.location.href = 'apointment.html?couponId=' + couponId
+      window.goPage('apointment.html?couponId=' + couponId)
     },
     exchangeCoupon () {
       this.exchangeModal = true

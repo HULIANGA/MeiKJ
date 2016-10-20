@@ -144,7 +144,7 @@
       self.token = localStorage.token
       if (!self.token) {
         toast('请先登录')
-        window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+        window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
       }else {
         self.$http.post(window.ctx + '/api/customer/t/detail', { }, {headers: {token: self.token}}).then((response) => {
           let res = response.data
@@ -153,7 +153,7 @@
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
-              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
           }
         })
@@ -212,7 +212,7 @@
           } else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
-              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
           } else {
             toast(res.message)
@@ -224,7 +224,7 @@
       logout () {
         localStorage.setItem('token', '')
         self.token = localStorage.getItem('token')
-        window.location.href = 'main.html'
+        window.goPage('main.html')
       },
       avaChange (e) {
         let files = e.target.files || e.dataTransfer.files

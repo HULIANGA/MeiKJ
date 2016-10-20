@@ -262,7 +262,7 @@ export default {
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
-              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
           }else {
             toast('获取可用优惠券失败')
@@ -274,7 +274,7 @@ export default {
       }else {
         toast('请先登录')
         setTimeout(function () {
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
         }, 1000)
       }
     }

@@ -126,18 +126,18 @@ export default {
           self.loading.show = false
           if (res.code === 0) {
             toast('评价成功')
-            window.location.href = 'myOrder.html'
+            window.goPage('myOrder.html')
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
-              window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
           }
         })
       }else {
         toast('请先登录')
         setTimeout(function () {
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
         }, 1000)
       }
     },

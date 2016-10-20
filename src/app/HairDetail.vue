@@ -67,7 +67,7 @@ export default {
         }else if (res.code === 10007) {
           toast('登录已过期')
           setTimeout(function () {
-            window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+            window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
           }, 1000)
         }
       })
@@ -79,18 +79,18 @@ export default {
       this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
         let res = response.data
         if (res.code === 0) {
-          window.location.href = 'apointment.html'
+          window.goPage('apointment.html')
         }else {
           this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
             if (response.data.code === 0) {
               localStorage.loginid = response.data.result.id
               localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
               localStorage.token = response.data.result.token
-              window.location.href = 'apointment.html'
+              window.goPage('apointment.html')
             } else {
               toast('请先登录')
               setTimeout(function () {
-                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }
           })
@@ -98,7 +98,7 @@ export default {
       }, function () {
         toast('请先登录')
         setTimeout(function () {
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
         }, 1000)
       })
     },
@@ -116,7 +116,7 @@ export default {
             }else if (res.code === 10007) {
               toast('登录已过期，请重新登录')
               setTimeout(function () {
-                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }else {
               self.loading.show = false
@@ -136,7 +136,7 @@ export default {
             }else if (res.code === 10007) {
               toast('登录已过期，请重新登录')
               setTimeout(function () {
-                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }else {
               self.loading.show = false
@@ -150,7 +150,7 @@ export default {
       } else {
         toast('请先登录')
         setTimeout(function () {
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
         }, 1000)
       }
     },
@@ -168,7 +168,7 @@ export default {
             }else if (res.code === 10007) {
               toast('登录已过期，请重新登录')
               setTimeout(function () {
-                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }else {
               self.loading.show = false
@@ -188,7 +188,7 @@ export default {
             }else if (res.code === 10007) {
               toast('登录已过期，请重新登录')
               setTimeout(function () {
-                window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }else {
               self.loading.show = false
@@ -202,7 +202,7 @@ export default {
       } else {
         toast('请先登录')
         setTimeout(function () {
-          window.location.href = 'login.html?fromUrl=' + encodeURIComponent(window.location.href)
+          window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
         }, 1000)
       }
     }
