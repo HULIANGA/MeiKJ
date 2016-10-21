@@ -60,6 +60,12 @@ export default {
                 window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }
+          }, (response) => {
+            toast('请先登录')
+            setTimeout(function () {
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+              // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+            }, 1000)
           })
         }
       }, function () {

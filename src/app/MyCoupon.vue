@@ -86,7 +86,41 @@ export default {
     }
   },
   created () {
-    this.getCouponData(1)
+    let self = this
+    self.loading.show = true
+    this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+      let res = response.data
+      if (res.code === 0) {
+        self.getCouponData(1)
+      }else {
+        this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
+          if (res.code === 0) {
+            localStorage.loginid = response.data.result.id
+            localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
+            localStorage.token = response.data.result.token
+            self.getCouponData(1)
+          } else {
+            toast('请先登录')
+            setTimeout(function () {
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+            }, 1000)
+          }
+        }, (response) => {
+          toast('请先登录')
+          setTimeout(function () {
+            window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+            // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+          }, 1000)
+        })
+      }
+    }, function () {
+      toast('请先登录')
+      setTimeout(function () {
+        window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+        // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+      }, 1000)
+    })
+    // self.getCouponData(1)
   },
   ready: function () {
     let self = this

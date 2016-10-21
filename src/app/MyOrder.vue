@@ -81,7 +81,7 @@ export default {
       orderDetail: {},
       showDetail: false,
       state: 1,
-      token: '',
+      token: localStorage.token,
       currentPage: 1,
       pageSize: 10,
       hasMoreData: true
@@ -89,8 +89,44 @@ export default {
   },
   created () {
     let self = this
-    self.token = localStorage.getItem('token')
-    self.getOrder(1, 1, 10)
+    self.loading.show = true
+    this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+      let res = response.data
+      if (res.code === 0) {
+        self.token = localStorage.getItem('token')
+        self.getOrder(1, 1, 10)
+      }else {
+        this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
+          if (res.code === 0) {
+            localStorage.loginid = response.data.result.id
+            localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
+            localStorage.token = response.data.result.token
+            self.token = localStorage.getItem('token')
+            self.getOrder(1, 1, 10)
+          } else {
+            toast('请先登录')
+            setTimeout(function () {
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+            }, 1000)
+          }
+        }, (response) => {
+          toast('请先登录')
+          setTimeout(function () {
+            window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+            // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+          }, 1000)
+        })
+      }
+    }, function () {
+      toast('请先登录')
+      setTimeout(function () {
+        window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+        // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+      }, 1000)
+    })
+    // let self = this
+    // self.token = localStorage.getItem('token')
+    // self.getOrder(1, 1, 10)
   },
   ready: function () {
     let self = this

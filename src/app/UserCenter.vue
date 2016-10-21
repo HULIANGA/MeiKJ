@@ -131,7 +131,7 @@
           aboutUrl: 'aboutUs.html',
           salesUrl: 'afterSale.html'
         },
-        token: '',
+        token: localStorage.token,
         phoneModal: false,
         phoneNum: '',
         verifyCode: '',
@@ -141,25 +141,62 @@
     },
     created () {
       let self = this
-      self.token = localStorage.token
-      if (!self.token) {
-        toast('请先登录')
-        window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-      }else {
-        self.$http.post(window.ctx + '/api/customer/t/detail', { }, {headers: {token: self.token}}).then((response) => {
-          let res = response.data
-          if (res.code === 0) {
-            self.$set('userInfo', res.result)
-          }else if (res.code === 10007) {
-            toast('登录已过期，请重新登录')
+      self.loading.show = true
+      this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+        let res = response.data
+        if (res.code === 0) {
+          self.goJumping()
+        }else {
+          this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
+            if (res.code === 0) {
+              localStorage.loginid = response.data.result.id
+              localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
+              localStorage.token = response.data.result.token
+              self.goJumping()
+            } else {
+              toast('请先登录')
+              setTimeout(function () {
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+              }, 1000)
+            }
+          }, (response) => {
+            toast('请先登录')
             setTimeout(function () {
               window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+              // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
-          }
-        })
-      }
+          })
+        }
+      }, function () {
+        toast('请先登录')
+        setTimeout(function () {
+          window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+          // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+        }, 1000)
+      })
+      // self.goJumping()
     },
     methods: {
+      goJumping () {
+        let self = this
+        self.token = localStorage.token
+        if (!self.token) {
+          toast('请先登录')
+          window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+        }else {
+          self.$http.post(window.ctx + '/api/customer/t/detail', { }, {headers: {token: self.token}}).then((response) => {
+            let res = response.data
+            if (res.code === 0) {
+              self.$set('userInfo', res.result)
+            }else if (res.code === 10007) {
+              toast('登录已过期，请重新登录')
+              setTimeout(function () {
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+              }, 1000)
+            }
+          })
+        }
+      },
       getVerifyCode () {
         let self = this
         if (self.phoneNum.trim() === '') {

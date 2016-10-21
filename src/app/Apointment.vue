@@ -59,20 +59,41 @@ export default {
   },
   computed: {},
   created: function () {
-    if (window.location.hash !== '') {
-      window.location.hash = ''
-    }
-    let requestData = {}
-    if (utils.getUrlParam('shopId')) {
-      requestData.shopId = utils.getUrlParam('shopId')
-    }
-    if (utils.getUrlParam('personId')) {
-      requestData.barberId = utils.getUrlParam('personId')
-    }
-    if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
-      requestData.couponId = utils.getUrlParam('couponId')
-    }
-    this.getProject(requestData)
+    let self = this
+    self.loading.show = true
+    this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+      let res = response.data
+      if (res.code === 0) {
+        // window.goPage(url)
+        self.goAnother()
+      }else {
+        this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
+          if (res.code === 0) {
+            localStorage.loginid = response.data.result.id
+            localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
+            localStorage.token = response.data.result.token
+            self.goAnother()
+          } else {
+            toast('请先登录')
+            setTimeout(function () {
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+            }, 1000)
+          }
+        }, (response) => {
+          toast('请先登录')
+          setTimeout(function () {
+            window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+            // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+          }, 1000)
+        })
+      }
+    }, function () {
+      toast('请先登录')
+      setTimeout(function () {
+        window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+        // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+      }, 1000)
+    })
   },
   ready: function () {
     var self = this
@@ -194,6 +215,22 @@ export default {
     }
   },
   methods: {
+    goAnother: function () {
+      if (window.location.hash !== '') {
+        window.location.hash = ''
+      }
+      let requestData = {}
+      if (utils.getUrlParam('shopId')) {
+        requestData.shopId = utils.getUrlParam('shopId')
+      }
+      if (utils.getUrlParam('personId')) {
+        requestData.barberId = utils.getUrlParam('personId')
+      }
+      if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
+        requestData.couponId = utils.getUrlParam('couponId')
+      }
+      this.getProject(requestData)
+    },
     getProject: function (requestData) {// 获取项目列表
       this.loading.show = true
       this.$http.get(window.ctx + '/api/order/selectProject', requestData).then(function (response) {
