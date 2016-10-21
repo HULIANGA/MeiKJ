@@ -60,6 +60,20 @@ export default {
     }
   },
   created () {
+    this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+      let res = response.data
+      if (res.code === 0) {
+        window.location.href = 'main.html'
+      }else {
+        this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
+          if (res.code === 0) {
+            window.location.href = 'main.html'
+          }
+        }, (response) => {
+        })
+      }
+    }, function () {
+    })
     this.changeCodeImage()
   },
   computed: {
