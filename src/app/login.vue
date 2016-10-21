@@ -86,19 +86,19 @@ export default {
       self.loading.show = true
       self.$http.post(window.ctx + '/api/customer/codeLogin', {mobile: self.phone}, {headers: {code: self.sendVerifyCode}}).then((response) => {
         if (response.data.code === 0) {
-          localStorage.loginid = response.data.result.id
+					localStorage.loginid = response.data.result.id
           localStorage.loginphone = this.phone
           localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
           localStorage.token = response.data.result.token
-          if (utils.getUrlParam('fromUrl')) {
-						window.location.href = 'decodeURIComponent(utils.getUrlParam('fromUrl'))'
-          }else {
-            window.location.href = 'main.html'
-          }
-        }else {
-          toast(response.data.message)
+					if (utils.getUrlParam('fromUrl')) {
+						window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+					}else {
+						window.location.href = 'main.html'
+					}
+				}else {
+					toast(response.data.message)
           self.loading.show = false
-        }
+				}
       }, (response) => {
         toast('登录失败')
         self.loading.show = false
