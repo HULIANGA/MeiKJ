@@ -44,6 +44,7 @@
         </div>
       </div>
     </detail-modal>
+    <dialog :show.sync="dialog.show" :title="dialog.title" :is-B.sync="dialog.isB" :ok-text="dialog.okText" :cancel-text="dialog.cancelText" :callback="dialog.callback"></dialog>
   </div>
 </template>
 <script>
@@ -53,11 +54,19 @@ import NoResult from '../components/NoResult'
 import DetailModal from '../components/DetailModal'
 import toast from '../js/toast'
 import utils from '../js/utils'
+import Dialog from '../components/Dialog'
 export default {
   data () {
     return {
       loading: {
         show: true
+      },
+      dialog: {
+        isB: true,
+        show: false,
+        title: '',
+        cancelText: '确定',
+        callback: null
       },
       searchItems: {
         filters: []
@@ -83,6 +92,7 @@ export default {
     this.getProjectList()
     // 获取优惠券列表
     this.getCouponFirstList()
+    // this.dialog.button.mystyle.display = 'none'
   },
   ready: function () {
     let self = this
@@ -227,14 +237,16 @@ export default {
           let res = response.data
           self.loading.show = false
           if (res.code === 0) {
-            toast('领取成功，请到“我的>我的优惠券”使用')
+            self.dialog.show = true
+            self.dialog.title = res.message
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
               window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
           }else {
-            toast(res.message)
+            self.dialog.show = true
+            self.dialog.title = res.message
           }
         }, (response) => {
           self.loading.show = false
@@ -262,7 +274,8 @@ export default {
     Loading,
     NoResult,
     DetailModal,
-    HeadFilter
+    HeadFilter,
+    Dialog
   }
 }
 </script>

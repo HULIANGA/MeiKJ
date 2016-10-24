@@ -15,7 +15,7 @@
   					</div>
           </slot>
 
-					<div class="dialog-footer">
+					<div class="dialog-footer" :class="{ 'btn-close-hide': isB}">
 						<button type="button" class="btn btn-ok" v-on:click="callback">{{ okText}}</button>
 						<button type="button" class="btn btn-close" v-on:click="close">{{ cancelText}}</button>
 					</div>
@@ -26,6 +26,7 @@
 <script>
 export default {
   props: {
+    isB: false,
     okText: {
       type: String,
       default: ''
@@ -182,5 +183,12 @@ export default {
   background-color:#fff;
   color: #333;
 	border:1px solid #eaeaea;
+}
+.dialog-footer.btn-close-hide .btn-ok {
+  display: none;
+}
+.dialog-footer.btn-close-hide .btn-close {
+  background-color: #ff6251;
+  color: white
 }
 </style>
