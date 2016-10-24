@@ -74,6 +74,9 @@ export default {
       }, function (response) {
         this.$parent.$parent.loading.show = true
       })
+    },
+    'reset-select-time': function () {
+      this.currentIndex = []
     }
   },
   computed: {

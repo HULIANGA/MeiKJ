@@ -32,6 +32,35 @@ export default {
   },
   computed: {
     dateItems: function () {
+      return this.dateSet()
+    }
+  },
+  events: {
+    'time-show': function () {
+      /* eslint-disable no-new */
+      this.$nextTick(function () {
+        new Swiper('.swiper-container', {
+          prevButton: '.swiper-button-prev',
+          nextButton: '.swiper-button-next'
+        })
+      })
+    },
+    'date-set': function () {
+      this.currentIndex = 0
+      this.dateItems = this.dateSet()
+    }
+  },
+  ready () {
+
+  },
+  methods: {
+    selectDay: function (index, time) {
+      if (this.currentIndex !== index) {
+        this.currentIndex = index
+        this.$dispatch('select-date', time)
+      }
+    },
+    dateSet: function () {
       let dateItems = []
       let weeks = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
       let nowDate = new Date()
@@ -52,28 +81,6 @@ export default {
         dateItems.push(dayItem)
       }
       return dateItems
-    }
-  },
-  events: {
-    'time-show': function () {
-      /* eslint-disable no-new */
-      this.$nextTick(function () {
-        new Swiper('.swiper-container', {
-          prevButton: '.swiper-button-prev',
-          nextButton: '.swiper-button-next'
-        })
-      })
-    }
-  },
-  ready () {
-
-  },
-  methods: {
-    selectDay: function (index, time) {
-      if (this.currentIndex !== index) {
-        this.currentIndex = index
-        this.$dispatch('select-date', time)
-      }
     }
   }
 }

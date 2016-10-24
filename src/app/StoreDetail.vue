@@ -129,7 +129,7 @@
                 localStorage.loginid = response.data.result.id
                 localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
                 localStorage.token = response.data.result.token
-                window.goPage('apointment.html?shopId=' + this.storeDetail.id + '&shopName=' + this.storeDetail.name)
+                window.goPage('apointment.html?shopId=' + this.storeDetail.id + '&shopName=' + encodeURIComponent(this.storeDetail.name))
               } else {
                 toast('请先登录')
                 setTimeout(function () {
