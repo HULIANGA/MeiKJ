@@ -238,7 +238,8 @@ export default {
           self.loading.show = false
           if (res.code === 0) {
             self.dialog.show = true
-            self.dialog.title = res.message
+            let messageArray = res.message.split('，')
+            self.dialog.title = '<p>' + messageArray[0] + '，' + '</p>' + '<p>' + messageArray[1] + '</p>'
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
@@ -246,7 +247,8 @@ export default {
             }, 1000)
           }else {
             self.dialog.show = true
-            self.dialog.title = res.message
+            let messageArray = res.message.split('，')
+            self.dialog.title = '<p>' + messageArray[0] + '，' + '</p>' + '<p>' + messageArray[1] + '</p>'
           }
         }, (response) => {
           self.loading.show = false

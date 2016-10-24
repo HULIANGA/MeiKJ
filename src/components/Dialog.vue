@@ -4,11 +4,11 @@
 				<div class="dialog-content">
           <slot name="dialog-header">
             <div class="dialog-header">
-  						<button type="button" class="close" v-on:click="close"><span>&times;</span><span class="sr-only">Close</span></button>
+  						<!-- <button type="button" class="close" v-on:click="close"><span>&times;</span><span class="sr-only">Close</span></button> -->
   						<h4 class="dialog-title" id="myModalLabel">
                 <span id="prompt_title">
                   <slot name="title">
-                    {{ title }}
+                    {{{ title }}}
                   </slot>
                 </span>
               </h4>
@@ -136,7 +136,7 @@ export default {
 }
 .dialog-title {
   margin: 0;
-  font-size: 17px;
+  font-size: 14px;
   line-height: 1.428571429;
   color:#767676;
 	text-align:center;
