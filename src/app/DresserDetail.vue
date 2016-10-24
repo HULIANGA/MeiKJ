@@ -129,7 +129,7 @@
                 'apointment.html?personId=' + this.hairDresser.id +
                 '&personName=' + this.hairDresser.stageName +
                 '&shopId=' + this.hairDresser.shopId +
-                '&shopName=' + this.hairDresser.shopName)
+                '&shopName=' + encodeURIComponent(this.hairDresser.shopName))
               } else {
                 toast('请先登录')
                 setTimeout(function () {
