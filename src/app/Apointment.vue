@@ -255,6 +255,9 @@ export default {
       })
     },
     getTime: function (requestData) {
+      if (utils.getUrlParam('couponId')) {
+        requestData.couponId = utils.getUrlParam('couponId')
+      }
       this.$broadcast('get-time-list', requestData)
     },
     getPerson: function (requestData) {

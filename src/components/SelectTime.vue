@@ -28,7 +28,8 @@ export default {
         shopId: this.shopid,
         barberId: utils.getUrlParam('personId') ? utils.getUrlParam('personId') : '',
         date: date,
-        positionId: this.$parent.positionId
+        positionId: this.$parent.positionId,
+        couponId: utils.getUrlParam('couponId') ? utils.getUrlParam('couponId') : ''
       })
     }
   },
