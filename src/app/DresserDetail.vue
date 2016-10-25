@@ -116,9 +116,9 @@
           if (res.code === 0) {
             window.goPage(
             'apointment.html?personId=' + this.hairDresser.id +
-            '&personName=' + this.hairDresser.stageName +
+            '&personName=' + encodeURIComponent(this.hairDresser.stageName) +
             '&shopId=' + this.hairDresser.shopId +
-            '&shopName=' + this.hairDresser.shopName)
+            '&shopName=' + encodeURIComponent(this.hairDresser.shopName))
           }else {
             this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
               if (response.data.code === 0) {
@@ -127,7 +127,7 @@
                 localStorage.token = response.data.result.token
                 window.goPage(
                 'apointment.html?personId=' + this.hairDresser.id +
-                '&personName=' + this.hairDresser.stageName +
+                '&personName=' + encodeURIComponent(this.hairDresser.stageName) +
                 '&shopId=' + this.hairDresser.shopId +
                 '&shopName=' + encodeURIComponent(this.hairDresser.shopName))
               } else {
