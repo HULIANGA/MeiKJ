@@ -31,6 +31,7 @@ export default {
         positionId: this.$parent.positionId,
         couponId: utils.getUrlParam('couponId') ? utils.getUrlParam('couponId') : ''
       })
+      this.$broadcast('reset-select-time')
     }
   },
   created () {
