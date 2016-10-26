@@ -236,11 +236,7 @@ export default {
         self.$http.post(window.ctx + '/api/coupon/t/receive', {couponId: couponId}, {headers: {token: self.token}}).then((response) => {
           let res = response.data
           self.loading.show = false
-          if (res.code === 0) {
-            self.dialog.show = true
-            let messageArray = res.message.split('，')
-            self.dialog.title = '<p>' + messageArray[0] + '，' + '</p>' + '<p>' + messageArray[1] + '</p>'
-          }else if (res.code === 10007) {
+          if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
               window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
@@ -248,7 +244,14 @@ export default {
           }else {
             self.dialog.show = true
             let messageArray = res.message.split('，')
-            self.dialog.title = '<p>' + messageArray[0] + '，' + '</p>' + '<p>' + messageArray[1] + '</p>'
+            self.dialog.title = ''
+            for (var i = 0; i < messageArray.length; i++) {
+              if (i === messageArray.length - 1) {
+                self.dialog.title += '<p>' + messageArray[i] + '</p>'
+              }else {
+                self.dialog.title += '<p>' + messageArray[i] + '，</p>'
+              }
+            }
           }
         }, (response) => {
           self.loading.show = false
@@ -262,6 +265,7 @@ export default {
       }
     },
     showCouponDetail (couponId) {
+      debugger
       let self = this
       self.$http.post(window.ctx + '/api/coupon/detail', {couponId: couponId}).then((response) => {
         let res = response.data
