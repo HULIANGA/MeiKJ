@@ -122,7 +122,7 @@
         this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
           let res = response.data
           if (res.code === 0) {
-            window.goPage('apointment.html?shopId=' + this.storeDetail.id + '&shopName=' + this.storeDetail.name)
+            window.goPage('apointment.html?shopId=' + this.storeDetail.id + '&shopName=' + encodeURIComponent(this.storeDetail.name))
           }else {
             this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
               if (response.data.code === 0) {
