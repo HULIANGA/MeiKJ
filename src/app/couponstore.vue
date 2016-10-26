@@ -241,6 +241,11 @@ export default {
             setTimeout(function () {
               window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
+          }else if (res.code === 10008) {
+            toast('请先登录')
+            setTimeout(function () {
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+            }, 1000)
           }else {
             self.dialog.show = true
             let messageArray = res.message.split('，')
@@ -265,7 +270,6 @@ export default {
       }
     },
     showCouponDetail (couponId) {
-      debugger
       let self = this
       self.$http.post(window.ctx + '/api/coupon/detail', {couponId: couponId}).then((response) => {
         let res = response.data
