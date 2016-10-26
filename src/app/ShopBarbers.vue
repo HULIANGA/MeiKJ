@@ -38,23 +38,6 @@
       }
     },
     created () {
-      // let self = this
-      // let _shopId = utils.getUrlParam('id')
-      // self.shopId = _shopId
-      // self.$http.get(window.ctx + '/api/shop/barberList', {shopId: self.shopId, pageNo: 1}).then((response) => {
-      //   self.loading.show = false
-      //   let res = response.data
-      //   if (res.code === 0) {
-      //     self.$set('items', res.result.result)
-      //     if (!res.result.result || res.result.result.length === 0) {
-      //       self.noresult = true
-      //     }
-      //   }else {
-      //     self.noresult = true
-      //   }
-      // }, (response) => {
-      //   self.loading.show = false
-      // })
       this.setFirstData()
     },
     ready: function () {
@@ -69,12 +52,7 @@
     methods: {
       setFirstData: function (requestData) {
         let self = this
-        // let extendRequestData = utils.extendObj(self.baseRequsetData, requestData)
-        // extendRequestData.pageNo = 1
-        // self.baseRequsetData = extendRequestData
         // 获取发型师列表
-        // let _shopId = utils.getUrlParam('id')
-        // self.baseRequsetData.shopId = _shopId
         self.$http.get(window.ctx + '/api/shop/barberList', self.baseRequsetData).then((response) => {
           document.querySelector('html').style.overflowY = 'auto'
           self.loading.show = false
@@ -102,8 +80,6 @@
       },
       setMoreData: function () {
         let self = this
-        // let _shopId = utils.getUrlParam('id')
-        // self.baseRequsetData.shopId = _shopId
         self.baseRequsetData.pageNo = self.baseRequsetData.pageNo + 1
         self.loading.show = true
         document.querySelector('html').style.overflowY = 'hidden'
