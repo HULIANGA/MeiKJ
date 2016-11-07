@@ -42,8 +42,6 @@ package.json            npm配置文件
 install dependencies
 npm install
 
-clean dist
-npm run clean
 
 build for production with minification
 npm run build
