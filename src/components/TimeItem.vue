@@ -101,7 +101,7 @@ export default {
     resetList: function () {
       for (let i = 0; i < this.timelist.length; i++) {
         if (i > (this.timelist.length - (this.costhours * 2))) { // 加上消耗的时间超过了结束时间，不可预约
-          this.timelist[i].status = 2
+          // this.timelist[i].status = 2
         }else {
           for (let j = 0; j < (this.costhours * 2); j++) { // 预约时间起之后costhour个小时有不可预约的时间，不可预约
             if (this.timelist[i].status === 0 && this.timelist[i + j].status !== 0) {
