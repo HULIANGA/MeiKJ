@@ -2,6 +2,11 @@
 window.ctx = '../..'
 /********************************* 图片路径 ************************************/
 window.imageDomain = 'http://meimeidou.qiniudn.com/'
+/*************************** 区分东瀛和美空间 ***********************************/
+// 美空间
+//window.systemType = 'MKJ'
+// 东瀛
+window.systemType = 'DY'
 /*************************** 页面跳转经过后台重定向 ******************************/
 // 本地
 var webOrigin = 'http://mkj001.bigaka.com/mkj'
@@ -15,7 +20,7 @@ var webPath = '/dist/html/'
 window.goPage = function (url) {
   window.location.href = webOrigin + '/main?param=' + encodeURIComponent(window.location.origin + webPath + url)
 }
-// javascript.js
+/**************************** GrowingIO统计代码 ********************************/
 var head = document.head || document.getElementsByTagName('head')[0];
 var script = document.createElement('script');
 script.innerHTML =

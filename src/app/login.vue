@@ -3,7 +3,8 @@
 </style>
 <template>
   <div class="login-page">
-    <img src="../assets/img/login-header.jpg">
+    <img v-if="systemType === 'MKJ'" src="../assets/img/login-header.jpg">
+    <img v-if="systemType === 'DY'" src="../assets/img/login-header-dy.jpg">
     <div class="login-body">
       <div class="input-item">
         <input style="display:none"><!-- for disable autocomplete on chrome -->
@@ -41,6 +42,7 @@ import Loading from '../components/Loading'
 export default {
   data () {
     return {
+      systemType: window.systemType,
       loading: {
         show: false
       },

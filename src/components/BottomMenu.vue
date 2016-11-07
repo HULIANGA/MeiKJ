@@ -2,7 +2,8 @@
   <div class="bottom-menu">
     <footer>
       <a :class="active === 'main' ? 'current' : ''" @click.prevent="goMain">首页</a>
-      <a href="https://app.dymkj.net/page/main.do?id=4430&salesid=&storeid=2056">商城</a>
+      <a v-if="systemType === 'MKJ'" href="https://app.dymkj.net/page/main.do?id=4430&salesid=&storeid=2056">商城</a>
+      <a v-if="systemType === 'DY'" @click.prevent="goCoupon">优惠</a>
       <a @click.prevent="goApointment" class="reserve"><span></span>预约</a>
       <a :class="active === 'order' ? 'current' : ''" @click.prevent="goOrder">订单</a>
       <a :class="active === 'usercenter' ? 'current' : ''" @click.prevent="goCenter">我的</a>
@@ -15,6 +16,7 @@ import toast from '../js/toast'
 export default {
   data () {
     return {
+      systemType: window.systemType,
       token: localStorage.token
     }
   },
@@ -22,6 +24,9 @@ export default {
     active: String
   },
   methods: {
+    goCoupon: function () {
+      window.goPage('couponStore.html')
+    },
     goMain: function () {
       if (this.active !== 'main') {
         window.goPage('main.html')

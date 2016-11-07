@@ -86,7 +86,8 @@
         <a :href="hairUrl">发型</a>
       </li>
       <li>
-        <a :href="couponUrl">优惠专区</a>
+        <a v-if="systemType === 'MKJ'" :href="couponUrl">优惠专区</a>
+        <a v-if="systemType === 'DY'" href="https://dy.dymkj.net/html/product_price_list">价目表</a>
       </li>
     </ul>
     <div class="change-city" @click="showCity">
@@ -99,6 +100,7 @@
 export default {
   data () {
     return {
+      systemType: window.systemType,
       storeUrl: 'allStore.html',
       barberUrl: 'allDresser.html',
       hairUrl: 'hairList.html',
