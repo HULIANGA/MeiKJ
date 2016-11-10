@@ -39,6 +39,11 @@ export default {
     }
   },
   created: function () {
+    if (window.systemType === 'MKJ') {
+      document.title = '美空间'
+    } else if (window.systemType === 'DY') {
+      document.title = '东瀛造型'
+    }
     let self = this
     // 百度地图api放在最后加载，判断api加载完成后获取城市
     let getCityInterval = setInterval(() => {

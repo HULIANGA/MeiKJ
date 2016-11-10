@@ -7,7 +7,7 @@
   <p class="del-info"><em>*</em>向左滑动可删除优惠券</p>
   <div class="coupon-item-wrap" v-for="(index,item) in items">
     <div class="behind">
-      <button class="btn btn-del" @click.prevent="delCoupon(item.id,$index)">删除</button>
+      <button class="btn btn-del" @click.prevent="delCoupon(item.customerCouponId,$index)">删除</button>
     </div>
     <div class="coupon-item" v-on:touchstart="touchStart" v-on:touchmove="touchMove" v-on:touchend="touchEnd">
       <div class="coupon-subitem" @click.prevent.stop="showCouponDetail(item.id)">
