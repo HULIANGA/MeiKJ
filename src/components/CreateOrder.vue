@@ -68,7 +68,7 @@
           <input type="radio" name="pay" v-model="order.orderSubmit.payType" value='1'>
         </div>
       </div>
-      <!-- <div class="o-pay-item">
+      <div class="o-pay-item">
         <div class="o-pay-hd">
           <img src="../assets/img/alipay.png">
         </div>
@@ -78,7 +78,7 @@
         <div class="o-pay-ft">
           <input type="radio" name="pay" v-model="order.orderSubmit.payType" value="2">
         </div>
-      </div> -->
+      </div>
     </div>
     <!-- remark -->
     <div class="order-remark">
@@ -116,10 +116,6 @@
     },
     methods: {
       submit: function () {
-        if (!this.isWeixin) {
-          toast('目前只支持微信环境支付')
-          // return false
-        }
         console.log(this.order.orderSubmit.productList)
         if (this.token) {
           if (!this.order.orderSubmit.customerName) {

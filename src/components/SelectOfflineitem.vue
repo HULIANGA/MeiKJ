@@ -52,6 +52,10 @@ export default {
   methods: {
     next: function () {
       if (document.querySelectorAll('.product-check:checked').length > 0) {
+        if (this.positionId.length > 1) {
+          toast('一次只能预约一个职位的服务')
+          return false
+        }
         this.$dispatch('next', {'fromStep': 'service', 'maxHours': this.maxHours, 'productItems': this.selectedItem, 'productIds': this.productIds, 'positionId': this.positionId[0]})
       }else {
         toast('请至少选择一个产品')
