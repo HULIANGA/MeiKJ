@@ -162,12 +162,21 @@
               let res = response.data
               if (res.code === 0) {
                 toast('订单提交成功，请在15分钟内完成付款')
-                self.$http.post(window.ctx + '/api/pay/wechat-pay', res.result, {headers: {token: self.token}, emulateJSON: true}).then(function (response) {
-                  window.location.href = response.data
-                }, function (response) {
-                  self.$parent.loading.show = false
-                  toast('支付失败')
-                })
+                if (this.order.orderSubmit.payType === '1' || this.order.orderSubmit.payType === 1) { // 微信支付
+                  this.$http.post(window.ctx + '/api/pay/wechat-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+                    window.location.href = response.data
+                  }, function (response) {
+                    this.$parent.loading.show = false
+                    toast('支付失败')
+                  })
+                }else if (this.order.orderSubmit.payType === '2' || this.order.orderSubmit.payType === 2) { // 支付宝支付
+                  this.$http.post(window.ctx + '/api/pay/ali-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+                    window.location.href = decodeURIComponent(response.data)
+                  }, function (response) {
+                    this.$parent.loading.show = false
+                    toast('支付失败')
+                  })
+                }
               }else if (res.code === 10007) {
                 toast('登录已过期，请重新登录')
                 setTimeout(function () {
