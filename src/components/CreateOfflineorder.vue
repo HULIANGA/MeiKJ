@@ -35,7 +35,7 @@
           <input type="tel" v-model="order.orderSubmit.customerPhone" placeholder="请输入您的手机号码">
         </div>
       </div>
-      <div class="user-info-item img-code-item" v-show="order.orderSubmit.customerPhone">
+      <div v-if="!hasLogin" class="user-info-item img-code-item" v-show="order.orderSubmit.customerPhone">
         <div class="user-info-hd">
           <label>图片验证：</label>
         </div>
@@ -44,7 +44,7 @@
           <img class="checkCodeImage" @click.prevent="changeCodeImage" :src="codeImage" alt="看不清?点击图片换一张">
         </div>
       </div>
-      <div class="user-info-item msg-code-item" v-show="order.orderSubmit.customerPhone">
+      <div v-if="!hasLogin" class="user-info-item msg-code-item" v-show="order.orderSubmit.customerPhone">
         <div class="user-info-hd">
           <label>短信验证：</label>
         </div>
@@ -104,12 +104,14 @@
 <script>
   import utils from '../js/utils'
   import toast from '../js/toast'
+  import autoLogin from '../js/autoLogin'
 
   export default {
     data () {
       return {
         isWeixin: /MicroMessenger/i.test(navigator.userAgent),
         token: localStorage.token,
+        hasLogin: false,
         codeImage: '',
         imageCode: '',
         ran: '',
@@ -117,6 +119,33 @@
         disabled: false,
         count: 60
       }
+    },
+    created () {
+      var self = this
+      self.$parent.loading.show = true
+      self.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: self.token}}).then(function (response) {
+        var res = response.data
+        if (res.code === 0) {
+          self.$parent.loading.show = false
+          self.hasLogin = true
+        } else {
+          autoLogin.login({
+            component: self,
+            yCallback: function () {
+              self.$parent.loading.show = false
+              self.hasLogin = true
+              self.token = localStorage.token
+            },
+            nCallback: function () {
+              self.$parent.loading.show = false
+              self.hasLogin = false
+            }
+          })
+        }
+      }, function (response) {
+        self.hasLogin = false
+        self.$parent.loading.show = false
+      })
     },
     ready () {
       this.changeCodeImage()
@@ -132,71 +161,86 @@
           toast('请输入手机号')
           return
         }
-        if (self.imageCode.trim() === '') {
-          toast('请输入图片验证码')
-          return
-        }
-        if (self.sendVerifyCode.trim() === '') {
-          toast('请输入验证码')
-          return
+        if (!self.hasLogin) { // 未登录下单
+          if (self.imageCode.trim() === '') {
+            toast('请输入图片验证码')
+            return
+          }
+          if (self.sendVerifyCode.trim() === '') {
+            toast('请输入验证码')
+            return
+          }
         }
         if (!utils.getCheck.checkPhone(self.order.orderSubmit.customerPhone.trim())) {
           toast('请输入正确的手机号')
           return
         }
         self.$parent.loading.show = true
-        self.$http.post(window.ctx + '/api/customer/codeLogin', {mobile: self.order.orderSubmit.customerPhone}, {headers: {code: self.sendVerifyCode}, emulateJSON: true}).then((response) => {
-          if (response.data.code === 0) {
-            localStorage.loginid = response.data.result.id
-            localStorage.loginphone = self.order.orderSubmit.customerPhone
-            localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
-            self.token = localStorage.token = response.data.result.token
-            self.$parent.loading.show = true
-            if (self.order.orderSubmit.realPrice === 0) {
-              self.order.orderSubmit.realPrice = 0.01
-            }
-            if (self.order.orderSubmit.price === 0) {
-              self.order.orderSubmit.price = 0.01
-            }
-            self.$http.post(window.ctx + '/api/order/t/saveOfflineOrder', self.order.orderSubmit, {headers: {token: self.token}}).then(function (response) {
-              let res = response.data
-              if (res.code === 0) {
-                toast('订单提交成功，请在15分钟内完成付款')
-                if (this.order.orderSubmit.payType === '1' || this.order.orderSubmit.payType === 1) { // 微信支付
-                  this.$http.post(window.ctx + '/api/pay/wechat-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
-                    window.location.href = response.data
-                  }, function (response) {
-                    this.$parent.loading.show = false
-                    toast('支付失败')
-                  })
-                }else if (this.order.orderSubmit.payType === '2' || this.order.orderSubmit.payType === 2) { // 支付宝支付
-                  this.$http.post(window.ctx + '/api/pay/ali-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
-                    window.location.href = decodeURIComponent(response.data)
-                  }, function (response) {
-                    this.$parent.loading.show = false
-                    toast('支付失败')
-                  })
-                }
-              }else if (res.code === 10007) {
-                toast('登录已过期，请重新登录')
-                setTimeout(function () {
-                  window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-                }, 1000)
-              }else {
-                self.$parent.loading.show = false
-                toast('订单提交失败')
+        if (!self.hasLogin) { // 未登录下单
+          self.$http.post(window.ctx + '/api/customer/codeLogin', {mobile: self.order.orderSubmit.customerPhone}, {headers: {code: self.sendVerifyCode}, emulateJSON: true}).then((response) => {
+            if (response.data.code === 0) {
+              localStorage.loginid = response.data.result.id
+              localStorage.loginphone = self.order.orderSubmit.customerPhone
+              localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
+              self.token = localStorage.token = response.data.result.token
+              if (self.order.orderSubmit.realPrice === 0) {
+                self.order.orderSubmit.realPrice = 0.01
               }
-            }, function (response) {
+              if (self.order.orderSubmit.price === 0) {
+                self.order.orderSubmit.price = 0.01
+              }
+              self.saveOrder()
+            }else {
+              toast(response.data.message)
               self.$parent.loading.show = false
-              toast('订单提交失败')
-            })
-          }else {
-            toast(response.data.message)
+            }
+          }, (response) => {
+            toast('登录失败')
             self.$parent.loading.show = false
+          })
+        } else { // 已登录下单
+          if (self.order.orderSubmit.realPrice === 0) {
+            self.order.orderSubmit.realPrice = 0.01
           }
-        }, (response) => {
-          toast('登录失败')
+          if (self.order.orderSubmit.price === 0) {
+            self.order.orderSubmit.price = 0.01
+          }
+          self.saveOrder()
+        }
+      },
+      saveOrder () {
+        var self = this
+        self.$http.post(window.ctx + '/api/order/t/saveOfflineOrder', self.order.orderSubmit, {headers: {token: self.token}}).then(function (response) {
+          let res = response.data
+          if (res.code === 0) {
+            toast('订单提交成功，请在15分钟内完成付款')
+            if (this.order.orderSubmit.payType === '1' || this.order.orderSubmit.payType === 1) { // 微信支付
+              this.$http.post(window.ctx + '/api/pay/wechat-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+                window.location.href = response.data
+              }, function (response) {
+                this.$parent.loading.show = false
+                toast('支付失败')
+              })
+            }else if (this.order.orderSubmit.payType === '2' || this.order.orderSubmit.payType === 2) { // 支付宝支付
+              this.$http.post(window.ctx + '/api/pay/ali-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+                window.location.href = decodeURIComponent(response.data)
+              }, function (response) {
+                this.$parent.loading.show = false
+                toast('支付失败')
+              })
+            }
+          }else if (res.code === 10007) {
+            toast('登录已过期，请重新登录')
+            setTimeout(function () {
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+            }, 1000)
+          }else {
+            self.$parent.loading.show = false
+            toast('订单提交失败')
+          }
+        }, function (response) {
           self.$parent.loading.show = false
+          toast('订单提交失败')
         })
       },
       getVerifyCode () {
