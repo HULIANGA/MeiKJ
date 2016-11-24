@@ -57,6 +57,7 @@
   import Loading from '../components/Loading'
   import utils from '../js/utils'
   import toast from '../js/toast'
+  import autoLogin from '../js/autoLogin'
 
   export default {
     data () {
@@ -120,22 +121,16 @@
             '&shopId=' + this.hairDresser.shopId +
             '&shopName=' + encodeURIComponent(this.hairDresser.shopName))
           }else {
-            this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
-              if (response.data.code === 0) {
-                localStorage.loginid = response.data.result.id
-                localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
-                localStorage.token = response.data.result.token
+            autoLogin.login({
+              component: this,
+              yCallback: function () {
                 window.goPage(
                 'apointment.html?personId=' + this.hairDresser.id +
                 '&personName=' + encodeURIComponent(this.hairDresser.stageName) +
                 '&shopId=' + this.hairDresser.shopId +
                 '&shopName=' + encodeURIComponent(this.hairDresser.shopName))
-              } else {
-                toast('请先登录')
-                setTimeout(function () {
-                  window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-                }, 1000)
-              }
+              },
+              nCallback: null
             })
           }
         }, function () {

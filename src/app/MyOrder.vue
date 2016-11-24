@@ -77,6 +77,7 @@ import Loading from '../components/Loading'
 import NoResult from '../components/NoResult'
 import toast from '../js/toast'
 import Dialog from '../components/Dialog'
+import autoLogin from '../js/autoLogin'
 
 export default {
   data () {
@@ -113,25 +114,12 @@ export default {
         self.token = localStorage.getItem('token')
         self.getOrder(1, 1, 10)
       }else {
-        this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
-          if (res.code === 0) {
-            localStorage.loginid = response.data.result.id
-            localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
-            localStorage.token = response.data.result.token
-            self.token = localStorage.getItem('token')
+        autoLogin.login({
+          component: this,
+          yCallback: function () {
             self.getOrder(1, 1, 10)
-          } else {
-            toast('请先登录')
-            setTimeout(function () {
-              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-            }, 1000)
-          }
-        }, (response) => {
-          toast('请先登录')
-          setTimeout(function () {
-            window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-            // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-          }, 1000)
+          },
+          nCallback: null
         })
       }
     }, function () {

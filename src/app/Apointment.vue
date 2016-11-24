@@ -18,6 +18,7 @@ import SelectCoupon from '../components/SelectCoupon'
 import Loading from '../components/Loading'
 import utils from '../js/utils'
 import toast from '../js/toast'
+import autoLogin from '../js/autoLogin'
 
 export default {
   data: function () {
@@ -64,34 +65,20 @@ export default {
     this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
       let res = response.data
       if (res.code === 0) {
-        // window.goPage(url)
         self.goAnother()
       }else {
-        this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
-          if (res.code === 0) {
-            localStorage.loginid = response.data.result.id
-            localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
-            localStorage.token = response.data.result.token
+        autoLogin.login({
+          component: this,
+          yCallback: function () {
             self.goAnother()
-          } else {
-            toast('请先登录')
-            setTimeout(function () {
-              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-            }, 1000)
-          }
-        }, (response) => {
-          toast('请先登录')
-          setTimeout(function () {
-            window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-            // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-          }, 1000)
+          },
+          nCallback: null
         })
       }
     }, function () {
       toast('请先登录')
       setTimeout(function () {
         window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-        // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
       }, 1000)
     })
   },

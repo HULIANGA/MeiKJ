@@ -38,6 +38,7 @@
 import toast from '../js/toast'
 import utils from '../js/utils'
 import Loading from '../components/Loading'
+import autoLogin from '../js/autoLogin'
 
 export default {
   data () {
@@ -63,15 +64,24 @@ export default {
   },
   created () {
     this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
-      let res = response.data
-      if (res.code === 0) {
-        window.location.href = 'main.html'
+      if (response.data.code === 0) {
+        if (utils.getUrlParam('fromUrl')) {
+          window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+        }else {
+          window.location.href = 'main.html'
+        }
       }else {
-        this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
-          if (res.code === 0) {
-            window.location.href = 'main.html'
+        autoLogin.login({
+          component: this,
+          yCallback: function () {
+            if (utils.getUrlParam('fromUrl')) {
+              window.location.href = decodeURIComponent(utils.getUrlParam('fromUrl'))
+            }else {
+              window.location.href = 'main.html'
+            }
+          },
+          nCallback: function () {
           }
-        }, (response) => {
         })
       }
     }, function () {

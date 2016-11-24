@@ -27,6 +27,7 @@
 import SwiperHair from '../components/SwiperHair'
 import Loading from '../components/Loading'
 import toast from '../js/toast'
+import autoLogin from '../js/autoLogin'
 
 export default {
   data () {
@@ -81,18 +82,12 @@ export default {
         if (res.code === 0) {
           window.goPage('apointment.html')
         }else {
-          this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
-            if (response.data.code === 0) {
-              localStorage.loginid = response.data.result.id
-              localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
-              localStorage.token = response.data.result.token
+          autoLogin.login({
+            component: this,
+            yCallback: function () {
               window.goPage('apointment.html')
-            } else {
-              toast('请先登录')
-              setTimeout(function () {
-                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-              }, 1000)
-            }
+            },
+            nCallback: null
           })
         }
       }, function () {

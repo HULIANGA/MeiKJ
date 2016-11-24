@@ -66,6 +66,8 @@ import Loading from '../components/Loading'
 import DetailModal from '../components/DetailModal'
 import Modal from '../components/Modal'
 import toast from '../js/toast'
+import autoLogin from '../js/autoLogin'
+
 export default {
   data () {
     return {
@@ -93,24 +95,12 @@ export default {
       if (res.code === 0) {
         self.getCouponData(1)
       }else {
-        this.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
-          if (res.code === 0) {
-            localStorage.loginid = response.data.result.id
-            localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
-            localStorage.token = response.data.result.token
+        autoLogin.login({
+          component: this,
+          yCallback: function () {
             self.getCouponData(1)
-          } else {
-            toast('请先登录')
-            setTimeout(function () {
-              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-            }, 1000)
-          }
-        }, (response) => {
-          toast('请先登录')
-          setTimeout(function () {
-            window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-            // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-          }, 1000)
+          },
+          nCallback: null
         })
       }
     }, function () {
