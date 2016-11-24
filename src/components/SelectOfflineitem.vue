@@ -97,6 +97,7 @@ export default {
           if (document.getElementsByClassName('product-check')[index].checked === true) {
             this.costHours.push(document.getElementsByClassName('product-check')[index].getAttribute('data-hours'))
             this.selectedItem.push({
+              'productId': document.getElementsByClassName('product-check')[index].getAttribute('data-id'),
               'productName': document.getElementsByClassName('product-check')[index].getAttribute('data-name'),
               'price': document.getElementsByClassName('product-check')[index].getAttribute('data-price')
             })
