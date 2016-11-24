@@ -163,23 +163,39 @@ export default {
           this.orderInfo.timeString = tempDateString + ' ' + tempTime
           this.orderInfo.orderSubmit.date = parseInt(tempDate, 10)
           this.orderInfo.orderSubmit.time = tempTime
+          window.location.hash = 'order'
+          this.$broadcast('date-set')
+          this.$broadcast('reset-select-time')
+          this.orderInfo.orderSubmit.price = 0
+          this.orderInfo.orderSubmit.realPrice = 0
+          for (let i = 0; i < this.orderInfo.orderSubmit.productList.length; i++) {
+            let productInfo = this.orderInfo.orderSubmit.productList[i]
+            this.orderInfo.orderSubmit.price += parseFloat(productInfo.price, 10)
+            this.orderInfo.orderSubmit.realPrice += parseFloat(productInfo.price, 10)
+          }
           if (utils.getUrlParam('personId')) { // 从发型师预约
-            window.location.hash = 'order'
-            this.$broadcast('date-set')
-            this.$broadcast('reset-select-time')
             this.orderInfo.orderSubmit.barberId = utils.getUrlParam('personId')
             this.orderInfo.barberName = decodeURIComponent(utils.getUrlParam('personName'))
-            this.orderInfo.orderSubmit.price = 0
-            this.orderInfo.orderSubmit.realPrice = 0
-            for (let i = 0; i < this.orderInfo.orderSubmit.productList.length; i++) {
-              let productInfo = this.orderInfo.orderSubmit.productList[i]
-              this.orderInfo.orderSubmit.price += parseFloat(productInfo.price, 10)
-              this.orderInfo.orderSubmit.realPrice += parseFloat(productInfo.price, 10)
-            }
             this.getAvilCoupon({'barberId': this.orderInfo.orderSubmit.barberId, 'productIds': this.orderInfo.productIds, 'money': this.orderInfo.orderSubmit.price})
-          }else {
-            window.location.hash = 'person'
-            this.getPerson({'date': parseInt(tempDate, 10), 'time': tempTime, 'hours': this.maxHours, shopId: this.shopId, 'positionId': this.positionId})
+          }else { // 自动选择发型师
+            this.loading.show = true
+            var requestData = {'date': parseInt(tempDate, 10), 'time': tempTime, 'hours': this.maxHours, shopId: this.shopId, 'positionId': this.positionId}
+            if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
+              requestData.couponId = utils.getUrlParam('couponId')
+            }
+            this.$http.post(window.ctx + '/api/order/t/chooseBarber', requestData, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+              this.loading.show = false
+              var res = response.data
+              if (res.code === 0) {
+                this.orderInfo.orderSubmit.barberId = res.result.id
+                this.orderInfo.barberName = res.result.stageName
+              }else {
+                toast('获取发型师失败')
+              }
+            }, function (response) {
+              this.loading.show = false
+              toast('获取发型师失败')
+            })
           }
         }else {
           toast('请选择时间')
