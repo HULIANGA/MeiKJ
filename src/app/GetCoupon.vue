@@ -46,7 +46,7 @@ export default {
     getCoupon () {
       var self = this
       if (utils.getUrlParam('couponId')) {
-        self.$http.post(window.ctx + '/api/coupon/t/receive', {couponId: utils.getUrlParam('couponId')}, {headers: {token: localStorage.token}}).then((response) => {
+        self.$http.post(window.ctx + '/api/coupon/t/receive', {couponId: utils.getUrlParam('couponId')}, {headers: {token: localStorage.token}, emulateJSON: true}).then((response) => {
           let res = response.data
           if (res.code === 10007) {
             toast('登录已过期，请重新登录')
@@ -59,8 +59,10 @@ export default {
               window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
           }else {
-            toast('领取成功')
-            window.goPage('userCenter.html')
+            toast(res.message)
+            setTimeout(function () {
+              window.goPage('userCenter.html')
+            }, 1500)
           }
         }, (response) => {
           self.loading.show = false
