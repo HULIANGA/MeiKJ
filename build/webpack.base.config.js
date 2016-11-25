@@ -9,8 +9,8 @@ var distPath = path.resolve(__dirname, '../dist'); //输出文件目录
 var entryPath = path.resolve(__dirname, '../src/entrys') //入口js目录
 
 // var resourcePath = 'http://172.26.64.12:8080/dist/'; //js和css的引用路径；开发debugger
-var resourcePath = 'http://192.168.1.138:8080/dist/'; //js和css的引用路径；开发debugger
-// var resourcePath = '../';//js和 css的引用路径；生产
+// var resourcePath = 'http://192.168.1.138:8080/dist/'; //js和css的引用路径；开发debugger
+var resourcePath = '../';//js和 css的引用路径；生产
 
 module.exports = {
   debug: true,
@@ -39,7 +39,8 @@ module.exports = {
     aboutUs: entryPath + '/aboutUs.js',
     afterSale: entryPath + '/afterSale.js',
     oldRegist: entryPath + '/oldRegist.js',
-    apointmentOffline: entryPath + '/apointmentOffline.js'
+    apointmentOffline: entryPath + '/apointmentOffline.js',
+    getCoupon: entryPath + '/getCoupon.js'
   },
   output: {
     path: distPath, //输出文件目录
@@ -194,6 +195,11 @@ module.exports = {
       template: 'src/html/apointmentOffline.html',
       filename: 'html/apointmentOffline.html',
       chunks: ['apointmentOffline']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/getCoupon.html',
+      filename: 'html/getCoupon.html',
+      chunks: ['getCoupon']
     })
   ],
   module: {
