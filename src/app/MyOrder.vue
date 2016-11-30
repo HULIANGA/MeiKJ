@@ -40,11 +40,11 @@
           <p v-if="orderDetail.offline === 0">{{new Date(orderDetail.date).getFullYear() + '-' + (new Date(orderDetail.date).getMonth() + 1) + '-' + new Date(orderDetail.date).getDate()}} {{orderDetail.time}}</p>
           <h5 v-if="orderDetail.offline === 1"><i></i>等候人数</h5>
           <p v-if="orderDetail.offline === 1">{{orderDetail.waitNum}}</p>
-          <div v-if="orderDetail.offline === 1 && orderDetail.processState === 2" class="inline col-50">
+          <div v-if="orderDetail.offline === 1 && (orderDetail.processState === 2 || orderDetail.processState === 0)" class="inline col-50">
             <h5><i></i>排队号码</h5>
             <p>{{orderDetail.queueNum}}号</p>
           </div>
-          <div v-if="orderDetail.offline === 1 && orderDetail.processState === 2" class="inline col-50">
+          <div v-if="orderDetail.offline === 1 && (orderDetail.processState === 2 || orderDetail.processState === 0)" class="inline col-50">
             <h5><i></i>验票码</h5>
             <p>{{orderDetail.checkCode}}</p>
           </div>
@@ -53,7 +53,7 @@
             <p>{{orderDetail.dealGroupCode}}</p>
           </div>
         </div>
-        <div v-if="orderDetail.offline === 1 && orderDetail.processState === 2" class="offline-order-detail">
+        <div v-if="orderDetail.offline === 1 && (orderDetail.processState === 2 || orderDetail.processState === 0)" class="offline-order-detail">
           <p>下单时间：{{new Date(orderDetail.updateTime).getFullYear() + '-' + (new Date(orderDetail.updateTime).getMonth() + 1) + '-' + new Date(orderDetail.updateTime).getDate()}}</p>
           <p>支付方式：{{orderDetail.payType === 1 ? '微信公众平台支付' : '支付宝支付'}}</p>
           <h5>服务时请向发型设计师出示验票码</h5>
