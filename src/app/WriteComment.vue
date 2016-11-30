@@ -119,6 +119,10 @@ export default {
         content: self.commentConent,
         photoList: self.photoList
       }
+      if (!self.commentConent) {
+        toast('请输入评价')
+        return false
+      }
       if (self.token) {
         self.loading.show = true
         self.$http.post(window.ctx + '/api/comment/t/save', comment, {headers: {token: self.token}}).then((response) => {
