@@ -147,7 +147,7 @@ body {
   content: '';
   position: absolute;
   bottom: -16px;
-  right: -6px;
+  right: -7px;
   width: 12px;
   height: 12px;
   border-radius: 50%;
