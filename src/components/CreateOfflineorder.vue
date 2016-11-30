@@ -24,7 +24,7 @@
           <label>真实姓名：</label>
         </div>
         <div class="user-info-bd">
-          <input type="text" v-model="order.orderSubmit.customerName" placeholder="请输入您的真实姓名">
+          <input type="text" v-model="order.orderSubmit.customerName" maxlength="10" placeholder="请输入您的真实姓名">
         </div>
       </div>
       <div class="user-info-item">
@@ -32,7 +32,7 @@
           <label>手机号码：</label>
         </div>
         <div class="user-info-bd">
-          <input type="tel" v-model="order.orderSubmit.customerPhone" placeholder="请输入您的手机号码">
+          <input type="tel" v-model="order.orderSubmit.customerPhone" maxlength="11" placeholder="请输入您的手机号码">
         </div>
       </div>
       <div v-if="!hasLogin" class="user-info-item img-code-item" v-show="order.orderSubmit.customerPhone">
@@ -84,7 +84,7 @@
     <div class="order-remark">
       <div class="order-remark-item">
         <div class="o-remark-bd">
-          <textarea rows="3" placeholder="在这里填上您的备注说明" v-model="order.orderSubmit.memo"></textarea>
+          <textarea rows="3" placeholder="在这里填上您的备注说明" maxlength="50" v-model="order.orderSubmit.memo"></textarea>
         </div>
       </div>
     </div>
