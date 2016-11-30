@@ -101,13 +101,16 @@ export default {
               'productName': document.getElementsByClassName('product-check')[index].getAttribute('data-name'),
               'price': document.getElementsByClassName('product-check')[index].getAttribute('data-price')
             })
-            this.positionId.push(document.getElementsByClassName('product-check')[index].getAttribute('data-position'))
+            let tempPositionId = document.getElementsByClassName('product-check')[index].getAttribute('data-position')
+            if (this.positionId.indexOf(tempPositionId) < 0) {
+              this.positionId.push(tempPositionId)
+            }
             checkedProjects.push(document.getElementsByClassName('product-check')[index].getAttribute('data-id'))
           }
         }
       }
       this.productIds = checkedProjects.join(',')
-      console.log(checkedProjects)
+      console.log(this.positionId)
     }
   },
   props: {
