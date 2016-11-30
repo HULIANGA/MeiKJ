@@ -53,7 +53,8 @@ export default {
           price: null, // 订单总额
           realPrice: null, // 实付金额
           memo: null, // 订单备注
-          couponId: null // 优惠券id
+          couponId: null, // 优惠券id
+          barberFirst: null // 是否从发型师预约，1是，0否
         }
       }
     }
@@ -61,6 +62,11 @@ export default {
   computed: {},
   created: function () {
     let self = this
+    if (utils.getUrlParam('personId')) {
+      self.barberFirst = 1
+    }else {
+      self.barberFirst = 0
+    }
     self.loading.show = true
     this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
       let res = response.data
