@@ -189,6 +189,7 @@ export default {
               if (res.code === 0) {
                 this.orderInfo.orderSubmit.barberId = res.result.id
                 this.orderInfo.barberName = res.result.stageName
+                this.getAvilCoupon({'barberId': this.orderInfo.orderSubmit.barberId, 'productIds': this.orderInfo.productIds, 'money': this.orderInfo.orderSubmit.price})
               }else {
                 toast('获取发型师失败')
               }
