@@ -153,10 +153,6 @@
     methods: {
       submit: function () {
         let self = this
-        if (!self.order.orderSubmit.customerName) {
-          toast('请填写您的姓名')
-          return
-        }
         if (self.order.orderSubmit.customerPhone.trim() === '') {
           toast('请输入手机号')
           return
