@@ -238,6 +238,7 @@ export default {
       }
       self.exchangeModal = false
       self.loading.show = true
+      debugger
       self.$http.post(window.ctx + '/api/coupon/t/exchange', {code: self.exchangeCode}, {headers: {token: self.token}, emulateJSON: true}).then((response) => {
         let res = response.data
         self.loading.show = false
@@ -248,6 +249,7 @@ export default {
           toast(res.message)
         }
       }, (response) => {
+        self.loading.show = false
         toast(response.data.message)
       })
     }
