@@ -63,9 +63,9 @@ export default {
   created: function () {
     let self = this
     if (utils.getUrlParam('personId')) {
-      self.barberFirst = 1
+      self.orderInfo.orderSubmit.barberFirst = 1
     }else {
-      self.barberFirst = 0
+      self.orderInfo.orderSubmit.barberFirst = 0
     }
     self.loading.show = true
     this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
