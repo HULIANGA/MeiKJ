@@ -54,7 +54,7 @@
           </div>
         </div>
         <div v-if="orderDetail.offline === 1 && (orderDetail.processState === 2 || orderDetail.processState === 0)" class="offline-order-detail">
-          <p>下单时间：{{new Date(orderDetail.updateTime).getFullYear() + '-' + (new Date(orderDetail.updateTime).getMonth() + 1) + '-' + new Date(orderDetail.updateTime).getDate()}}</p>
+          <p>下单时间：{{new Date(orderDetail.updateTime).getFullYear() + '-' + fixNum(new Date(orderDetail.updateTime).getMonth() + 1) + '-' + fixNum(new Date(orderDetail.updateTime).getDate()) + ' ' + fixNum(new Date(orderDetail.updateTime).getHours()) + ':' + fixNum(new Date(orderDetail.updateTime).getMinutes()) + ':' + fixNum(new Date(orderDetail.updateTime).getSeconds())}}</p>
           <p>支付方式：{{orderDetail.payType === 1 ? '微信公众平台支付' : '支付宝支付'}}</p>
           <h5>服务时请向发型设计师出示验票码</h5>
           <p class="tips">请于门店中心耐心排队</p>
@@ -144,6 +144,12 @@ export default {
     }
   },
   methods: {
+    fixNum (num) {
+      if (num < 10) {
+        num = 0 + num.toString()
+      }
+      return num
+    },
     handleLink (active) {
       let self = this
       let state
