@@ -8,7 +8,7 @@
       <span class="pull-l">预约项目：<span v-for="(index,pro) in item.productList" v-show="$index < 1">{{pro.productName}}<i v-show="item.productList.length > 1">...</i></span></span>
       <span v-if="item.offline === 0" class="pull-r">预约发型师：{{item.barberName}}</span>
     </p>
-    <p v-if="item.offline === 1">等待人数：{{item.waitNum}}</p>
+    <p v-if="item.offline === 1 && (item.processState === 1 || item.processState === 2 || item.processState === 0)">等待人数：{{item.waitNum}}</p>
     <div class="order-control">
       <div>
         <template v-if="item.processState === 1 || item.processState === 2 || item.processState === 0">
