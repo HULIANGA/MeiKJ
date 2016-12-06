@@ -15,6 +15,9 @@
           <button class="btn btn-default" @click.prevent.stop="cancelOrder(item.id,$index)">取消订单</button>
         </template>
       </div>
+      <div class="control-right" v-if="item.processState === 0">
+        <button class="btn btn-default" @click.prevent.stop="cancelOrder(item.id,$index)">取消订单</button>
+      </div>
       <div v-if="item.processState === 1">
           <button class="btn btn-primary" @click.prevent.stop="goPay(item)">去付款</button>
       </div>
