@@ -39,7 +39,7 @@
           <h5 v-if="orderDetail.offline === 0"><i></i>预约时间</h5>
           <p v-if="orderDetail.offline === 0">{{new Date(orderDetail.date).getFullYear() + '-' + (new Date(orderDetail.date).getMonth() + 1) + '-' + new Date(orderDetail.date).getDate()}} {{orderDetail.time}}</p>
           <h5 v-if="orderDetail.offline === 1 && (orderDetail.processState === 1 || orderDetail.processState === 2 || orderDetail.processState === 0)"><i></i>等候人数</h5>
-          <p v-if="orderDetail.offline === 1">{{orderDetail.waitNum}}</p>
+          <p v-if="orderDetail.offline === 1 && (orderDetail.processState === 1 || orderDetail.processState === 2 || orderDetail.processState === 0)">{{orderDetail.waitNum}}</p>
           <div v-if="orderDetail.offline === 1 && (orderDetail.processState === 2 || orderDetail.processState === 0)" class="inline col-50">
             <h5><i></i>排队号码</h5>
             <p>{{orderDetail.queueNum}}号</p>
