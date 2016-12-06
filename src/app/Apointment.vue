@@ -77,6 +77,8 @@ export default {
           component: this,
           yCallback: function () {
             self.goAnother()
+            self.orderInfo.orderSubmit.customerName = localStorage.loginname
+            self.orderInfo.orderSubmit.customerPhone = localStorage.loginphone
           },
           nCallback: null
         })

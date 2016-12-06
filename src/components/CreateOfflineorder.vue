@@ -135,6 +135,8 @@
               self.$parent.loading.show = false
               self.hasLogin = true
               self.token = localStorage.token
+              self.order.orderSubmit.customerPhone = localStorage.loginphone
+              self.order.orderSubmit.customerName = localStorage.loginname
             },
             nCallback: function () {
               self.$parent.loading.show = false
@@ -149,6 +151,8 @@
             self.$parent.loading.show = false
             self.hasLogin = true
             self.token = localStorage.token
+            self.order.orderSubmit.customerPhone = localStorage.loginphone
+            self.order.orderSubmit.customerName = localStorage.loginname
           },
           nCallback: function () {
             self.$parent.loading.show = false

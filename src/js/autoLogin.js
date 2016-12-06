@@ -9,6 +9,7 @@ function autoLogin (options) {
       localStorage.loginid = response.data.result.id
       localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
       localStorage.token = response.data.result.token
+      localStorage.loginphone = response.data.result.mobile
       if (options.yCallback) {
         options.yCallback()
       }
