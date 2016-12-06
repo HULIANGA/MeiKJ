@@ -143,8 +143,18 @@
           })
         }
       }, function (response) {
-        self.hasLogin = false
-        self.$parent.loading.show = false
+        autoLogin.login({
+          component: self,
+          yCallback: function () {
+            self.$parent.loading.show = false
+            self.hasLogin = true
+            self.token = localStorage.token
+          },
+          nCallback: function () {
+            self.$parent.loading.show = false
+            self.hasLogin = false
+          }
+        })
       })
     },
     ready () {
