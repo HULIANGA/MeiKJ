@@ -11,7 +11,7 @@
     <p v-if="item.offline === 1 && (item.processState === 1 || item.processState === 2 || item.processState === 0)">等待人数：{{item.waitNum}}</p>
     <div class="order-control">
       <div>
-        <template v-if="item.processState === 1 || item.processState === 2 || item.processState === 0">
+        <template v-if="item.processState === 1 || item.processState === 2">
           <button class="btn btn-default" @click.prevent.stop="cancelOrder(item.id,$index)">取消订单</button>
         </template>
       </div>
