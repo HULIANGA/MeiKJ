@@ -48,19 +48,20 @@ export default {
     this.getProject({shopId: utils.getUrlParam('shopId')}) // 获取项目列表
   },
   ready () {
-    var self = this
-    window.onhashchange = function () {
-      var hashVal = window.location.hash
-      if (hashVal === '') {
-        self.currentStep = 'service'
-      }else if (hashVal === '#order') {
-        self.currentStep = 'order'
-      }
-    }
   },
   attached () {},
   events: {
     'next': function (data) {
+      var self = this
+      // 在ready里绑定onhashchange事件，手机QQ内置浏览器不触发，故在此绑定
+      window.onhashchange = function () {
+        var hashVal = window.location.hash
+        if (hashVal === '') {
+          self.currentStep = 'service'
+        }else if (hashVal === '#order') {
+          self.currentStep = 'order'
+        }
+      }
       if (data.fromStep === 'service') { // 选择项目点下一步
         console.log(data)
         window.location.hash = 'order'

@@ -91,28 +91,30 @@ export default {
     })
   },
   ready: function () {
-    var self = this
-    window.onhashchange = function () {
-      var hashVal = window.location.hash
-      if (hashVal === '') {
-        self.currentStep = 'service'
-      }else if (hashVal === '#time') {
-        self.currentStep = 'time'
-        self.$broadcast('time-show')
-      }else if (hashVal === '#store') {
-        self.currentStep = 'store'
-      }else if (hashVal === '#person') {
-        self.currentStep = 'person'
-      }else if (hashVal === '#order') {
-        self.currentStep = 'order'
-      }else if (hashVal === '#coupon') {
-        self.currentStep = 'coupon'
-      }
-    }
+
   },
   attached: function () {},
   events: {
     'next': function (data) {
+      var self = this
+      // 在ready里绑定onhashchange事件，手机QQ内置浏览器不触发，故在此绑定
+      window.onhashchange = function () {
+        var hashVal = window.location.hash
+        if (hashVal === '') {
+          self.currentStep = 'service'
+        }else if (hashVal === '#time') {
+          self.currentStep = 'time'
+          self.$broadcast('time-show')
+        }else if (hashVal === '#store') {
+          self.currentStep = 'store'
+        }else if (hashVal === '#person') {
+          self.currentStep = 'person'
+        }else if (hashVal === '#order') {
+          self.currentStep = 'order'
+        }else if (hashVal === '#coupon') {
+          self.currentStep = 'coupon'
+        }
+      }
       if (data.fromStep === 'service') { // 在项目选择点下一步
         this.positionId = data.positionId
         if (utils.getUrlParam('shopId')) { // 从门店预约和从发型师预约
