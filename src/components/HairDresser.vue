@@ -1,7 +1,10 @@
 <template>
   <div class="hair-dresser-item" v-for="item in items" @click.prevent="detail(item)">
     <div >
-      <div class="hair-dresser-img"><img :src="imageDomain + item.logo"></div>
+      <div class="hair-dresser-img">
+        <img v-if="item.logo" :src="imageDomain + item.logo">
+        <img v-else src="../assets/img/dresser-default.png">
+      </div>
     </div>
     <div class="hair-dresser-text">
         <p class="hair-dresser-store">{{item.shopName}}</p>

@@ -1,7 +1,10 @@
 <template>
   <div class="hair-dresser-item">
     <div class="hair-dresser-img">
-      <div><img :src="imageDomain + item.logo"></div>
+      <div>
+        <img v-if="item.logo" :src="imageDomain + item.logo">
+        <img v-else src="../assets/img/dresser-default.png">
+      </div>
     </div>
     <div class="hair-dresser-text">
         <p class="hair-dresser-name">{{item.stageName }}</p>

@@ -4,7 +4,8 @@
   <div class="s-member-list">
     <div class="s-member-item" v-for="(index, item) in storemember | limitBy 4" @click.prevent="detail(item.id)">
       <div class="s-member-img" :style="{height: (screenWidth - 30) / 4 - 14 + 'px'}">
-        <img :src="imageDomain + item.logo">
+        <img v-if="item.logo" :src="imageDomain + item.logo">
+        <img v-else src="../assets/img/dresser-default.png">
       </div>
       <p class="s-member-name">{{item.stageName}}</p>
       <p class="s-member-level">{{item.positionName}}</p>

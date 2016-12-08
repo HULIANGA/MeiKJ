@@ -5,7 +5,10 @@
   <div class="hair-dresser-detail">
     <div class="detail-header clearfix">
       <div class="detail-header-item">
-        <div class="detail-img"><img v-if="hairDresser.logo" :src="imageDomain + hairDresser.logo"></div>
+        <div class="detail-img">
+          <img v-if="hairDresser.logo" :src="imageDomain + hairDresser.logo">
+          <img v-else src="../assets/img/dresser-default.png">
+        </div>
       </div>
       <div class="detail-header-item">
         <p class="detail-header-name">{{hairDresser.stageName}} <span>{{hairDresser.positionName}}</span></p>

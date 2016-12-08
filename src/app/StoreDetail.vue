@@ -13,7 +13,6 @@
             </div>
           </div>
         </div>
-        <!-- <img :src="imageDomain + storeDetail.logo"> -->
         <p class="store-info-name">{{storeDetail.name}}</p>
       </div>
       <div class="store-info-text">
