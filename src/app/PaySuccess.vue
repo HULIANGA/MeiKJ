@@ -10,7 +10,7 @@
       <a href="userCenter.html">返回个人中心</a>
     </template>
     <template v-else>
-      <p class="success-text">支付成功，请回到微信中确认支付完成</p>
+      <p class="success-text">支付成功，请到微信客户端查看您的订单信息</p>
     </template>
   </div>
 </template>
