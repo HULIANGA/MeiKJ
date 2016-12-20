@@ -77,17 +77,17 @@
   <div class="header-menu">
     <ul>
       <li>
-        <a :href="storeUrl">门店</a>
+        <a @click="goPage('allStore.html')">门店</a>
       </li>
       <li>
-        <a :href="barberUrl">发型师</a>
+        <a @click="goPage('allDresser.html')">发型师</a>
       </li>
       <li>
-        <a :href="hairUrl">发型</a>
+        <a @click="goPage('hairList.html')">发型</a>
       </li>
       <li>
-        <a v-if="systemType === 'MKJ'" :href="couponUrl">优惠专区</a>
-        <a v-if="systemType === 'DY'" href="https://dy.dymkj.net/html/product_price_list">价目表</a>
+        <a v-if="systemType === 'MKJ'" @click="goPage('couponStore.html')">优惠专区</a>
+        <a v-if="systemType === 'DY'" href="http://dy.dymkj.net/html/20161214141035728.html">价目表</a>
       </li>
     </ul>
     <div class="change-city" @click="showCity">
@@ -100,16 +100,15 @@
 export default {
   data () {
     return {
-      systemType: window.systemType,
-      storeUrl: 'allStore.html',
-      barberUrl: 'allDresser.html',
-      hairUrl: 'hairList.html',
-      couponUrl: 'couponStore.html'
+      systemType: window.systemType
     }
   },
   methods: {
     showCity: function () {
       window.location.hash = 'showFirst'
+    },
+    goPage: function (url) {
+      window.goPage(url)
     }
   },
   props: {

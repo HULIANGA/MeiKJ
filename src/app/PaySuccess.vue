@@ -7,7 +7,7 @@
     <img src="../assets/img/pay-success.jpg" alt="支付成功">
     <template v-if="token">
       <p class="success-text">支付成功</p>
-      <a href="userCenter.html">返回个人中心</a>
+      <a @click="goPage('userCenter.html')">返回个人中心</a>
     </template>
     <template v-else>
       <p class="success-text">支付成功，请到微信客户端查看您的订单信息</p>
@@ -25,7 +25,11 @@ export default {
   computed: {},
   ready () {},
   attached () {},
-  methods: {},
+  methods: {
+    goPage: function (url) {
+      window.goPage(url)
+    }
+  },
   components: {}
 }
 </script>

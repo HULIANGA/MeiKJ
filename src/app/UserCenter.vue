@@ -17,7 +17,7 @@
   </div>
   <div class="user-center-bd">
     <div class="center-item">
-      <a class="center-item-link" :href="userCenter.orderUrl">
+      <a class="center-item-link" @clicl="goPage(userCenter.orderUrl)">
         <div class="ct-link-hd">
           <img src="../assets/img/center-order.png">
         </div>
@@ -27,7 +27,7 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link" :href="userCenter.couponUrl">
+      <a class="center-item-link" @clicl="goPage(userCenter.couponUrl)">
         <div class="ct-link-hd">
           <img src="../assets/img/center-coupon.png">
         </div>
@@ -37,7 +37,7 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link" :href="userCenter.collectionUrl">
+      <a class="center-item-link" @clicl="goPage(userCenter.collectionUrl)">
         <div class="ct-link-hd">
           <img src="../assets/img/center-favorite.png">
         </div>
@@ -47,7 +47,7 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link" :href="userCenter.personalUrl">
+      <a class="center-item-link" @clicl="goPage(userCenter.personalUrl)">
         <div class="ct-link-hd">
           <img src="../assets/img/center.png">
         </div>
@@ -57,7 +57,7 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link" :href="userCenter.resetUrl">
+      <a class="center-item-link" @clicl="goPage(userCenter.resetUrl)">
         <div class="ct-link-hd">
           <img src="../assets/img/center-pwd.png">
         </div>
@@ -67,7 +67,7 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link" :href="userCenter.salesUrl">
+      <a class="center-item-link" @clicl="goPage(userCenter.salesUrl)">
         <div class="ct-link-hd">
           <img src="../assets/img/center-sale.png">
         </div>
@@ -77,7 +77,7 @@
       </a>
     </div>
     <div class="center-item">
-      <a class="center-item-link" :href="userCenter.aboutUrl">
+      <a class="center-item-link" @clicl="goPage(userCenter.aboutUrl)">
         <div class="ct-link-hd">
           <img src="../assets/img/center-about.png">
         </div>
@@ -167,6 +167,9 @@
       // self.goJumping()
     },
     methods: {
+      goPage: function (url) {
+        window.goPage(url)
+      },
       goJumping () {
         let self = this
         self.token = localStorage.token

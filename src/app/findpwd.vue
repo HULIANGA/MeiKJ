@@ -17,7 +17,7 @@
       </div>
       <button class="btn btn-confirm" @click.prevent="findPwd">确认提交</button>
     </div>
-    <p class="clearfix regist-link"><a class="pull-r" :href="login">想起密码，去登录</a></p>
+    <p class="clearfix regist-link"><a class="pull-r" @click="goPage(login)">想起密码，去登录</a></p>
   </div>
   <loading :show="loading.show" :show-text="loading.showText"></loading>
 </template>
@@ -124,6 +124,9 @@ export default {
         toast('重置密码失败')
         self.loading.show = false
       })
+    },
+    goPage: function (url) {
+      window.goPage(url)
     }
   },
   components: {
