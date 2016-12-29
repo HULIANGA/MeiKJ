@@ -1,9 +1,10 @@
 import toast from '../js/toast'
+import utils from '../js/utils'
 
 function autoLogin (options) {
   console.log('autoLogin options')
   console.log(options)
-  options.component.$http.post(window.ctx + '/api/customer/loginState', {}).then((response) => {
+  options.component.$http.post(window.ctx + '/api/customer/loginState' + (utils.getUrlParam('session_key') ? ('?session_key=' + utils.getUrlParam('session_key')) : ''), {}).then((response) => {
     var res = response.data
     if (res.code === 0) {
       localStorage.loginid = response.data.result.id

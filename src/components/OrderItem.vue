@@ -48,6 +48,7 @@
 
 <script>
 import toast from '../js/toast'
+import utils from '../js/utils'
 import CountTime from '../components/CountTime'
 export default {
   data () {
@@ -70,7 +71,7 @@ export default {
     goPay (item) {
       this.$parent.$parent.$parent.loading.show = true
       if (item.payType === 1) { // 微信支付
-        this.$http.post(window.ctx + '/api/pay/wechat-pay', item, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+        this.$http.post(window.ctx + '/api/pay/wechat-pay' + (utils.getUrlParam('session_key') ? ('?session_key=' + utils.getUrlParam('session_key')) : ''), item, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
           window.location.href = response.data
         }, function (response) {
           this.$parent.$parent.$parent.loading.show = false

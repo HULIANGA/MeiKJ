@@ -6,11 +6,11 @@ window.imageDomain = 'http://meimeidou.qiniudn.com/'
 // 美空间
 window.systemType = 'MKJ'
 // 东瀛
-// window.systemType = 'DY'
+window.systemType = 'DY'
 /*************************** 页面跳转经过后台重定向 ******************************/
 // 本地
 // var webOrigin = 'http://mkj001.bigaka.com/mkj'
-var webPath = '/dist/html/'
+// var webPath = '/dist/html/'
 // mkj001
 // var webOrigin = 'http://mkj001.bigaka.com/mkj'
 // var webPath = '/mkj/view/html/'
@@ -19,7 +19,7 @@ var webPath = '/dist/html/'
 // var webPath = '/mkj/view/html/'
 // 生产东瀛
 var webOrigin = 'https://dy.dymkj.net/dyzx'
-// var webPath = '/dyzx/view/html/'
+var webPath = '/dyzx/view/html/'
 window.goPage = function (url) {
   window.location.href = webOrigin + '/main?param=' + encodeURIComponent(window.location.origin + webPath + url) +  (getUrlParam('session_key') ? ('&session_key=' + getUrlParam('session_key')) : '')
 }

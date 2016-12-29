@@ -187,7 +187,7 @@
         }
         self.$parent.loading.show = true
         if (!self.hasLogin) { // 未登录下单
-          self.$http.post(window.ctx + '/api/customer/codeLogin', {mobile: self.order.orderSubmit.customerPhone}, {headers: {code: self.sendVerifyCode}, emulateJSON: true}).then((response) => {
+          self.$http.post(window.ctx + '/api/customer/codeLogin' + (utils.getUrlParam('session_key') ? ('?session_key=' + utils.getUrlParam('session_key')) : ''), {mobile: self.order.orderSubmit.customerPhone}, {headers: {code: self.sendVerifyCode}, emulateJSON: true}).then((response) => {
             if (response.data.code === 0) {
               localStorage.loginid = response.data.result.id
               localStorage.loginphone = self.order.orderSubmit.customerPhone
@@ -225,7 +225,7 @@
           if (res.code === 0) {
             toast('订单提交成功，请在15分钟内完成付款')
             if (this.order.orderSubmit.payType === '1' || this.order.orderSubmit.payType === 1) { // 微信支付
-              this.$http.post(window.ctx + '/api/pay/wechat-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+              this.$http.post(window.ctx + '/api/pay/wechat-pay' + (utils.getUrlParam('session_key') ? ('?session_key=' + utils.getUrlParam('session_key')) : ''), res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
                 window.location.href = response.data
               }, function (response) {
                 this.$parent.loading.show = false

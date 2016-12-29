@@ -110,7 +110,7 @@ export default {
         return
       }
       self.loading.show = true
-      self.$http.post(window.ctx + '/api/customer/codeLogin', {mobile: self.phone}, {headers: {code: self.sendVerifyCode}}).then((response) => {
+      self.$http.post(window.ctx + '/api/customer/codeLogin' + (utils.getUrlParam('session_key') ? ('?session_key=' + utils.getUrlParam('session_key')) : ''), {mobile: self.phone}, {headers: {code: self.sendVerifyCode}}).then((response) => {
         if (response.data.code === 0) {
           localStorage.loginid = response.data.result.id
           localStorage.loginphone = this.phone
