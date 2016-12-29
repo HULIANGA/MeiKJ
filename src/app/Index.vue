@@ -40,7 +40,7 @@ export default {
   },
   created: function () {
     if (window.systemType === 'MKJ') {
-      document.title = '美空间'
+      document.title = '丽人淘'
     } else if (window.systemType === 'DY') {
       document.title = '东瀛造型'
     }
