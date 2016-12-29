@@ -125,9 +125,9 @@
           }else if (!this.order.orderSubmit.customerPhone) {
             toast('请填写您的手机号')
             return false
-          }else if (!this.order.orderSubmit.memo) {
-            // toast('请填写备注说明')
-            // return false
+          }else if (!utils.getCheck.checkPhone(this.order.orderSubmit.customerPhone.trim())) {
+            toast('请输入正确的手机号')
+            return false
           }
           this.$parent.loading.show = true
           if (this.order.orderSubmit.realPrice === 0) {
