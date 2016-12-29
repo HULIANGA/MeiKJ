@@ -137,6 +137,7 @@
             this.order.orderSubmit.price = 0.01
           }
           this.$http.post(window.ctx + '/api/order/t/save', this.order.orderSubmit, {headers: {token: this.token}}).then(function (response) {
+            localStorage.loginname = this.order.orderSubmit.customerName
             let res = response.data
             if (res.code === 0) {
               toast('订单提交成功，请在15分钟内完成付款')

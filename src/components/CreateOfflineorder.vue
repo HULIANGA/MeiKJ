@@ -221,6 +221,7 @@
       saveOrder () {
         var self = this
         self.$http.post(window.ctx + '/api/order/t/saveOfflineOrder', self.order.orderSubmit, {headers: {token: self.token}}).then(function (response) {
+          localStorage.loginname = self.order.orderSubmit.customerName
           let res = response.data
           if (res.code === 0) {
             toast('订单提交成功，请在15分钟内完成付款')
