@@ -6,19 +6,35 @@
         <span class="service-name"><i></i>{{item.name}}</span>
         <span>&yen;{{projectPrice[index]}}起</span>
       </div>
-      <div class="service-subitem-second" v-for="product in item.productList">
+      <div :class="['service-subitem-second', 'project'+product.projectId, 'product'+product.productId]" @click="selectProduct('project'+product.projectId, 'product'+product.productId)" v-for="product in item.productList">
         <span class="service-name">{{product.name}}</span>
         <span>&yen;{{product.price}}</span>
+        <input type="checkbox" @click.stop="selectCheckbox('project'+product.projectId, 'product'+product.productId)" :data-hours="item.hours" :data-id="product.productId" :data-name="product.name" :data-price="product.price" :data-position="product.positionId" class="product-check">
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
+  data () {
+    return {
+      selectedItem: [], // 选中的产品取耗时最长的
+      costHours: [], // 所有勾选的产品的等待时间数组
+      productIds: '',
+      positionId: []
+    }
+  },
   props: {
     serviceitem: Array
   },
   computed: {
+    maxHours: function () {
+      if (this.costHours.length === 0) {
+        return null
+      }else {
+        return Math.max.apply(null, this.costHours)
+      }
+    },
     totalCount: function () {
       return this.serviceitem.length
     },
@@ -41,6 +57,58 @@ export default {
     }
   },
   methods: {
+    selectProduct: function (projectClass, productClass) {
+      if (document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked) {
+        document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked = false
+      }else {
+        for (let i = 0; i < document.getElementsByClassName(projectClass).length; i++) {
+          document.getElementsByClassName(projectClass)[i].getElementsByClassName('product-check')[0].checked = false
+        }
+        document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked = true
+      }
+      this.getSelectItemHours()
+    },
+    selectCheckbox: function (projectClass, productClass) {
+      if (document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked) {
+        for (let i = 0; i < document.getElementsByClassName(projectClass).length; i++) {
+          if (document.getElementsByClassName(projectClass).hasOwnProperty(i)) {
+            document.getElementsByClassName(projectClass)[i].getElementsByClassName('product-check')[0].checked = false
+          }
+        }
+        document.getElementsByClassName(productClass)[0].getElementsByClassName('product-check')[0].checked = true
+      }else {
+
+      }
+      this.getSelectItemHours()
+    },
+    // 获取选中产品需要的时间
+    getSelectItemHours: function () {
+      this.costHours = []
+      this.selectedItem = []
+      this.productIds = ''
+      this.positionId = []
+      let checkedProjects = []
+      for (let index = 0; index < document.getElementsByClassName('product-check').length; index++) {
+        if (document.getElementsByClassName('product-check').hasOwnProperty(index)) {
+          if (document.getElementsByClassName('product-check')[index].checked === true) {
+            this.costHours.push(document.getElementsByClassName('product-check')[index].getAttribute('data-hours'))
+            this.selectedItem.push({
+              'productId': document.getElementsByClassName('product-check')[index].getAttribute('data-id'),
+              'productName': document.getElementsByClassName('product-check')[index].getAttribute('data-name'),
+              'price': document.getElementsByClassName('product-check')[index].getAttribute('data-price')
+            })
+            this.positionId.push(document.getElementsByClassName('product-check')[index].getAttribute('data-position'))
+            checkedProjects.push(document.getElementsByClassName('product-check')[index].getAttribute('data-id'))
+          }
+        }
+      }
+      this.productIds = checkedProjects.join(',')
+      // 将选中的产品信息保存在本地
+      localStorage.appointmentMaxHours = this.maxHours
+      localStorage.appointmentProductItems = JSON.stringify(this.selectedItem)
+      localStorage.appointmentProductIds = this.productIds
+      localStorage.appointmentPositionId = this.positionId[0] ? this.positionId[0] : ''
+    },
     showSecond: function (index) {
       var tempServiceitem = document.querySelectorAll('.service-subitem')[index]
       if (tempServiceitem.getAttribute('class').indexOf('active') !== -1) {
@@ -109,5 +177,24 @@ export default {
 }
 .service-subitem.active .service-subitem-first .service-name>i {
   transform: rotate(90deg);
+}
+.product-check[type=checkbox] {
+  appearance:none;
+  width: 16px;
+  height: 16px;
+  background-image: url(../assets/img/not-check.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  margin-left: 5px;
+  margin-top: 7px;
+  float: right;
+  background-color: #ffffff;
+}
+.product-check[type=checkbox]:checked {
+  background-image: url(../assets/img/checked.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 </style>

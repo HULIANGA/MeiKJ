@@ -123,12 +123,20 @@
         this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
           let res = response.data
           if (res.code === 0) {
-            window.goPage('apointment.html?shopId=' + this.storeDetail.id + '&shopName=' + encodeURIComponent(this.storeDetail.name))
+            var apointmentHtml = 'apointment.html?'
+            if (document.querySelectorAll('.product-check:checked').length > 0) {
+              apointmentHtml += 'skipProductSelect=true&'
+            }
+            window.goPage(apointmentHtml + 'shopId=' + this.storeDetail.id + '&shopName=' + encodeURIComponent(this.storeDetail.name))
           }else {
             autoLogin.login({
               component: this,
               yCallback: function () {
-                window.goPage('apointment.html?shopId=' + this.storeDetail.id + '&shopName=' + encodeURIComponent(this.storeDetail.name))
+                var apointmentHtml = 'apointment.html?'
+                if (document.querySelectorAll('.product-check:checked').length > 0) {
+                  apointmentHtml += 'skipProductSelect=true&'
+                }
+                window.goPage(apointmentHtml + 'shopId=' + this.storeDetail.id + '&shopName=' + encodeURIComponent(this.storeDetail.name))
               },
               nCallback: null
             })

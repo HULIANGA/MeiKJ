@@ -101,7 +101,11 @@ export default {
       window.onhashchange = function () {
         var hashVal = window.location.hash
         if (hashVal === '') {
-          self.currentStep = 'service'
+          if (utils.getUrlParam('skipProductSelect')) {
+            window.history.go(-1)
+          }else {
+            self.currentStep = 'service'
+          }
         }else if (hashVal === '#time') {
           self.currentStep = 'time'
           self.$broadcast('time-show')
@@ -251,7 +255,11 @@ export default {
       if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
         requestData.couponId = utils.getUrlParam('couponId')
       }
-      this.getProject(requestData)
+      if (utils.getUrlParam('skipProductSelect')) { // 跳过项目选择
+        this.$dispatch('next', {'fromStep': 'service', 'maxHours': parseInt(localStorage.appointmentMaxHours, 10), 'productItems': JSON.parse(localStorage.appointmentProductItems), 'productIds': localStorage.appointmentProductIds, 'positionId': localStorage.appointmentPositionId})
+      }else {
+        this.getProject(requestData)
+      }
     },
     getProject: function (requestData) {// 获取项目列表
       this.loading.show = true

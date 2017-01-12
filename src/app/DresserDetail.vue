@@ -118,8 +118,13 @@
         this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
           let res = response.data
           if (res.code === 0) {
+            var apointmentHtml = 'apointment.html?'
+            if (document.querySelectorAll('.product-check:checked').length > 0) {
+              apointmentHtml += 'skipProductSelect=true&'
+            }
             window.goPage(
-            'apointment.html?personId=' + this.hairDresser.id +
+            apointmentHtml +
+            'personId=' + this.hairDresser.id +
             '&personName=' + encodeURIComponent(this.hairDresser.stageName) +
             '&shopId=' + this.hairDresser.shopId +
             '&shopName=' + encodeURIComponent(this.hairDresser.shopName))
@@ -127,8 +132,13 @@
             autoLogin.login({
               component: this,
               yCallback: function () {
+                var apointmentHtml = 'apointment.html?'
+                if (document.querySelectorAll('.product-check:checked').length > 0) {
+                  apointmentHtml += 'skipProductSelect=true&'
+                }
                 window.goPage(
-                'apointment.html?personId=' + this.hairDresser.id +
+                apointmentHtml +
+                'personId=' + this.hairDresser.id +
                 '&personName=' + encodeURIComponent(this.hairDresser.stageName) +
                 '&shopId=' + this.hairDresser.shopId +
                 '&shopName=' + encodeURIComponent(this.hairDresser.shopName))
