@@ -52,6 +52,8 @@
             <h5><i></i>团购券码</h5>
             <p>{{orderDetail.dealGroupCode}}</p>
           </div>
+          <h5 v-if="systemType === 'DY'"><i></i>门店座机</h5>
+          <p v-if="systemType === 'DY'">{{orderDetail.shopPhone}}</p>
         </div>
         <div v-if="orderDetail.offline === 1 && (orderDetail.processState === 2 || orderDetail.processState === 0)" class="offline-order-detail">
           <p>下单时间：{{new Date(orderDetail.updateTime).getFullYear() + '-' + fixNum(new Date(orderDetail.updateTime).getMonth() + 1) + '-' + fixNum(new Date(orderDetail.updateTime).getDate()) + ' ' + fixNum(new Date(orderDetail.updateTime).getHours()) + ':' + fixNum(new Date(orderDetail.updateTime).getMinutes()) + ':' + fixNum(new Date(orderDetail.updateTime).getSeconds())}}</p>
@@ -102,7 +104,8 @@ export default {
       token: localStorage.token,
       currentPage: 1,
       pageSize: 10,
-      hasMoreData: true
+      hasMoreData: true,
+      systemType: window.systemType
     }
   },
   created () {
