@@ -43,41 +43,52 @@ export default {
     }
   },
   created () {
-    let self = this
-    self.hairId = window.location.search.substr(1).split('=')[1]
-    self.token = localStorage.token
-    // 发型详情
-    self.$http.post(window.ctx + '/api/hairstyle/detail', {hairstyleId: self.hairId}).then((response) => {
+    this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: localStorage.token}}).then(function (response) {
       let res = response.data
-      self.loading.show = false
+      if (res.code === 0) { // 已经登录
+        this.setCollectAndPraise() // 设置点赞和收藏状态
+      }else {
+        autoLogin.login({ // 自动登录
+          component: this,
+          yCallback: function () { // 自动登录成功
+            this.setCollectAndPraise() // 设置点赞和收藏状态
+          },
+          nCallback: function () {
+            return
+          }
+        })
+      }
+    }, function () {
+    })
+
+    this.hairId = window.location.search.substr(1).split('=')[1]
+    // 发型详情
+    this.$http.post(window.ctx + '/api/hairstyle/detail', {hairstyleId: this.hairId}).then((response) => {
+      let res = response.data
+      this.loading.show = false
       if (res.code === 0) {
-        self.$set('hairData', res.result)
-        if (self.hairData.photoList && self.hairData.photoList.length > 1) {
-          self.$broadcast('init-swiper')
+        this.$set('hairData', res.result)
+        if (this.hairData.photoList && this.hairData.photoList.length > 1) {
+          this.$broadcast('init-swiper')
         }
       }
     }, (response) => {
-      self.loading.show = false
+      this.loading.show = false
     })
-    if (self.token) {
-      self.$http.post(window.ctx + '/api/hairstyle/t/collectAndPraise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
-        let res = response.data
-        if (res.code === 0) {
-          self.$set('isPraise', res.result.isPriase)
-          self.$set('isCollect', res.result.isCollect)
-        }else if (res.code === 10007) {
-          toast('登录已过期')
-          setTimeout(function () {
-            window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-          }, 1000)
-        }
-      })
-    }
   },
   methods: {
+    setCollectAndPraise () {
+      this.$http.post(window.ctx + '/api/hairstyle/t/collectAndPraise', {hairstyleId: this.hairId}, {headers: {token: localStorage.token}}).then((response) => {
+        let res = response.data
+        if (res.code === 0) {
+          this.$set('isPraise', res.result.isPriase)
+          this.$set('isCollect', res.result.isCollect)
+        }
+      })
+    },
     goApointment () {
       this.loading.show = true
-      this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+      this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: localStorage.token}}).then(function (response) {
         let res = response.data
         if (res.code === 0) {
           window.goPage('apointment.html')
@@ -98,15 +109,14 @@ export default {
       })
     },
     praise () {
-      let self = this
-      if (self.token) {
-        self.loading.show = true
-        if (!self.isPraise) {
-          self.$http.post(window.ctx + '/api/praise/t/praise', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+      if (localStorage.token) {
+        this.loading.show = true
+        if (!this.isPraise) {
+          this.$http.post(window.ctx + '/api/praise/t/praise', {hairstyleId: this.hairId}, {headers: {token: localStorage.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
-              self.$set('isPraise', true)
-              self.loading.show = false
+              this.$set('isPraise', true)
+              this.loading.show = false
               toast('成功点赞')
             }else if (res.code === 10007) {
               toast('登录已过期，请重新登录')
@@ -114,19 +124,19 @@ export default {
                 window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }else {
-              self.loading.show = false
+              this.loading.show = false
               toast('点赞失败')
             }
           }, (response) => {
-            self.loading.show = false
+            this.loading.show = false
             toast('点赞失败')
           })
         } else {
-          self.$http.post(window.ctx + '/api/praise/t/cancel', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+          this.$http.post(window.ctx + '/api/praise/t/cancel', {hairstyleId: this.hairId}, {headers: {token: localStorage.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
-              self.$set('isPraise', false)
-              self.loading.show = false
+              this.$set('isPraise', false)
+              this.loading.show = false
               toast('取消点赞成功')
             }else if (res.code === 10007) {
               toast('登录已过期，请重新登录')
@@ -134,11 +144,11 @@ export default {
                 window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }else {
-              self.loading.show = false
+              this.loading.show = false
               toast('取消点赞失败')
             }
           }, (response) => {
-            self.loading.show = false
+            this.loading.show = false
             toast('取消点赞失败')
           })
         }
@@ -150,15 +160,14 @@ export default {
       }
     },
     collect () {
-      let self = this
-      if (self.token) {
-        self.loading.show = true
-        if (!self.isCollect) {
-          self.$http.post(window.ctx + '/api/collect/t/collect', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+      if (localStorage.token) {
+        this.loading.show = true
+        if (!this.isCollect) {
+          this.$http.post(window.ctx + '/api/collect/t/collect', {hairstyleId: this.hairId}, {headers: {token: localStorage.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
-              self.$set('isCollect', true)
-              self.loading.show = false
+              this.$set('isCollect', true)
+              this.loading.show = false
               toast('收藏成功')
             }else if (res.code === 10007) {
               toast('登录已过期，请重新登录')
@@ -166,19 +175,19 @@ export default {
                 window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }else {
-              self.loading.show = false
+              this.loading.show = false
               toast('收藏失败')
             }
           }, (response) => {
-            self.loading.show = false
+            this.loading.show = false
             toast('收藏失败')
           })
         } else {
-          self.$http.post(window.ctx + '/api/collect/t/cancel', {hairstyleId: self.hairId}, {headers: {token: self.token}}).then((response) => {
+          this.$http.post(window.ctx + '/api/collect/t/cancel', {hairstyleId: this.hairId}, {headers: {token: localStorage.token}}).then((response) => {
             let res = response.data
             if (res.code === 0) {
-              self.$set('isCollect', false)
-              self.loading.show = false
+              this.$set('isCollect', false)
+              this.loading.show = false
               toast('取消收藏成功')
             }else if (res.code === 10007) {
               toast('登录已过期，请重新登录')
@@ -186,11 +195,11 @@ export default {
                 window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
             }else {
-              self.loading.show = false
+              this.loading.show = false
               toast('取消收藏失败')
             }
           }, (response) => {
-            self.loading.show = false
+            this.loading.show = false
             toast('取消收藏失败')
           })
         }
