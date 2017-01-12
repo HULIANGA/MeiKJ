@@ -2,8 +2,9 @@
   <div class="bottom-menu">
     <footer>
       <a :class="active === 'main' ? 'current' : ''" @click.prevent="goMain">首页</a>
-      <a v-if="systemType === 'MKJ'" href="https://app.dymkj.net/page/main.do?id=4430&salesid=&storeid=2056">商城</a>
-      <a v-if="systemType === 'DY'" @click.prevent="goCoupon">活动</a>
+      <!-- <a v-if="systemType === 'MKJ'" href="https://app.dymkj.net/page/main.do?id=4430&salesid=&storeid=2056">商城</a>
+      <a v-if="systemType === 'DY'" @click.prevent="goCoupon">活动</a> -->
+      <a @click.prevent="goCoupon">活动</a>
       <a @click.prevent="goApointment" class="reserve"><span></span>预约</a>
       <a :class="active === 'order' ? 'current' : ''" @click.prevent="goOrder">订单</a>
       <a :class="active === 'usercenter' ? 'current' : ''" @click.prevent="goCenter">我的</a>
