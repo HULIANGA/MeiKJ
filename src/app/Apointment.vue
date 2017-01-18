@@ -196,6 +196,8 @@ export default {
             var requestData = {'date': parseInt(tempDate, 10), 'time': tempTime, 'hours': this.maxHours, shopId: this.shopId, 'positionId': this.positionId}
             if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
               requestData.couponId = utils.getUrlParam('couponId')
+            }else {
+              requestData.couponId = ''
             }
             this.$http.post(window.ctx + '/api/order/t/chooseBarber', requestData, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
               this.loading.show = false
