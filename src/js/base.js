@@ -4,9 +4,9 @@ window.ctx = '../..'
 window.imageDomain = 'http://meimeidou.qiniudn.com/'
 /*************************** 区分东瀛和丽人淘 ***********************************/
 // 丽人淘
-window.systemType = 'MKJ'
+// window.systemType = 'MKJ'
 // 东瀛
-// window.systemType = 'DY'
+window.systemType = 'DY'
 /*************************** 页面跳转经过后台重定向 ******************************/
 // 本地
 var webOrigin = 'http://mkj001.bigaka.com/mkj'

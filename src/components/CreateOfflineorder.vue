@@ -79,6 +79,17 @@
           <input type="radio" name="pay" v-model="order.orderSubmit.payType" value="2">
         </div>
       </div>
+      <div class="o-pay-item" v-if="systemType === 'DY'">
+        <div class="o-pay-hd">
+          <img src="../assets/img/alipay.png">
+        </div>
+        <div class="o-pay-bd">
+          <p>到店付</p>
+        </div>
+        <div class="o-pay-ft">
+          <input type="radio" name="pay" v-model="order.orderSubmit.payType" value="4">
+        </div>
+      </div>
     </div>
     <!-- remark -->
     <div class="order-remark">
@@ -111,6 +122,7 @@
       return {
         isWeixin: /MicroMessenger/i.test(navigator.userAgent),
         token: localStorage.token,
+        systemType: window.systemType,
         hasLogin: false,
         codeImage: '',
         imageCode: '',
@@ -224,21 +236,28 @@
           localStorage.loginname = self.order.orderSubmit.customerName
           let res = response.data
           if (res.code === 0) {
-            toast('订单提交成功，请在15分钟内完成付款')
-            if (this.order.orderSubmit.payType === '1' || this.order.orderSubmit.payType === 1) { // 微信支付
-              this.$http.post(window.ctx + '/api/pay/wechat-pay' + (utils.getUrlParam('session_key') ? ('?session_key=' + utils.getUrlParam('session_key')) : ''), res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
-                window.location.href = response.data
-              }, function (response) {
-                this.$parent.loading.show = false
-                toast('支付失败')
-              })
-            }else if (this.order.orderSubmit.payType === '2' || this.order.orderSubmit.payType === 2) { // 支付宝支付
-              this.$http.post(window.ctx + '/api/pay/ali-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
-                window.location.href = decodeURIComponent(response.data)
-              }, function (response) {
-                this.$parent.loading.show = false
-                toast('支付失败')
-              })
+            if (this.order.orderSubmit.payType === '4' || this.order.orderSubmit.payType === 4) { // 到店付
+              toast('订单提交成功')
+              setTimeout(function () {
+                window.goPage('userCenter.html')
+              }, 500)
+            }else {
+              toast('订单提交成功，请在15分钟内完成付款')
+              if (this.order.orderSubmit.payType === '1' || this.order.orderSubmit.payType === 1) { // 微信支付
+                this.$http.post(window.ctx + '/api/pay/wechat-pay' + (utils.getUrlParam('session_key') ? ('?session_key=' + utils.getUrlParam('session_key')) : ''), res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+                  window.location.href = response.data
+                }, function (response) {
+                  this.$parent.loading.show = false
+                  toast('支付失败')
+                })
+              }else if (this.order.orderSubmit.payType === '2' || this.order.orderSubmit.payType === 2) { // 支付宝支付
+                this.$http.post(window.ctx + '/api/pay/ali-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+                  window.location.href = decodeURIComponent(response.data)
+                }, function (response) {
+                  this.$parent.loading.show = false
+                  toast('支付失败')
+                })
+              }
             }
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
