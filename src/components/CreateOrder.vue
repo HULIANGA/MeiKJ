@@ -81,7 +81,7 @@
       </div>
       <div class="o-pay-item" v-if="systemType === 'DY'">
         <div class="o-pay-hd">
-          <img src="../assets/img/alipay.png">
+          <img src="../assets/img/shop-pay.png">
         </div>
         <div class="o-pay-bd">
           <p>到店付</p>

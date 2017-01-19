@@ -88,7 +88,8 @@
       <li>
         <!-- <a v-if="systemType === 'MKJ'" @click="goPage('couponStore.html')">优惠专区</a> -->
         <!-- <a v-if="systemType === 'DY'" href="http://dy.dymkj.net/html/20161214141035728.html">价目表</a> -->
-        <a href="http://dy.dymkj.net/html/20161214141035728.html">价目表</a>
+        <!-- <a href="http://dy.dymkj.net/html/20161214141035728.html">价目表</a> -->
+        <a @click="goPage('apointment.html')">价目表</a>
       </li>
     </ul>
     <div class="change-city" @click="showCity">
