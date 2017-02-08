@@ -125,7 +125,10 @@ export default {
               }, 1000)
             }else {
               this.loading.show = false
-              toast('点赞失败')
+              toast('请先登录')
+              setTimeout(function () {
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+              }, 1000)
             }
           }, (response) => {
             this.loading.show = false
@@ -176,7 +179,10 @@ export default {
               }, 1000)
             }else {
               this.loading.show = false
-              toast('收藏失败')
+              toast('请先登录')
+              setTimeout(function () {
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+              }, 1000)
             }
           }, (response) => {
             this.loading.show = false

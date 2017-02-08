@@ -25,7 +25,7 @@ export default {
         queueNum: null,
         orderSubmit: { // 提交订单数据
           productList: [], // 产品信息
-          payType: 1, // 支付方式
+          payType: 4, // 支付方式
           shopId: null, // 门店id
           customerName: localStorage.loginname ? localStorage.loginname : '', // 用户名称
           customerPhone: localStorage.loginphone, // 用户手机号
