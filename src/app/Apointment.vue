@@ -71,12 +71,12 @@ export default {
     this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
       let res = response.data
       if (res.code === 0) {
-        self.goAnother()
+        self.initPageData()
       }else {
         autoLogin.login({
           component: this,
           yCallback: function () {
-            self.goAnother()
+            self.initPageData()
             self.orderInfo.orderSubmit.customerName = localStorage.loginname
             self.orderInfo.orderSubmit.customerPhone = localStorage.loginphone
           },
@@ -243,7 +243,7 @@ export default {
     }
   },
   methods: {
-    goAnother: function () {
+    initPageData: function () {
       if (window.location.hash !== '') {
         window.location.hash = ''
       }

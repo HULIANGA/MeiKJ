@@ -62,10 +62,11 @@ export default {
         show: true
       },
       dialog: {
-        isB: true,
+        isB: false,
         show: false,
         title: '',
-        cancelText: '确定',
+        cancelText: '关闭',
+        okText: '立即使用',
         callback: null
       },
       searchItems: {
@@ -247,6 +248,9 @@ export default {
               window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
           }else {
+            self.dialog.callback = function () {
+              window.goPage('apointment.html?couponId=' + couponId)
+            }
             self.dialog.show = true
             let messageArray = res.message.split('，')
             self.dialog.title = ''
