@@ -1,4 +1,3 @@
-test
 一、目录说明
 1.build
   webpack配置文件
