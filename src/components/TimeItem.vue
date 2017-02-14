@@ -89,10 +89,10 @@ export default {
     chooseTime: function (index, status) {
       if (status === 0) {
         if (this.currentIndex.indexOf(index) === -1) {
-          this.currentIndex = []
-          for (var i = 0; i < (this.costhours * 2); i++) {
-            this.currentIndex.push(index + i)
-          }
+          this.currentIndex = [index]
+          // for (var i = 0; i < (this.costhours * 2); i++) {
+          //   this.currentIndex.push(index + i)
+          // }
         }else {
           this.currentIndex = []
         }
