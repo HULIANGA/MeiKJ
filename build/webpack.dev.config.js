@@ -11,8 +11,8 @@ config.devServer = {
       // target: 'http://192.168.1.114:8080/mkj',
       // target: 'http://192.168.1.94:8080/mkj',
       // target: 'http://data.old.bigaka.com/yanghb',
-      target: 'http://mkj001.bigaka.com/mkj',
-      // target: 'http://192.168.1.81:8080/mkj',
+      // target: 'http://mkj001.bigaka.com/mkj',
+      target: 'http://192.168.1.81:8080/mkj',
       secure: false
     },
     '/json/*': {

@@ -35,6 +35,7 @@ export default {
       baseRequsetData: {
         pageNo: 1,
         pageSize: 20,
+        customerId: localStorage.loginid,
         longitude: localStorage.longitude,
         latitude: localStorage.latitude,
         productIds: ''

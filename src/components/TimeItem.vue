@@ -30,6 +30,7 @@ export default {
   events: {
     'get-time-list': function (requestData) {
       this.$parent.$parent.loading.show = true
+      requestData.customerId = localStorage.loginid
       this.$http.get(window.ctx + '/api/order/selectAppointment', requestData).then(function (response) {
         this.$parent.$parent.loading.show = false
         var res = response.data
