@@ -20,7 +20,7 @@
     </div>
     <div class="hair-dresser-ft">
       <p class="hair-dresser-project">洗剪吹<span>&yen;{{item.basePrice}}</span></p>
-      <p class="hair-dresser-order">月接单{{item.orderNum}}</p>
+      <p class="hair-dresser-order">月接单{{item.orderNum}},总接单{{item.orderAllNum}}</p>
       <p class="hair-dresser-comment"><a>点评({{item.commentNum}})</a></p>
     </div>
   </div>
