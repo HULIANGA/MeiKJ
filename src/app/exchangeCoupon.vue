@@ -5,15 +5,16 @@
   <div class="coupon-container">
     <img src="../assets/img/coupon-border.png" alt="">
     <div class="coupon-top-info">
-      <h1>优惠券名称</h1>
+      <h1>{{couponInfo.couponName}}</h1>
       <img src="../assets/img/coupon-tag-icon.png" alt="">
       <div class="coupon-detail">
         <div class="coupon-price">
-          3折
+          <p>{{{couponInfo.couponPrice}}}</p>
+          <p class="coupon-limit" v-if="couponInfo.couponLimit">{{couponInfo.couponLimit}}</p>
         </div>
         <div class="coupon-useage">
-          <p class="coupon-project">项目：项目A|项目B</p>
-          <p class="coupon-time">有效期：2017.1.9 ~ 2017.2.13</p>
+          <p class="coupon-project">项目：{{couponInfo.projectName}}</p>
+          <p class="coupon-time">有效期：{{couponInfo.startTime}} ~ {{couponInfo.endTime}}</p>
         </div>
       </div>
     </div>
@@ -26,10 +27,10 @@
     </div> -->
     <div :class="['coupon-bot-info', hasLogin ? 'has-login' : 'not-login']">
       <img class="person-icon" src="../assets/img/dresser-default.png" alt="">
-      <p class="person-name">XX发型师发券给您</p>
+      <p class="person-name">{{couponInfo.barberName}}发券给您</p>
       <template v-if="hasLogin">
         <p class="tips">* 您将领取发型师指定发放的优惠券，领取后将仅限发型师处使用。</p>
-        <button type="button" class="get-coupon-btn" name="button">领取</button>
+        <button type="button" class="get-coupon-btn" name="button" @click.prevent="getCoupon">领取</button>
       </template>
       <template v-if="!hasLogin">
         <div class="input-div">
@@ -48,6 +49,14 @@
       </template>
     </div>
   </div>
+  <div class="coupon-success-dialog" v-show="showDialog">
+    <img src="../assets/img/barber-coupon-success.png" class="dialog-success" alt="领取成功">
+    <div class="dialog-buttons clearfix">
+      <a href="" type="button" class="btn btn-default" @click.prevent="goMain">到丽人淘逛逛</a>
+      <a href="" type="button" class="btn btn-primary" @click.prevent="useCoupon">直接使用</a>
+    </div>
+    <img src="../assets/img/barber-coupon-close.png" class="dialog-close" alt="关闭" @click.prevent="showDialog=false">
+  </div>
   <loading :show="loading.show" :show-text=""></loading>
 </template>
 
@@ -63,6 +72,7 @@ export default {
       loading: {
         show: true
       },
+      showDialog: false,
       hasLogin: false,
       phone: '',
       imageCode: '',
@@ -71,12 +81,42 @@ export default {
       ran: '',
       disabled: false,
       count: 60,
-      token: localStorage.getItem('token')
+      couponId: '',
+      couponInfo: {
+        couponName: '',
+        couponPrice: '',
+        couponLimit: '',
+        startTime: '',
+        endTime: '',
+        projectName: '',
+        barberName: ''
+      }
     }
   },
   created () {
     let self = this
-    self.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: self.token}}).then(function (response) {
+    self.couponId = utils.getUrlParam('couponId')
+    self.couponInfo.barberName = decodeURIComponent(utils.getUrlParam('barberName'))
+    self.$http.post(window.ctx + '/api/coupon/detail', {couponId: self.couponId}).then(function (response) {
+      var res = response.data.result
+      self.couponInfo.couponName = res.name // 优惠券名称
+      // 优惠券金额
+      if (res.type === 1) {
+        self.couponInfo.couponPrice = res.discount / 10 + '折'
+      }else if (res.type === 2) {
+        self.couponInfo.couponPrice = '&yen;' + res.money
+        self.couponInfo.couponLimit = '（满' + res.line + '可用）'
+      }else if (res.type === 3) {
+        self.couponInfo.couponPrice = '&yen;' + res.quota
+      }
+      // 有效时间
+      self.couponInfo.startTime = res.startTime
+      self.couponInfo.endTime = res.endTime
+      // 使用项目
+      self.couponInfo.projectName = res.projectName
+    }, function (response) {
+    })
+    self.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: localStorage.getItem('token')}}).then(function (response) {
       if (response.data.code === 0) {
         self.hasLogin = true
         self.loading.show = false
@@ -105,8 +145,75 @@ export default {
       this.ran = Math.random()
       self.codeImage = window.ctx + '/api/customer/picVerifyCode' + '?c=' + this.ran
     },
+    goMain () {
+      window.goPage('main.html')
+    },
+    useCoupon () {
+      window.goPage('apointment.html?couponId=' + this.couponId)
+    },
     getCoupon () {
-
+      var self = this
+      if (!self.hasLogin) { // 未登录时先登录
+        self.login()
+      }else {
+        self.loading.show = true
+        self.$http.get(window.ctx + '/api/coupon/t/receiveBarberCoupon', {
+          couponId: utils.getUrlParam('couponId'),
+          code: utils.getUrlParam('code'),
+          barberId: utils.getUrlParam('barberId')
+        }, {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        }).then(function (response) {
+          self.loading.show = false
+          if (response.data.code === 0) {
+            self.showDialog = true
+          }else {
+            toast(response.data.message)
+          }
+        }, function (response) {
+          self.loading.show = false
+        })
+      }
+    },
+    login () {
+      let self = this
+      if (self.phone.trim() === '') {
+        toast('请输入手机号')
+        return
+      }
+      if (self.imageCode.trim() === '') {
+        toast('请输入图片验证码')
+        return
+      }
+      if (self.sendVerifyCode.trim() === '') {
+        toast('请输入验证码')
+        return
+      }
+      if (!utils.getCheck.checkPhone(self.phone.trim())) {
+        toast('请输入正确的手机号')
+        return
+      }
+      self.loading.show = true
+      self.$http.post(window.ctx + '/api/customer/codeLogin' + (utils.getUrlParam('session_key') ? ('?session_key=' + utils.getUrlParam('session_key')) : ''), {mobile: self.phone}, {headers: {code: self.sendVerifyCode}}).then((response) => {
+        if (response.data.code === 0) {
+          localStorage.loginid = response.data.result.id
+          localStorage.loginphone = this.phone
+          localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
+          localStorage.token = response.data.result.token
+          self.loading.show = false
+          // 登陆成功，领取优惠券
+          self.hasLogin = true
+          self.getCoupon()
+        }else {
+          toast(response.data.message)
+          self.loading.show = false
+        }
+      }, (response) => {
+        toast('登录失败')
+        self.loading.show = false
+      })
     },
     getVerifyCode () {
       let self = this
@@ -168,7 +275,7 @@ export default {
   .coupon-top-info {
     background-color: rgba(255, 255, 255, 0.8);
     text-align: center;
-    padding: 30px 0 20px;
+    padding: 30px 10px 20px;
   }
   .coupon-top-info>h1 {
     font-size: 24px;
@@ -186,6 +293,9 @@ export default {
     font-size: 24px;
     color: #ff6251;
     margin-right: 20px;
+  }
+  .coupon-limit {
+    font-size: 10px;
   }
   .coupon-useage {
     font-size: 9px;
@@ -279,5 +389,45 @@ export default {
   }
   .coupon-bot-info.not-login .get-coupon-btn {
 
+  }
+  .coupon-success-dialog {
+    position: fixed;
+    overflow-y: auto;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+  }
+  .dialog-success {
+    width: 80%;
+    margin-top: 50px;
+  }
+  .dialog-buttons {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 15px;
+  }
+  .dialog-buttons .btn {
+    line-height: 40px;
+    width: 45%;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  .dialog-buttons .btn.btn-primary {
+    float: right;
+  }
+  .dialog-buttons .btn.btn-default {
+    float: left;
+    background: transparent;
+    border: 1px solid #fff;
+    line-height: 38px;
+  }
+  .dialog-close {
+    width: 30px;
+    margin-top: 40px;
   }
 </style>
