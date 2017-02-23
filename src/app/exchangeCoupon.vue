@@ -26,7 +26,7 @@
       <button type="button" class="get-coupon-btn" name="button">领取</button>
     </div> -->
     <div :class="['coupon-bot-info', hasLogin ? 'has-login' : 'not-login']">
-      <img class="person-icon" src="../assets/img/dresser-default.png" alt="">
+      <img class="person-icon" v-if="dresserLogo" :src="dresserLogo" alt="">
       <p class="person-name">{{couponInfo.barberName}}发券给您</p>
       <template v-if="hasLogin">
         <p class="tips">* 您将领取发型师指定发放的优惠券，领取后将仅限发型师处使用。</p>
@@ -81,6 +81,7 @@ export default {
       ran: '',
       disabled: false,
       count: 60,
+      dresserLogo: null,
       couponId: '',
       couponInfo: {
         couponName: '',
@@ -96,7 +97,14 @@ export default {
   created () {
     let self = this
     self.couponId = utils.getUrlParam('couponId')
-    self.couponInfo.barberName = decodeURIComponent(utils.getUrlParam('barberName'))
+    // 发型师详情
+    self.$http.post(window.ctx + '/api/barber/detail', {barberId: utils.getUrlParam('barberId')}).then((response) => {
+      let res = response.data.result
+      self.couponInfo.barberName = res.stageName
+      self.dresserLogo = window.imageDomain + res.logo
+    }, (response) => {
+    })
+    // 优惠券详情
     self.$http.post(window.ctx + '/api/coupon/detail', {couponId: self.couponId}).then(function (response) {
       var res = response.data.result
       self.couponInfo.couponName = res.name // 优惠券名称
@@ -116,6 +124,7 @@ export default {
       self.couponInfo.projectName = res.projectName
     }, function (response) {
     })
+    // 自动登录
     self.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: localStorage.getItem('token')}}).then(function (response) {
       if (response.data.code === 0) {
         self.hasLogin = true
@@ -311,6 +320,8 @@ export default {
   }
   .person-icon {
     width: 60px;
+    height: 60px;
+    border-radius: 50%;
   }
   .get-coupon-btn {
     width: 100%;
