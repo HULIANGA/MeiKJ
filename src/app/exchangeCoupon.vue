@@ -57,6 +57,7 @@
     </div>
     <img src="../assets/img/barber-coupon-close.png" class="dialog-close" alt="关闭" @click.prevent="showDialog=false">
   </div>
+  <dialog :show.sync="dialog.show" :title="dialog.title" :is-B.sync="dialog.isB" :ok-text="dialog.okText" :cancel-text="dialog.cancelText" :callback="dialog.callback"></dialog>
   <loading :show="loading.show" :show-text=""></loading>
 </template>
 
@@ -65,10 +66,19 @@ import toast from '../js/toast'
 import utils from '../js/utils'
 import Loading from '../components/Loading'
 import autoLogin from '../js/autoLogin'
+import Dialog from '../components/Dialog'
 
 export default {
   data () {
     return {
+      dialog: {
+        isB: false,
+        show: false,
+        title: '',
+        cancelText: '关闭',
+        okText: '确定',
+        callback: null
+      },
       loading: {
         show: true
       },
@@ -147,6 +157,18 @@ export default {
       self.loading.show = false
     })
     self.changeCodeImage()
+  },
+  ready () {
+    let self = this
+    let isCanuse = utils.getUrlParam('isCanuse')
+    if (isCanuse === 'true') {
+    }else {
+      self.dialog.title = '当前优惠券不可用，到丽人淘逛逛吧'
+      self.dialog.show = true
+      self.dialog.callback = function () {
+        window.goPage('main.html')
+      }
+    }
   },
   methods: {
     changeCodeImage () {
@@ -262,7 +284,8 @@ export default {
     }
   },
   components: {
-    Loading
+    Loading,
+    Dialog
   }
 }
 </script>
