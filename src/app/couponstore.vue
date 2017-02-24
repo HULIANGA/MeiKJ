@@ -248,8 +248,13 @@ export default {
               window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
           }else {
-            self.dialog.callback = function () {
-              window.goPage('apointment.html?couponId=' + couponId)
+            if (res.code === 0 || res.code === 10230) {
+              self.dialog.callback = function () {
+                window.goPage('apointment.html?couponId=' + couponId)
+              }
+              self.dialog.isB = false
+            }else {
+              self.dialog.isB = true
             }
             self.dialog.show = true
             let messageArray = res.message.split('，')
