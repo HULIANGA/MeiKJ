@@ -34,6 +34,7 @@ export default {
       timeItem: null, // 时间数据
       personItem: null, // 发型师数据
       currentStep: 'service', // 当前显示步骤。service选项目；store选门店；time选时间；person选发型师；order下单
+      customerCouponId: null,
       orderInfo: { // 订单初始化数据，包括显示的数据和提交的数据
         shopName: null, // 门店名称
         barberName: null, // 发型师名称
@@ -66,6 +67,9 @@ export default {
       self.orderInfo.orderSubmit.barberFirst = 1
     }else {
       self.orderInfo.orderSubmit.barberFirst = 0
+    }
+    if (utils.getUrlParam('customerCouponId')) {
+      self.customerCouponId = utils.getUrlParam('customerCouponId')
     }
     self.loading.show = true
     this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
@@ -193,7 +197,7 @@ export default {
             this.getAvilCoupon({'barberId': this.orderInfo.orderSubmit.barberId, 'productIds': this.orderInfo.productIds, 'money': this.orderInfo.orderSubmit.price})
           }else { // 自动选择发型师
             this.loading.show = true
-            var requestData = {'date': parseInt(tempDate, 10), 'time': tempTime, 'hours': this.maxHours, shopId: this.shopId, 'positionId': this.positionId}
+            var requestData = {'date': parseInt(tempDate, 10), 'time': tempTime, 'hours': this.maxHours, shopId: this.shopId, 'positionId': this.positionId, 'customerCouponId': this.customerCouponId}
             if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
               requestData.couponId = utils.getUrlParam('couponId')
             }else {
@@ -264,6 +268,7 @@ export default {
       }
     },
     getProject: function (requestData) {// 获取项目列表
+      requestData.customerCouponId = this.customerCouponId
       this.loading.show = true
       requestData.customerId = localStorage.loginid
       this.$http.get(window.ctx + '/api/order/selectProject', requestData).then(function (response) {

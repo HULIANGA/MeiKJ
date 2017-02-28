@@ -38,12 +38,16 @@ export default {
         customerId: localStorage.loginid,
         longitude: localStorage.longitude,
         latitude: localStorage.latitude,
-        productIds: ''
+        productIds: '',
+        customerCouponId: ''
       },
       hasMoreData: true
     }
   },
   created: function () {
+    if (utils.getUrlParam('customerCouponId')) {
+      this.baseRequsetData.customerCouponId = utils.getUrlParam('customerCouponId')
+    }
     // 附近选项
     let tempFilter = {
       'name': '附近',

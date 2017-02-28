@@ -310,6 +310,7 @@
 .user-info-item .user-info-hd {
   padding-right: 10px;
   flex-grow: 0;
+  flex-shrink: 0;
   line-height: 24px;
 }
 .user-info-item .user-info-bd {

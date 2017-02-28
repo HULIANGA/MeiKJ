@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="coupon-control">
-        <button class="btn btn-coupon" v-if="(item.state == 2 || item.state == 3) && item.useState == 1" @click.prevent="useCoupon(item.id,item.applyShop)">去使用</button>
+        <button class="btn btn-coupon" v-if="(item.state == 2 || item.state == 3) && item.useState == 1" @click.prevent="useCoupon(item.id,item.applyShop,item.customerCouponId)">去使用</button>
         <span class="coupon-status btn-coupon" v-if="item.useState != 2 && item.state == 4">已过期</span>
         <span class="coupon-status btn-coupon" v-if="item.useState == 2">已使用</span>
       </div>
@@ -224,8 +224,8 @@ export default {
         self.loading.show = false
       })
     },
-    useCoupon (couponId, applyShop) {
-      window.goPage('apointment.html?couponId=' + couponId)
+    useCoupon (couponId, applyShop, customerCouponId) {
+      window.goPage('apointment.html?couponId=' + couponId + '&customerCouponId=' + customerCouponId)
     },
     exchangeCoupon () {
       this.exchangeModal = true

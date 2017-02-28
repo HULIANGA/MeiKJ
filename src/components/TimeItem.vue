@@ -20,6 +20,8 @@
   </div>
 </template>
 <script>
+import utils from '../js/utils'
+
 export default {
   data () {
     return {
@@ -31,6 +33,9 @@ export default {
     'get-time-list': function (requestData) {
       this.$parent.$parent.loading.show = true
       requestData.customerId = localStorage.loginid
+      if (utils.getUrlParam('customerCouponId')) {
+        requestData.customerCouponId = utils.getUrlParam('customerCouponId')
+      }
       this.$http.get(window.ctx + '/api/order/selectAppointment', requestData).then(function (response) {
         this.$parent.$parent.loading.show = false
         var res = response.data
@@ -91,9 +96,9 @@ export default {
       if (status === 0) {
         if (this.currentIndex.indexOf(index) === -1) {
           this.currentIndex = [index]
-          for (var i = 0; i < (this.costhours * 2); i++) {
-            this.currentIndex.push(index + i)
-          }
+          // for (var i = 0; i < (this.costhours * 2); i++) {
+          //   this.currentIndex.push(index + i)
+          // }
         }else {
           this.currentIndex = []
         }
