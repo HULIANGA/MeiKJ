@@ -208,7 +208,8 @@ export default {
               var res = response.data
               if (res.code === 0) {
                 this.orderInfo.orderSubmit.barberId = res.result.id
-                this.orderInfo.barberName = res.result.positionName + '发型师'
+                // this.orderInfo.barberName = res.result.positionName + '发型师'
+                this.orderInfo.barberName = (window.systemType === 'MKJ' ? res.result.stageName : (res.result.positionName + '发型师'))
                 this.getAvilCoupon({'barberId': this.orderInfo.orderSubmit.barberId, 'productIds': this.orderInfo.productIds, 'money': this.orderInfo.orderSubmit.price})
               }else {
                 toast('获取发型师失败')
