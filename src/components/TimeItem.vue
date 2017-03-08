@@ -36,6 +36,9 @@ export default {
       if (utils.getUrlParam('customerCouponId')) {
         requestData.customerCouponId = utils.getUrlParam('customerCouponId')
       }
+      if (utils.getUrlParam('personId')) {
+        requestData.barberId = utils.getUrlParam('personId')
+      }
       this.$http.get(window.ctx + '/api/order/selectAppointment', requestData).then(function (response) {
         this.$parent.$parent.loading.show = false
         var res = response.data

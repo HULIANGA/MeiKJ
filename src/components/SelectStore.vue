@@ -39,7 +39,8 @@ export default {
         longitude: localStorage.longitude,
         latitude: localStorage.latitude,
         productIds: '',
-        customerCouponId: ''
+        customerCouponId: '',
+        barberId: ''
       },
       hasMoreData: true
     }
@@ -126,6 +127,9 @@ export default {
       }
       if (utils.getUrlParam('couponId')) { // 从我的优惠券进入预约
         extendRequestData.couponId = utils.getUrlParam('couponId')
+      }
+      if (utils.getUrlParam('personId')) {
+        extendRequestData.barberId = utils.getUrlParam('personId')
       }
       extendRequestData.pageNo = 1
       self.baseRequsetData = extendRequestData

@@ -180,7 +180,8 @@ export default {
       window.goPage('main.html')
     },
     useCoupon () {
-      window.goPage('apointment.html?couponId=' + this.couponId + '&personId=' + utils.getUrlParam('barberId'))
+      debugger
+      window.goPage('apointment.html?couponId=' + this.couponId + '&personId=' + utils.getUrlParam('barberId') + '&personName=' + encodeURIComponent(this.couponInfo.barberName))
     },
     getCoupon () {
       var self = this
