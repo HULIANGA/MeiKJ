@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-    <div class="user-coupon" @click="showCoupon()">
+    <div :class="['user-coupon', order.discountType === 1 ? 'active' : '']" @click="showCoupon()">
       <a class="user-info-item">
         <div class="user-info-hd">
           <label>优惠券</label>
@@ -50,6 +50,18 @@
           <p class="u-info-text">
             <span v-if="couponName">{{couponName}}</span>
             <span v-else>{{order.couponItem.length}}张可用</span>
+          </p>
+        </div>
+      </a>
+    </div>
+    <div :class="['user-coupon', order.discountType === 2 ? 'active' : '']" @click="useDiscount()" style="margin-top: 0" v-if="order.orderDiscount.show">
+      <a class="user-info-item">
+        <div class="user-info-hd">
+          <label>订单折扣</label>
+        </div>
+        <div class="user-info-bd">
+          <p class="u-info-text">
+            <span>{{order.orderDiscount.name}}</span>
           </p>
         </div>
       </a>
@@ -127,6 +139,8 @@
         couponName: null
       }
     },
+    ready: function () {
+    },
     methods: {
       submit: function () {
         console.log(this.order.orderSubmit.productList)
@@ -147,6 +161,9 @@
           }
           if (this.order.orderSubmit.price === 0) {
             this.order.orderSubmit.price = 0.01
+          }
+          if (this.order.discountType === 2) {
+            this.order.orderSubmit.isDiscount = 1
           }
           this.$http.post(window.ctx + '/api/order/t/save', this.order.orderSubmit, {headers: {token: this.token}}).then(function (response) {
             localStorage.loginname = this.order.orderSubmit.customerName
@@ -196,7 +213,20 @@
         }
       },
       showCoupon: function () {
+        this.order.discountType = 1
+        if (this.tempCouponId) {
+          this.$emit('select-coupon', this.tempCouponId, this.tempCouponName, this.tempCouponType, this.tempCouponMoney)
+        } else {
+          this.order.orderSubmit.realPrice = this.order.orderSubmit.price
+          this.couponPrice = 0
+        }
         window.location.hash = 'coupon'
+      },
+      useDiscount: function () {
+        this.order.discountType = 2
+        this.order.orderSubmit.couponId = null
+        this.order.orderSubmit.realPrice = (this.order.orderSubmit.price * this.order.orderDiscount.ratio / 100).toFixed(2)
+        this.couponPrice = (this.order.orderSubmit.price * (100 - this.order.orderDiscount.ratio) / 100).toFixed(2)
       }
     },
     events: {
@@ -205,6 +235,10 @@
           couponId: id,
           productIds: this.order.productIds
         }
+        this.tempCouponId = id
+        this.tempCouponName = name
+        this.tempCouponType = type
+        this.tempCouponMoney = money
         this.$parent.loading.show = true
         this.$http.post(window.ctx + '/api/coupon/t/computePrice', couponPriceData, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
           let res = response.data
@@ -246,6 +280,11 @@
         // this.couponName = name
       },
       'cancel-select-coupon': function () {
+        this.tempCouponId = null
+        this.tempCouponName = null
+        this.tempCouponType = null
+        this.tempCouponMoney = null
+
         this.couponPrice = 0
         this.order.orderSubmit.realPrice = this.order.orderSubmit.price
         this.couponName = ''
@@ -303,7 +342,7 @@
 }
 .user-info-item {
   display: flex;
-  padding: 10px 15px;
+  padding: 10px 20px;
   border-bottom: 1px solid #eaeaea;
   align-items: center;
 }
@@ -321,6 +360,17 @@
   line-height: 24px;
   width: 100%;
 }
+.user-coupon .user-info-bd {
+  background-image:url(../assets/img/not-check.png);
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: 20px;
+  background-color: #ffffff;
+  padding-right: 25px;
+}
+.user-coupon.active .user-info-bd {
+  background-image:url(../assets/img/checked.png);
+}
 .user-coupon {
   background-color: #fff;
   margin-top: 15px;
@@ -332,7 +382,7 @@
   align-items: center;
   color: #8d8d8d;
 }
-.u-info-text::after {
+/*.u-info-text::after {
   content: '';
   display: inline-block;
   width: 9px;
@@ -341,7 +391,7 @@
   border-style: solid;
   border-color: #8d8d8d;
   transform: rotate(45deg);
-}
+}*/
 .order-pay {
   margin-top: 15px;
   background-color: #fff;

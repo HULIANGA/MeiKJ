@@ -42,6 +42,13 @@ export default {
         productNames: null, // 预约产品名称
         productIds: null, // 预约产品id
         couponItem: [], // 优惠券数据
+        discountType: 1, // 优惠类型，1优惠券，2订单折扣
+        orderDiscount: {
+          show: false,
+          line: null,
+          name: null,
+          ratio: null
+        }, // 订单折扣
         orderSubmit: { // 提交订单数据
           productList: [], // 产品信息
           payType: window.systemType === 'MKJ' ? 1 : 4, // 支付方式
@@ -93,6 +100,17 @@ export default {
         window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
       }, 1000)
     })
+    this.$http.get(window.ctx + '/api/discount/detail', {}).then(function (response) {
+      let res = response.data
+      if (res.code === 0 && res.result) {
+        if (!utils.getUrlParam('couponId')) {
+          this.orderInfo.discountType = 1
+        }
+        this.orderInfo.orderDiscount.name = res.result.name
+        this.orderInfo.orderDiscount.ratio = res.result.ratio
+        this.orderInfo.orderDiscount.line = res.result.line
+      }
+    })
   },
   ready: function () {
 
@@ -119,6 +137,9 @@ export default {
           self.currentStep = 'person'
         }else if (hashVal === '#order') {
           self.currentStep = 'order'
+          if (self.orderInfo.orderDiscount.name && self.orderInfo.orderSubmit.price >= self.orderInfo.orderDiscount.line) {
+            self.orderInfo.orderDiscount.show = true
+          }
         }else if (hashVal === '#coupon') {
           self.currentStep = 'coupon'
         }
