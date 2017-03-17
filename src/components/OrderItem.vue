@@ -14,6 +14,9 @@
         <template v-if="item.processState === 1 || item.processState === 2">
           <button class="btn btn-default" @click.prevent.stop="cancelOrder(item.id,$index)">取消订单</button>
         </template>
+        <template v-if="item.processState === 3 || item.processState === 4">
+          <button class="btn btn-primary" @click.prevent.stop="goApointment(item.barberId, item.barberName, item.shopId, item.shopName)">再来一单</button>
+        </template>
       </div>
       <div class="control-right" v-if="item.processState === 0">
         <button class="btn btn-default" @click.prevent.stop="cancelOrder(item.id,$index)">取消订单</button>
@@ -24,10 +27,10 @@
       <div v-if="item.processState === 2">
         <button class="btn btn-primary" @click.prevent.stop="confirmService(item.id,$index)">确认服务</button>
       </div>
-      <div class="control-right" v-if="item.processState === 3">
+      <div v-if="item.processState === 3">
         <button class="btn btn-primary" @click.prevent.stop="goComment(item.id)">去评价</button>
       </div>
-      <div class="control-right" v-if="item.processState === 4">
+      <div v-if="item.processState === 4">
         <button class="btn btn-primary" @click.prevent.stop="viewComment(item.barberId)">查看评价</button>
       </div>
       <div class="control-right" v-if="item.processState === 5">
@@ -68,6 +71,14 @@ export default {
     }
   },
   methods: {
+    goApointment (personId, personName, shopId, shopName) {
+      window.goPage(
+      'apointment.html?' +
+      'personId=' + personId +
+      '&personName=' + encodeURIComponent(personName) +
+      '&shopId=' + shopId +
+      '&shopName=' + encodeURIComponent(shopName))
+    },
     goPay (item) {
       this.$parent.$parent.$parent.loading.show = true
       if (item.payType === 1) { // 微信支付
