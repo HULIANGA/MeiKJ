@@ -42,7 +42,9 @@ module.exports = {
     apointmentOffline: entryPath + '/apointmentOffline.js',
     getCoupon: entryPath + '/getCoupon.js',
     paySuccess: entryPath + '/paySuccess.js',
-    exchangeCoupon: entryPath + '/exchangeCoupon.js'
+    exchangeCoupon: entryPath + '/exchangeCoupon.js',
+    myRownum: entryPath + '/myRownum.js',
+    payOffline: entryPath + '/payOffline.js'
   },
   output: {
     path: distPath, //输出文件目录
@@ -212,6 +214,16 @@ module.exports = {
       template: 'src/html/exchangeCoupon.html',
       filename: 'html/exchangeCoupon.html',
       chunks: ['exchangeCoupon']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/myRownum.html',
+      filename: 'html/myRownum.html',
+      chunks: ['myRownum']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/html/payOffline.html',
+      filename: 'html/payOffline.html',
+      chunks: ['payOffline']
     })
   ],
   module: {

@@ -37,6 +37,16 @@
       </a>
     </div>
     <div class="center-item">
+      <a class="center-item-link" @click="goPage(userCenter.rownumUrl)">
+        <div class="ct-link-hd">
+          <img src="../assets/img/center-favorite.png">
+        </div>
+        <div class="ct-link-bd">
+          我的排号
+        </div>
+      </a>
+    </div>
+    <div class="center-item">
       <a class="center-item-link" @click="goPage(userCenter.collectionUrl)">
         <div class="ct-link-hd">
           <img src="../assets/img/center-favorite.png">
@@ -131,7 +141,8 @@
           resetUrl: 'resetPwd.html',
           couponUrl: 'myCoupon.html',
           aboutUrl: 'aboutUs.html',
-          salesUrl: 'afterSale.html'
+          salesUrl: 'afterSale.html',
+          rownumUrl: 'myRownum.html'
         },
         token: localStorage.token,
         phoneModal: false,

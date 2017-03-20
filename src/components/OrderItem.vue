@@ -22,7 +22,8 @@
         <button class="btn btn-default" @click.prevent.stop="cancelOrder(item.id,$index)">取消订单</button>
       </div>
       <div v-if="item.processState === 1">
-          <button class="btn btn-primary" @click.prevent.stop="goPay(item)">去付款</button>
+        <button v-if="item.offline === 0" class="btn btn-primary" @click.prevent.stop="goPay(item)">去付款</button>
+        <button v-if="item.offline === 1" class="btn btn-primary" @click.prevent.stop="goPayOffline(item)">去付款</button>
       </div>
       <div v-if="item.processState === 2">
         <button class="btn btn-primary" @click.prevent.stop="confirmService(item.id,$index)">确认服务</button>
@@ -96,7 +97,9 @@ export default {
           toast('支付失败')
         })
       }
-
+    },
+    goPayOffline (item) {
+      window.goPage('payOffline.html?orderId=' + item.id)
     },
     detailModal (item) {
       this.$emit('detail-msg', item.id)

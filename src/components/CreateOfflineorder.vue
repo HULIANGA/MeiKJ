@@ -54,6 +54,18 @@
         </div>
       </div>
     </div>
+    <div class="user-coupon active" v-if="order.orderDiscount.show">
+      <a class="user-info-item">
+        <div class="user-info-hd">
+          <label>订单折扣</label>
+        </div>
+        <div class="user-info-bd">
+          <p class="u-info-text">
+            <span>{{order.orderDiscount.name}}</span>
+          </p>
+        </div>
+      </a>
+    </div>
     <!-- pay  -->
     <div class="order-pay">
       <div class="order-pay-title">付款方式</div>
@@ -123,7 +135,7 @@
         isWeixin: /MicroMessenger/i.test(navigator.userAgent),
         token: localStorage.token,
         systemType: window.systemType,
-        hasLogin: false,
+        hasLogin: true,
         codeImage: '',
         imageCode: '',
         ran: '',
@@ -332,6 +344,7 @@
 .order{
   height: 100%;
   width: 100%;
+  background: #eaeaea;
   overflow-y: auto;
   -webkit-overflow-scrolling:touch;
   position: absolute;
@@ -370,7 +383,7 @@
 }
 .user-info-item {
   display: flex;
-  padding: 10px 15px;
+  padding: 10px 20px 10px 15px;
   border-bottom: 1px solid #eaeaea;
   align-items: center;
 }
@@ -406,6 +419,17 @@
   line-height: 24px;
   width: 100%;
 }
+.user-coupon .user-info-bd {
+  background-image:url(../assets/img/not-check.png);
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: 18px;
+  background-color: #ffffff;
+  padding-right: 25px;
+}
+.user-coupon.active .user-info-bd {
+  background-image:url(../assets/img/checked.png);
+}
 .user-coupon {
   background-color: #fff;
   margin-top: 15px;
@@ -416,16 +440,6 @@
   justify-content: flex-end;
   align-items: center;
   color: #8d8d8d;
-}
-.u-info-text::after {
-  content: '';
-  display: inline-block;
-  width: 9px;
-  height: 9px;
-  border-width: 2px 2px 0 0;
-  border-style: solid;
-  border-color: #8d8d8d;
-  transform: rotate(45deg);
 }
 .order-pay {
   margin-top: 15px;
