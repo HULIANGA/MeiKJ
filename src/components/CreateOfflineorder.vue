@@ -18,7 +18,7 @@
         <span class="value">{{order.queueNum}}</span>
       </div>
     </div>
-    <div class="user-info">
+    <!-- <div class="user-info">
       <div class="user-info-item">
         <div class="user-info-hd">
           <label>真实姓名：</label>
@@ -53,7 +53,7 @@
           <button class="btn btn-code" @click.prevent="getVerifyCode" :disabled="disabled">{{disabled ? count : '获取验证码'}}</button>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="user-coupon active" v-if="order.orderDiscount.show">
       <a class="user-info-item">
         <div class="user-info-hd">
@@ -159,12 +159,14 @@
               self.$parent.loading.show = false
               self.hasLogin = true
               self.token = localStorage.token
-              self.order.orderSubmit.customerPhone = localStorage.loginphone
-              self.order.orderSubmit.customerName = localStorage.loginname
             },
             nCallback: function () {
               self.$parent.loading.show = false
               self.hasLogin = false
+              toast('请先登录')
+              setTimeout(function () {
+                window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+              }, 1000)
             }
           })
         }
@@ -175,12 +177,14 @@
             self.$parent.loading.show = false
             self.hasLogin = true
             self.token = localStorage.token
-            self.order.orderSubmit.customerPhone = localStorage.loginphone
-            self.order.orderSubmit.customerName = localStorage.loginname
           },
           nCallback: function () {
             self.$parent.loading.show = false
             self.hasLogin = false
+            toast('请先登录')
+            setTimeout(function () {
+              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+            }, 1000)
           }
         })
       })
@@ -191,61 +195,18 @@
     methods: {
       submit: function () {
         let self = this
-        if (self.order.orderSubmit.customerPhone.trim() === '') {
-          toast('请输入手机号')
-          return
-        }
-        if (!self.hasLogin) { // 未登录下单
-          if (self.imageCode.trim() === '') {
-            toast('请输入图片验证码')
-            return
-          }
-          if (self.sendVerifyCode.trim() === '') {
-            toast('请输入验证码')
-            return
-          }
-        }
-        if (!utils.getCheck.checkPhone(self.order.orderSubmit.customerPhone.trim())) {
-          toast('请输入正确的手机号')
-          return
-        }
         self.$parent.loading.show = true
-        if (!self.hasLogin) { // 未登录下单
-          self.$http.post(window.ctx + '/api/customer/codeLogin' + (utils.getUrlParam('session_key') ? ('?session_key=' + utils.getUrlParam('session_key')) : ''), {mobile: self.order.orderSubmit.customerPhone}, {headers: {code: self.sendVerifyCode}, emulateJSON: true}).then((response) => {
-            if (response.data.code === 0) {
-              localStorage.loginid = response.data.result.id
-              localStorage.loginphone = self.order.orderSubmit.customerPhone
-              localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
-              self.token = localStorage.token = response.data.result.token
-              if (self.order.orderSubmit.realPrice === 0) {
-                self.order.orderSubmit.realPrice = 0.01
-              }
-              if (self.order.orderSubmit.price === 0) {
-                self.order.orderSubmit.price = 0.01
-              }
-              self.saveOrder()
-            }else {
-              toast(response.data.message)
-              self.$parent.loading.show = false
-            }
-          }, (response) => {
-            toast('登录失败')
-            self.$parent.loading.show = false
-          })
-        } else { // 已登录下单
-          if (self.order.orderSubmit.realPrice === 0) {
-            self.order.orderSubmit.realPrice = 0.01
-          }
-          if (self.order.orderSubmit.price === 0) {
-            self.order.orderSubmit.price = 0.01
-          }
-          self.saveOrder()
+        if (self.order.orderSubmit.realPrice === 0) {
+          self.order.orderSubmit.realPrice = 0.01
         }
+        if (self.order.orderSubmit.price === 0) {
+          self.order.orderSubmit.price = 0.01
+        }
+        self.saveOrder()
       },
       saveOrder () {
         var self = this
-        self.$http.post(window.ctx + '/api/order/t/saveOfflineOrder', self.order.orderSubmit, {headers: {token: self.token}}).then(function (response) {
-          localStorage.loginname = self.order.orderSubmit.customerName
+        self.$http.post(window.ctx + '/api/order/t/updateOrder', self.order.orderSubmit, {headers: {token: localStorage.token}}).then(function (response) {
           let res = response.data
           if (res.code === 0) {
             if (this.order.orderSubmit.payType === '4' || this.order.orderSubmit.payType === 4) { // 到店付

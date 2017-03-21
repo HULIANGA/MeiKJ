@@ -213,13 +213,6 @@
         }
       },
       showCoupon: function () {
-        this.order.discountType = 1
-        if (this.tempCouponId) {
-          this.$emit('select-coupon', this.tempCouponId, this.tempCouponName, this.tempCouponType, this.tempCouponMoney)
-        } else {
-          this.order.orderSubmit.realPrice = this.order.orderSubmit.price
-          this.couponPrice = 0
-        }
         window.location.hash = 'coupon'
       },
       useDiscount: function () {
@@ -235,15 +228,12 @@
           couponId: id,
           productIds: this.order.productIds
         }
-        this.tempCouponId = id
-        this.tempCouponName = name
-        this.tempCouponType = type
-        this.tempCouponMoney = money
         this.$parent.loading.show = true
         this.$http.post(window.ctx + '/api/coupon/t/computePrice', couponPriceData, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
           let res = response.data
           if (res.code === 0) {
             this.$parent.loading.show = false
+            this.order.discountType = 1
             this.order.orderSubmit.couponId = id
             this.couponName = name
             money = res.result
@@ -280,15 +270,18 @@
         // this.couponName = name
       },
       'cancel-select-coupon': function () {
-        this.tempCouponId = null
-        this.tempCouponName = null
-        this.tempCouponType = null
-        this.tempCouponMoney = null
-
-        this.couponPrice = 0
-        this.order.orderSubmit.realPrice = this.order.orderSubmit.price
-        this.couponName = ''
-        this.order.orderSubmit.couponId = ''
+        if (this.order.orderDiscount.show) {
+          this.order.discountType = 2
+          this.order.orderSubmit.couponId = null
+          this.order.orderSubmit.realPrice = (this.order.orderSubmit.price * this.order.orderDiscount.ratio / 100).toFixed(2)
+          this.couponPrice = (this.order.orderSubmit.price * (100 - this.order.orderDiscount.ratio) / 100).toFixed(2)
+        }else {
+          this.order.discountType = null
+          this.couponPrice = 0
+          this.order.orderSubmit.realPrice = this.order.orderSubmit.price
+          this.couponName = ''
+          this.order.orderSubmit.couponId = ''
+        }
       }
     },
     props: {

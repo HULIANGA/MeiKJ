@@ -16,7 +16,6 @@ export default {
       loading: {
         show: true
       },
-      orderId: '',
       orderInfo: { // 订单初始化数据，包括显示的数据和提交的数据
         shopName: null, // 门店名称
         productNames: null, // 预约产品名称
@@ -29,13 +28,12 @@ export default {
           ratio: null
         },
         orderSubmit: { // 提交订单数据
-          productList: [], // 产品信息
+          id: null,
           payType: 1, // 支付方式
-          shopId: null, // 门店id
-          customerName: localStorage.loginname ? localStorage.loginname : '', // 用户名称
-          customerPhone: localStorage.loginphone, // 用户手机号
           price: null, // 订单总额
           realPrice: null, // 实付金额
+          couponId: null,
+          isDiscount: null,
           memo: null // 订单备注
         }
       }
@@ -44,8 +42,8 @@ export default {
   computed: {},
   created () {
     var self = this
-    self.orderId = utils.getUrlParam('orderId')
-    self.showDetail(self.orderId)
+    self.orderInfo.orderSubmit.id = utils.getUrlParam('orderId')
+    self.showDetail(self.orderInfo.orderSubmit.id)
   },
   ready () {
   },
@@ -64,10 +62,7 @@ export default {
             let orderDetail = res.result
             self.orderInfo.shopName = orderDetail.shopName
             self.orderInfo.queueNum = orderDetail.waitNum
-            self.orderInfo.orderSubmit.shopId = orderDetail.shopId
-            self.orderInfo.orderSubmit.customerName = orderDetail.customerName
 
-            self.orderInfo.orderSubmit.productList = orderDetail.productList
             let productNameString = ''
             let productIdString = ''
             for (let index = 0; index < orderDetail.productList.length; index++) {
@@ -82,8 +77,8 @@ export default {
             self.orderInfo.productIds = productIdString
             self.orderInfo.orderSubmit.price = 0
             self.orderInfo.orderSubmit.realPrice = 0
-            for (let i = 0; i < self.orderInfo.orderSubmit.productList.length; i++) {
-              let productInfo = self.orderInfo.orderSubmit.productList[i]
+            for (let i = 0; i < orderDetail.productList.length; i++) {
+              let productInfo = orderDetail.productList[i]
               self.orderInfo.orderSubmit.price += parseFloat(productInfo.price, 10)
               self.orderInfo.orderSubmit.realPrice += parseFloat(productInfo.price, 10)
             }
@@ -97,8 +92,8 @@ export default {
                 if (res.result.state === 1 && self.orderInfo.orderSubmit.price >= res.result.line) {
                   self.orderInfo.orderDiscount.show = true
                   self.orderInfo.orderSubmit.isDiscount = 1
+                  self.orderInfo.orderSubmit.realPrice = (self.orderInfo.orderSubmit.realPrice * res.result.ratio / 100).toFixed(2)
                 }
-                self.orderInfo.orderSubmit.realPrice = (self.orderInfo.orderSubmit.realPrice * res.result.ratio / 100).toFixed(2)
               }
             })
           }else if (res.code === 10007) {
