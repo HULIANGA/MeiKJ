@@ -57,11 +57,11 @@
     <div :class="['user-coupon', order.discountType === 2 ? 'active' : '']" @click="useDiscount()" style="margin-top: 0" v-if="order.orderDiscount.show">
       <a class="user-info-item">
         <div class="user-info-hd">
-          <label>订单折扣</label>
+          <label>{{order.orderDiscount.name}}</label>
         </div>
         <div class="user-info-bd">
           <p class="u-info-text">
-            <span>{{order.orderDiscount.name}}</span>
+            <span>{{order.orderDiscount.ratio / 10}}折优惠</span>
           </p>
         </div>
       </a>
