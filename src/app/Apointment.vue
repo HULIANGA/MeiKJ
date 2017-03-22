@@ -5,6 +5,7 @@
   <select-person v-show="currentStep === 'person'" :items="personItem"></select-person>
   <create-order v-show="currentStep === 'order'" :order="orderInfo"></create-order>
   <select-coupon v-show="currentStep === 'coupon'" :items="orderInfo.couponItem"></select-coupon>
+  <coupon-list v-if="orderInfo.availableCouponList.length > 0" v-show="showAvaliCoupons" :items="orderInfo.availableCouponList" :callback="orderInfo.getCouponCallback"></coupon-list>
   <loading :show="loading.show"></loading>
 </template>
 
@@ -15,6 +16,7 @@ import SelectTime from '../components/SelectTime'
 import SelectPerson from '../components/SelectPerson'
 import CreateOrder from '../components/CreateOrder'
 import SelectCoupon from '../components/SelectCoupon'
+import CouponList from '../components/CouponList'
 import Loading from '../components/Loading'
 import utils from '../js/utils'
 import toast from '../js/toast'
@@ -35,6 +37,7 @@ export default {
       personItem: null, // 发型师数据
       currentStep: 'service', // 当前显示步骤。service选项目；store选门店；time选时间；person选发型师；order下单
       customerCouponId: null,
+      showAvaliCoupons: false,
       orderInfo: { // 订单初始化数据，包括显示的数据和提交的数据
         shopName: null, // 门店名称
         barberName: null, // 发型师名称
@@ -50,6 +53,8 @@ export default {
           ratio: null,
           state: null
         }, // 订单折扣
+        availableCouponList: [],
+        getCouponCallback: null,
         orderSubmit: { // 提交订单数据
           productList: [], // 产品信息
           payType: window.systemType === 'MKJ' ? 1 : 4, // 支付方式
@@ -80,7 +85,7 @@ export default {
       self.customerCouponId = utils.getUrlParam('customerCouponId')
     }
     self.loading.show = true
-    this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
+    self.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: localStorage.token}}).then(function (response) {
       let res = response.data
       if (res.code === 0) {
         self.initPageData()
@@ -101,7 +106,7 @@ export default {
         window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
       }, 1000)
     })
-    this.$http.get(window.ctx + '/api/discount/detail', {}).then(function (response) {
+    self.$http.get(window.ctx + '/api/discount/detail', {}).then(function (response) {
       let res = response.data
       if (res.code === 0 && res.result) {
         this.orderInfo.orderDiscount.name = res.result.name
@@ -112,10 +117,15 @@ export default {
     })
   },
   ready: function () {
-
   },
   attached: function () {},
   events: {
+    'show-avali-coupons': function () {
+      this.showAvaliCoupons = true
+    },
+    'hide-avali-coupons': function () {
+      this.showAvaliCoupons = false
+    },
     'next': function (data) {
       var self = this
       // 在ready里绑定onhashchange事件，手机QQ内置浏览器不触发，故在此绑定
@@ -334,10 +344,47 @@ export default {
       })
     },
     getAvilCoupon: function (requestData) {
-      if (this.token) {
+      var self = this
+      if (localStorage.token) {
         this.loading.show = true
         console.log(requestData)
-        this.$http.post(window.ctx + '/api/coupon/t/availableList', requestData, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+        this.$http.post(window.ctx + '/api/coupon/t/availableCouponList', requestData, {
+          headers: {token: localStorage.token},
+          emulateJSON: true
+        }).then(function (response) {
+          var res = response.data
+          if (res.code === 0) {
+            this.orderInfo.availableCouponList = res.result
+            if (res.result.length > 0) {
+              self.orderInfo.getCouponCallback = function () {
+                var requestData = {
+                  'barberId': self.orderInfo.orderSubmit.barberId,
+                  'productIds': self.orderInfo.productIds,
+                  'money': self.orderInfo.orderSubmit.price
+                }
+                self.$http.post(window.ctx + '/api/coupon/t/availableCouponList', requestData, {
+                  headers: {token: localStorage.token},
+                  emulateJSON: true
+                }).then(function (response) {
+                  var res = response.data
+                  if (res.code === 0) {
+                    self.orderInfo.availableCouponList = res.result
+                  }
+                })
+                self.$http.post(window.ctx + '/api/coupon/t/availableList', requestData, {
+                  headers: {token: localStorage.token},
+                  emulateJSON: true
+                }).then(function (response) {
+                  var res = response.data
+                  if (res.code === 0) {
+                    self.orderInfo.couponItem = res.result
+                  }
+                })
+              }
+            }
+          }
+        })
+        this.$http.post(window.ctx + '/api/coupon/t/availableList', requestData, {headers: {token: localStorage.token}, emulateJSON: true}).then(function (response) {
           this.loading.show = false
           var res = response.data
           if (res.code === 0) {
@@ -389,7 +436,8 @@ export default {
     SelectPerson,
     CreateOrder,
     SelectCoupon,
-    Loading
+    Loading,
+    CouponList
   }
 }
 </script>

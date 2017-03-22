@@ -66,6 +66,7 @@
         </div>
       </a>
     </div>
+    <div v-if="order.availableCouponList.length > 0" class="avili-coupon-link"><a @click="showCoupons()">您有可用优惠券未领取</a></div>
     <!-- pay  -->
     <div class="order-pay">
       <div class="order-pay-title">付款方式</div>
@@ -142,6 +143,9 @@
     ready: function () {
     },
     methods: {
+      showCoupons: function () {
+        this.$dispatch('show-avali-coupons')
+      },
       submit: function () {
         console.log(this.order.orderSubmit.productList)
         if (this.token) {
@@ -290,6 +294,13 @@
   }
 </script>
 <style scoped>
+.avili-coupon-link {
+  color: #fd6f60;
+  text-align: right;
+  display: block;
+  background: #fff;
+  padding: 5px 20px;
+}
 .order-container {
   height: 100%;
   position: relative;
