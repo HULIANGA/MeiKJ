@@ -177,7 +177,7 @@ body {
   background-color: #eaeaea;
 }
 .order-item {
-  margin-top: 15px;
+  margin-bottom: 15px;
   background-color: #fff;
   font-size: 1.4rem;
   padding: 10px 15px;
