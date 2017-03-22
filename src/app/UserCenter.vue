@@ -39,7 +39,7 @@
     <div class="center-item">
       <a class="center-item-link" @click="goPage(userCenter.rownumUrl)">
         <div class="ct-link-hd">
-          <img src="../assets/img/center-favorite.png">
+          <img src="../assets/img/center-rownum.png">
         </div>
         <div class="ct-link-bd">
           我的排号
