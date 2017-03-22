@@ -52,7 +52,9 @@
       *参考价为不同发型师提供洗剪吹服务时的参考价格， 您的预约排号完成后，我们会指定发型师为您进行服务，届时您可以与发型师确认服务项目及服务金额。
     </p>
   </div>
-  <button type="button" class="appoint-btn" name="button" @click.prevent="goAppoint">预约</button>
+  <div class="appoint-btn">
+    <button type="button" name="button" @click.prevent="goAppoint">预约</button>
+  </div>
   <loading :show="loading.show"></loading>
 </template>
 
@@ -273,6 +275,7 @@ html, body {
 body {
   padding-bottom: 60px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 table {
   width: 100%;
@@ -350,11 +353,17 @@ input[type=radio]:checked {
 }
 .appoint-btn {
   position: absolute;
-  bottom: 10px;
-  width: 90%;
-  left: 5%;
+  bottom: 0;
+  text-align: center;
+  height: 60px;
+  width: 100%;
+  background: #ffffff;
+}
+.appoint-btn button {
   background: #ff6251;
   line-height: 40px;
+  width: 90%;
+  margin-top: 10px;
 }
 .tips {
   color: #888;
