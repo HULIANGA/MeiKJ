@@ -35,10 +35,10 @@
     <div class="input-div">
       <input type="tel" placeholder="请输入您的姓名" maxlength="4" v-model="customerName" @keyup.enter="goAppoint">
     </div>
+    <div class="input-div">
+      <input type="tel" placeholder="请输入手机号码" maxlength="11" v-model="phone" @keyup.enter="goAppoint">
+    </div>
     <template v-if="!hasLogin">
-      <div class="input-div">
-        <input type="tel" placeholder="请输入手机号码" maxlength="11" v-model="phone" @keyup.enter="goAppoint">
-      </div>
       <div class="input-div code-input-div">
         <input type="tel" placeholder="请输入图形验证码" v-model="imageCode" @keyup.enter="goAppoint">
         <img @click.prevent="changeCodeImage" :src="codeImage" alt="看不清?点击图片换一张" alt="">
