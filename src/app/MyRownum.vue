@@ -5,7 +5,8 @@
   <div class="my-rownum-list">
     <div class="order-item" v-for="(index, item) in orderItems">
       <div class="row-num-detail">
-        <p class="text-red" v-if="item.state === 1 || item.state === 2">排号中</p>
+        <p class="text-red" v-if="item.state === 1">排号中</p>
+        <p class="text-red" v-if="item.state === 2">接单中</p>
         <p v-if="item.state === 3">已接单</p>
         <p v-if="item.state === 4">已取消</p>
         <p v-if="item.state === 5">已过号</p>
