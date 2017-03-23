@@ -9,11 +9,11 @@ window.systemType = 'MKJ'
 // window.systemType = 'DY'
 /*************************** 页面跳转经过后台重定向 ******************************/
 // 本地
-// var webOrigin = 'http://mkj001.bigaka.com/mkj'
-// var webPath = '/dist/html/'
-// mkj001
 var webOrigin = 'http://mkj001.bigaka.com/mkj'
-var webPath = '/mkj/view/html/'
+var webPath = '/dist/html/'
+// mkj001
+// var webOrigin = 'http://mkj001.bigaka.com/mkj'
+// var webPath = '/mkj/view/html/'
 // 生产
 // var webOrigin = 'https://app.dymkj.net/mkj'
 // var webPath = '/mkj/view/html/'

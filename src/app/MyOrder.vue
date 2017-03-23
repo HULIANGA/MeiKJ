@@ -42,11 +42,7 @@
           <p v-if="orderDetail.offline === 1 && (orderDetail.processState === 1 || orderDetail.processState === 2 || orderDetail.processState === 0)">{{orderDetail.waitNum}}</p>
           <div v-if="orderDetail.offline === 1 && (orderDetail.processState === 2 || orderDetail.processState === 0)" class="inline col-50">
             <h5><i></i>排队号码</h5>
-            <p>{{orderDetail.queueNum}}号</p>
-          </div>
-          <div v-if="orderDetail.offline === 1 && (orderDetail.processState === 2 || orderDetail.processState === 0)" class="inline col-50">
-            <h5><i></i>验票码</h5>
-            <p>{{orderDetail.checkCode}}</p>
+            <p>{{orderDetail.queueNum}}</p>
           </div>
           <div v-if="orderDetail.dealGroupCode">
             <h5><i></i>团购券码</h5>
@@ -58,7 +54,6 @@
         <div v-if="orderDetail.offline === 1 && (orderDetail.processState === 2 || orderDetail.processState === 0)" class="offline-order-detail">
           <p>下单时间：{{new Date(orderDetail.updateTime).getFullYear() + '-' + fixNum(new Date(orderDetail.updateTime).getMonth() + 1) + '-' + fixNum(new Date(orderDetail.updateTime).getDate()) + ' ' + fixNum(new Date(orderDetail.updateTime).getHours()) + ':' + fixNum(new Date(orderDetail.updateTime).getMinutes()) + ':' + fixNum(new Date(orderDetail.updateTime).getSeconds())}}</p>
           <p>支付方式：{{orderDetail.payType === 1 ? '微信公众平台支付' : '支付宝支付'}}</p>
-          <h5>服务时请向发型设计师出示验票码</h5>
           <p class="tips">请于门店中心耐心排队</p>
           <p class="tips">具体等候时间需要以实际情况为准，东瀛造型拥有最终解释权</p>
         </div>

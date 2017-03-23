@@ -12,11 +12,6 @@
         <span>预约项目：</span>
         <span class="value">{{order.productNames}}</span>
       </div>
-      <div class="reserve-detail-item">
-        <img src="../assets/img/order-time.png">
-        <span>等待人数：</span>
-        <span class="value">{{order.queueNum}}</span>
-      </div>
     </div>
     <div class="user-info">
       <div class="user-info-item">
