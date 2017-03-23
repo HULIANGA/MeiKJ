@@ -108,7 +108,7 @@ export default {
                 productIdString += ','
               }
               productNameString += orderDetail.productList[index].productName
-              productIdString += orderDetail.productList[index].id
+              productIdString += orderDetail.productList[index].productId
             }
             self.orderInfo.productNames = productNameString
             self.orderInfo.productIds = productIdString
