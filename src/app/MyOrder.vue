@@ -38,12 +38,7 @@
           <p><span v-for="(index,pro) in orderDetail.productList">{{pro.productName}}<i v-if="index != (orderDetail.productList.length-1)">、</i></span></p>
           <h5 v-if="orderDetail.offline === 0"><i></i>预约时间</h5>
           <p v-if="orderDetail.offline === 0">{{new Date(orderDetail.date).getFullYear() + '-' + (new Date(orderDetail.date).getMonth() + 1) + '-' + new Date(orderDetail.date).getDate()}} {{orderDetail.time}}</p>
-          <h5 v-if="orderDetail.offline === 1 && (orderDetail.processState === 1 || orderDetail.processState === 2 || orderDetail.processState === 0)"><i></i>等候人数</h5>
-          <p v-if="orderDetail.offline === 1 && (orderDetail.processState === 1 || orderDetail.processState === 2 || orderDetail.processState === 0)">{{orderDetail.waitNum}}</p>
-          <div v-if="orderDetail.offline === 1 && (orderDetail.processState === 2 || orderDetail.processState === 0)" class="inline col-50">
-            <h5><i></i>排队号码</h5>
-            <p>{{orderDetail.queueNum}}</p>
-          </div>
+          <h5 class="text-highlight" v-if="orderDetail.offline === 1 && (orderDetail.processState === 1 || orderDetail.processState === 2 || orderDetail.processState === 0)"><i></i>线下订单</h5>
           <div v-if="orderDetail.dealGroupCode">
             <h5><i></i>团购券码</h5>
             <p>{{orderDetail.dealGroupCode}}</p>
@@ -54,6 +49,7 @@
         <div v-if="orderDetail.offline === 1 && (orderDetail.processState === 2 || orderDetail.processState === 0)" class="offline-order-detail">
           <p>下单时间：{{new Date(orderDetail.updateTime).getFullYear() + '-' + fixNum(new Date(orderDetail.updateTime).getMonth() + 1) + '-' + fixNum(new Date(orderDetail.updateTime).getDate()) + ' ' + fixNum(new Date(orderDetail.updateTime).getHours()) + ':' + fixNum(new Date(orderDetail.updateTime).getMinutes()) + ':' + fixNum(new Date(orderDetail.updateTime).getSeconds())}}</p>
           <p>支付方式：{{orderDetail.payType === 1 ? '微信公众平台支付' : '支付宝支付'}}</p>
+          <br>
           <p class="tips">请于门店中心耐心排队</p>
           <p class="tips">具体等候时间需要以实际情况为准，东瀛造型拥有最终解释权</p>
         </div>

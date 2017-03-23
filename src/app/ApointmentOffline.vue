@@ -33,7 +33,7 @@
   </table>
   <div class="input-panel">
     <div class="input-div">
-      <input type="tel" placeholder="请输入您的姓名" maxlength="4" v-model="customerName" @keyup.enter="goAppoint">
+      <input placeholder="请输入您的姓名" maxlength="4" v-model="customerName" @keyup.enter="goAppoint">
     </div>
     <div class="input-div">
       <input type="tel" placeholder="请输入手机号码" maxlength="11" v-model="phone" @keyup.enter="goAppoint">
@@ -186,7 +186,9 @@ export default {
           localStorage.loginname = response.data.result.nickName ? response.data.result.nickName : ''
           localStorage.token = response.data.result.token
           self.loading.show = false
-          if (!self.customerName) {
+          if (self.customerName) {
+            localStorage.loginname = self.customerName
+          }else {
             self.customerName = localStorage.loginname
           }
           self.phone = this.phone

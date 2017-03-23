@@ -145,7 +145,7 @@
           }else if (!this.order.orderSubmit.customerPhone) {
             toast('请填写您的手机号')
             return false
-          }else if (!utils.getCheck.checkPhone(this.order.orderSubmit.customerPhone.trim())) {
+          }else if (!utils.getCheck.checkPhone(this.order.orderSubmit.customerPhone)) {
             toast('请输入正确的手机号')
             return false
           }
