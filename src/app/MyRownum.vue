@@ -11,7 +11,7 @@
         <p v-if="item.state === 4">已取消</p>
         <p v-if="item.state === 5">已过号</p>
         <p class="text-big">{{item.queueNumExt}}</p>
-        <p class="text-red" v-if="item.state === 1 || item.state === 2">还有{{item.queueNum - 1}}位</p>
+        <p class="text-red" v-if="item.state === 1 || item.state === 2">还有{{item.waitNum}}位</p>
       </div>
       <p>预约门店：{{item.shopName}}</p>
       <p>预约时间：{{new Date(item.date).getFullYear() + '-' + (new Date(item.date).getMonth() + 1) + '-' + new Date(item.date).getDate()}} {{item.time}}</p>
