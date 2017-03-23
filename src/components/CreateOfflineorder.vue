@@ -18,13 +18,13 @@
         <span class="value">{{order.queueNum}}</span>
       </div>
     </div>
-    <!-- <div class="user-info">
+    <div class="user-info">
       <div class="user-info-item">
         <div class="user-info-hd">
           <label>真实姓名：</label>
         </div>
         <div class="user-info-bd">
-          <input type="text" v-model="order.orderSubmit.customerName" maxlength="10" placeholder="请输入您的真实姓名">
+          <input type="text" v-model="order.orderSubmit.customerName" placeholder="请输入您的真实姓名">
         </div>
       </div>
       <div class="user-info-item">
@@ -32,40 +32,36 @@
           <label>手机号码：</label>
         </div>
         <div class="user-info-bd">
-          <input type="tel" v-model="order.orderSubmit.customerPhone" maxlength="11" placeholder="请输入您的手机号码">
+          <input type="tel" v-model="order.orderSubmit.customerPhone" placeholder="请输入您的手机号码">
         </div>
       </div>
-      <div v-if="!hasLogin" class="user-info-item img-code-item" v-show="order.orderSubmit.customerPhone">
-        <div class="user-info-hd">
-          <label>图片验证：</label>
-        </div>
-        <div class="user-info-bd">
-          <input type="tel" placeholder="请输入图片验证码" v-model="imageCode">
-          <img class="checkCodeImage" @click.prevent="changeCodeImage" :src="codeImage" alt="看不清?点击图片换一张">
-        </div>
-      </div>
-      <div v-if="!hasLogin" class="user-info-item msg-code-item" v-show="order.orderSubmit.customerPhone">
-        <div class="user-info-hd">
-          <label>短信验证：</label>
-        </div>
-        <div class="user-info-bd">
-          <input type="tel" placeholder="请输入短信验证码" v-model="sendVerifyCode">
-          <button class="btn btn-code" @click.prevent="getVerifyCode" :disabled="disabled">{{disabled ? count : '获取验证码'}}</button>
-        </div>
-      </div>
-    </div> -->
-    <div class="user-coupon active" v-if="order.orderDiscount.show">
+    </div>
+    <div :class="['user-coupon', order.discountType === 1 ? 'active' : '']" @click="showCoupon()">
       <a class="user-info-item">
         <div class="user-info-hd">
-          <label>订单折扣</label>
+          <label>优惠券</label>
         </div>
         <div class="user-info-bd">
           <p class="u-info-text">
-            <span>{{order.orderDiscount.name}}</span>
+            <span v-if="couponName">{{couponName}}</span>
+            <span v-else>{{order.couponItem.length}}张可用</span>
           </p>
         </div>
       </a>
     </div>
+    <div :class="['user-coupon', order.discountType === 2 ? 'active' : '']" @click="useDiscount()" style="margin-top: 0" v-if="order.orderDiscount.show">
+      <a class="user-info-item">
+        <div class="user-info-hd">
+          <label>{{order.orderDiscount.name}}</label>
+        </div>
+        <div class="user-info-bd">
+          <p class="u-info-text">
+            <span>{{order.orderDiscount.ratio / 10}}折优惠</span>
+          </p>
+        </div>
+      </a>
+    </div>
+    <div v-if="order.availableCouponList.length > 0" class="avili-coupon-link"><a @click="showCoupons()">您有可用优惠券未领取</a></div>
     <!-- pay  -->
     <div class="order-pay">
       <div class="order-pay-title">付款方式</div>
@@ -107,7 +103,7 @@
     <div class="order-remark">
       <div class="order-remark-item">
         <div class="o-remark-bd">
-          <textarea rows="3" placeholder="在这里填上您的备注说明" maxlength="50" v-model="order.orderSubmit.memo"></textarea>
+          <textarea rows="3" placeholder="在这里填上您的备注说明" v-model="order.orderSubmit.memo"></textarea>
         </div>
       </div>
     </div>
@@ -116,6 +112,7 @@
     <div class="o-submit-left">
       <p>
         <span class="real-price">实付金额：{{order.orderSubmit.realPrice}}元</span>
+        <span class="cut-price">(优惠：{{couponPrice}}元)</span>
       </p>
     </div>
     <div class="o-submit-right">
@@ -125,172 +122,166 @@
 </div>
 </template>
 <script>
-  import utils from '../js/utils'
   import toast from '../js/toast'
-  import autoLogin from '../js/autoLogin'
+  import utils from '../js/utils'
 
   export default {
     data () {
       return {
         isWeixin: /MicroMessenger/i.test(navigator.userAgent),
         token: localStorage.token,
+        couponPrice: 0,
         systemType: window.systemType,
-        hasLogin: true,
-        codeImage: '',
-        imageCode: '',
-        ran: '',
-        sendVerifyCode: '',
-        disabled: false,
-        count: 60
+        couponName: null
       }
     },
-    created () {
-      var self = this
-      self.$parent.loading.show = true
-      self.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: self.token}}).then(function (response) {
-        var res = response.data
-        if (res.code === 0) {
-          self.$parent.loading.show = false
-          self.hasLogin = true
-        } else {
-          autoLogin.login({
-            component: self,
-            yCallback: function () {
-              self.$parent.loading.show = false
-              self.hasLogin = true
-              self.token = localStorage.token
-            },
-            nCallback: function () {
-              self.$parent.loading.show = false
-              self.hasLogin = false
-              toast('请先登录')
+    ready: function () {
+    },
+    methods: {
+      showCoupons: function () {
+        this.$dispatch('show-avali-coupons')
+      },
+      submit: function () {
+        console.log(this.order.orderSubmit.productList)
+        if (this.token) {
+          if (!this.order.orderSubmit.customerName) {
+            toast('请填写您的姓名')
+            return false
+          }else if (!this.order.orderSubmit.customerPhone) {
+            toast('请填写您的手机号')
+            return false
+          }else if (!utils.getCheck.checkPhone(this.order.orderSubmit.customerPhone.trim())) {
+            toast('请输入正确的手机号')
+            return false
+          }
+          this.$parent.loading.show = true
+          if (this.order.orderSubmit.realPrice === 0) {
+            this.order.orderSubmit.realPrice = 0.01
+          }
+          if (this.order.orderSubmit.price === 0) {
+            this.order.orderSubmit.price = 0.01
+          }
+          if (this.order.discountType === 2) {
+            this.order.orderSubmit.isDiscount = 1
+          }
+          this.$http.post(window.ctx + '/api/order/t/updateOrder', this.order.orderSubmit, {headers: {token: this.token}}).then(function (response) {
+            localStorage.loginname = this.order.orderSubmit.customerName
+            let res = response.data
+            if (res.code === 0) {
+              if (this.order.orderSubmit.payType === '4' || this.order.orderSubmit.payType === 4) { // 到店付
+                toast('订单提交成功')
+                setTimeout(function () {
+                  window.goPage('userCenter.html')
+                }, 500)
+              }else {
+                toast('订单提交成功，请在15分钟内完成付款')
+                if (this.order.orderSubmit.payType === '1' || this.order.orderSubmit.payType === 1) { // 微信支付
+                  this.$http.post(window.ctx + '/api/pay/wechat-pay' + (utils.getUrlParam('session_key') ? ('?session_key=' + utils.getUrlParam('session_key')) : ''), res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+                    window.location.href = response.data
+                  }, function (response) {
+                    this.$parent.loading.show = false
+                    toast('支付失败')
+                  })
+                }else if (this.order.orderSubmit.payType === '2' || this.order.orderSubmit.payType === 2) { // 支付宝支付
+                  this.$http.post(window.ctx + '/api/pay/ali-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
+                    window.location.href = decodeURIComponent(response.data)
+                  }, function (response) {
+                    this.$parent.loading.show = false
+                    toast('支付失败')
+                  })
+                }
+              }
+            }else if (res.code === 10007) {
+              toast('登录已过期，请重新登录')
               setTimeout(function () {
                 window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
               }, 1000)
+            }else {
+              this.$parent.loading.show = false
+              toast('订单提交失败')
             }
+          }, function (response) {
+            this.$parent.loading.show = false
+            toast('订单提交失败')
           })
+        }else {
+          toast('请先登录')
+          setTimeout(function () {
+            window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
+          }, 1000)
         }
-      }, function (response) {
-        autoLogin.login({
-          component: self,
-          yCallback: function () {
-            self.$parent.loading.show = false
-            self.hasLogin = true
-            self.token = localStorage.token
-          },
-          nCallback: function () {
-            self.$parent.loading.show = false
-            self.hasLogin = false
-            toast('请先登录')
-            setTimeout(function () {
-              window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
-            }, 1000)
-          }
-        })
-      })
-    },
-    ready () {
-      this.changeCodeImage()
-    },
-    methods: {
-      submit: function () {
-        let self = this
-        self.$parent.loading.show = true
-        if (self.order.orderSubmit.realPrice === 0) {
-          self.order.orderSubmit.realPrice = 0.01
-        }
-        if (self.order.orderSubmit.price === 0) {
-          self.order.orderSubmit.price = 0.01
-        }
-        self.saveOrder()
       },
-      saveOrder () {
-        var self = this
-        self.$http.post(window.ctx + '/api/order/t/updateOrder', self.order.orderSubmit, {headers: {token: localStorage.token}}).then(function (response) {
+      showCoupon: function () {
+        window.location.hash = 'coupon'
+      },
+      useDiscount: function () {
+        this.order.discountType = 2
+        this.order.orderSubmit.couponId = null
+        this.order.orderSubmit.realPrice = (this.order.orderSubmit.price * this.order.orderDiscount.ratio / 100).toFixed(2)
+        this.couponPrice = (this.order.orderSubmit.price * (100 - this.order.orderDiscount.ratio) / 100).toFixed(2)
+      }
+    },
+    events: {
+      'select-coupon': function (id, name, type, money) {
+        let couponPriceData = {
+          couponId: id,
+          productIds: this.order.productIds
+        }
+        this.$parent.loading.show = true
+        this.$http.post(window.ctx + '/api/coupon/t/computePrice', couponPriceData, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
           let res = response.data
           if (res.code === 0) {
-            if (this.order.orderSubmit.payType === '4' || this.order.orderSubmit.payType === 4) { // 到店付
-              toast('订单提交成功')
-              setTimeout(function () {
-                window.goPage('userCenter.html')
-              }, 500)
-            }else {
-              toast('订单提交成功，请在15分钟内完成付款')
-              if (this.order.orderSubmit.payType === '1' || this.order.orderSubmit.payType === 1) { // 微信支付
-                this.$http.post(window.ctx + '/api/pay/wechat-pay' + (utils.getUrlParam('session_key') ? ('?session_key=' + utils.getUrlParam('session_key')) : ''), res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
-                  window.location.href = response.data
-                }, function (response) {
-                  this.$parent.loading.show = false
-                  toast('支付失败')
-                })
-              }else if (this.order.orderSubmit.payType === '2' || this.order.orderSubmit.payType === 2) { // 支付宝支付
-                this.$http.post(window.ctx + '/api/pay/ali-pay', res.result, {headers: {token: this.token}, emulateJSON: true}).then(function (response) {
-                  window.location.href = decodeURIComponent(response.data)
-                }, function (response) {
-                  this.$parent.loading.show = false
-                  toast('支付失败')
-                })
-              }
-            }
+            this.$parent.loading.show = false
+            this.order.discountType = 1
+            this.order.orderSubmit.couponId = id
+            this.couponName = name
+            money = res.result
+            this.order.orderSubmit.realPrice = money
+            this.couponPrice = ((this.order.orderSubmit.price * 100 - money * 100) / 100) <= 0 ? 0.01 : (this.order.orderSubmit.price * 100 - money * 100) / 100
+            this.couponPrice = parseFloat(this.couponPrice.toFixed(2))
           }else if (res.code === 10007) {
             toast('登录已过期，请重新登录')
             setTimeout(function () {
               window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
             }, 1000)
           }else {
-            self.$parent.loading.show = false
-            toast('订单提交失败')
+            this.$parent.loading.show = false
+            toast('抱歉，优惠券使用出错')
           }
         }, function (response) {
-          self.$parent.loading.show = false
-          toast('订单提交失败')
+          this.$parent.loading.show = false
+          toast('抱歉，优惠券使用出错')
         })
+        // if (type === 1) { // 折扣
+        //   this.couponPrice = this.order.orderSubmit.price * (100 - money * 10) / 10 / 10
+        //   this.order.orderSubmit.realPrice = this.order.orderSubmit.price * (money * 10) / 10 / 10
+        // }else if (type === 2) {
+        //   this.couponPrice = money
+        //   this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
+        // }else if (type === 3) {
+        //   this.couponPrice = money
+        //   this.order.orderSubmit.realPrice = ((this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10) <= 0 ? 0.01 : (this.order.orderSubmit.price * 10 * 10 - money * 10 * 10) / 10 / 10
+        // }
+        // if (this.order.orderSubmit.realPrice.toString().indexOf('.') > 0) {
+        //   this.order.orderSubmit.realPrice = parseFloat(this.order.orderSubmit.realPrice.toFixed(2))
+        // }
+        // this.order.orderSubmit.couponId = id
+        // this.couponName = name
       },
-      getVerifyCode () {
-        let self = this
-        if (self.order.orderSubmit.customerPhone.trim() === '') {
-          toast('请输入手机号')
-          return
+      'cancel-select-coupon': function () {
+        if (this.order.orderDiscount.show) {
+          this.order.discountType = 2
+          this.order.orderSubmit.couponId = null
+          this.order.orderSubmit.realPrice = (this.order.orderSubmit.price * this.order.orderDiscount.ratio / 100).toFixed(2)
+          this.couponPrice = (this.order.orderSubmit.price * (100 - this.order.orderDiscount.ratio) / 100).toFixed(2)
+        }else {
+          this.order.discountType = null
+          this.couponPrice = 0
+          this.order.orderSubmit.realPrice = this.order.orderSubmit.price
+          this.couponName = ''
+          this.order.orderSubmit.couponId = ''
         }
-        if (self.imageCode.trim() === '') {
-          toast('请输入图片验证码')
-          return
-        }
-        if (!utils.getCheck.checkPhone(self.order.orderSubmit.customerPhone.trim())) {
-          toast('请输入正确的手机号')
-          return
-        }
-        self.disabled = true
-        self.$http.post(window.ctx + '/api/customer/sendVerifyCode', {picText: self.imageCode, c: this.ran, mobile: self.order.orderSubmit.customerPhone, ciphertext: '7C4A8D09CA3762AF61E59520943DC26494F8941B'}, {emulateJSON: true}).then((response) => {
-          let res = response.data
-          if (res.code === 0) {
-            toast('发送成功')
-            const countTime = setInterval(function () {
-              self.count = self.count - 1
-              if (self.count === 0) {
-                self.disabled = false
-                self.count = 60
-                clearInterval(countTime)
-              }
-            }, 1000)
-          }else {
-            toast(response.data.message)
-            self.changeCodeImage()
-            self.disabled = false
-          }
-        }, (response) => {
-          toast('发送失败')
-          self.changeCodeImage()
-          self.disabled = false
-        })
-      },
-      changeCodeImage () {
-        let self = this
-        this.ran = Math.random()
-        self.codeImage = window.ctx + '/api/customer/picVerifyCode' + '?c=' + this.ran
       }
-    },
-    events: {
     },
     props: {
       order: Object
@@ -298,6 +289,13 @@
   }
 </script>
 <style scoped>
+.avili-coupon-link {
+  color: #fd6f60;
+  text-align: right;
+  display: block;
+  background: #fff;
+  padding: 5px 20px;
+}
 .order-container {
   height: 100%;
   position: relative;
@@ -305,7 +303,6 @@
 .order{
   height: 100%;
   width: 100%;
-  background: #eaeaea;
   overflow-y: auto;
   -webkit-overflow-scrolling:touch;
   position: absolute;
@@ -344,37 +341,19 @@
 }
 .user-info-item {
   display: flex;
-  padding: 10px 20px 10px 15px;
+  padding: 10px 20px;
   border-bottom: 1px solid #eaeaea;
   align-items: center;
 }
 .user-info-item .user-info-hd {
   padding-right: 10px;
   flex-grow: 0;
+  flex-shrink: 0;
   line-height: 24px;
 }
 .user-info-item .user-info-bd {
   flex-grow: 1;
-  position: relative;
 }
-.user-info-item.msg-code-item .user-info-bd {
-  padding-right: 80px;
-}
-.user-info-item.msg-code-item .user-info-bd button {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 80px;
-}
-.user-info-item.img-code-item .user-info-bd {
-  padding-right: 80px;
-}
-.user-info-item.img-code-item .user-info-bd img {
-  position: absolute;
-  right: 0;
-  height: auto;
-}
-
 .user-info-bd>input {
   height: 24px;
   line-height: 24px;
@@ -384,7 +363,7 @@
   background-image:url(../assets/img/not-check.png);
   background-repeat: no-repeat;
   background-position: right;
-  background-size: 18px;
+  background-size: 20px;
   background-color: #ffffff;
   padding-right: 25px;
 }
@@ -402,6 +381,16 @@
   align-items: center;
   color: #8d8d8d;
 }
+/*.u-info-text::after {
+  content: '';
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-width: 2px 2px 0 0;
+  border-style: solid;
+  border-color: #8d8d8d;
+  transform: rotate(45deg);
+}*/
 .order-pay {
   margin-top: 15px;
   background-color: #fff;
