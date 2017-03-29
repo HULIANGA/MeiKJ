@@ -16,13 +16,23 @@
     <button class="btn btn-info" @click.prevent="changePhone">修改手机号</button>
   </div>
   <div class="user-center-bd">
-    <div class="center-item">
+    <!-- <div class="center-item">
       <a class="center-item-link" @click="goPage(userCenter.orderUrl)">
         <div class="ct-link-hd">
           <img src="../assets/img/center-order.png">
         </div>
         <div class="ct-link-bd">
           我的订单
+        </div>
+      </a>
+    </div> -->
+    <div class="center-item">
+      <a class="center-item-link" @click="goPage(userCenter.rownumUrl)">
+        <div class="ct-link-hd">
+          <img src="../assets/img/center-rownum.png">
+        </div>
+        <div class="ct-link-bd">
+          我的排号
         </div>
       </a>
     </div>
@@ -32,17 +42,7 @@
           <img src="../assets/img/center-coupon.png">
         </div>
         <div class="ct-link-bd">
-          我的优惠券
-        </div>
-      </a>
-    </div>
-    <div class="center-item">
-      <a class="center-item-link" @click="goPage(userCenter.rownumUrl)">
-        <div class="ct-link-hd">
-          <img src="../assets/img/center-rownum.png">
-        </div>
-        <div class="ct-link-bd">
-          我的排号
+          我的卡券
         </div>
       </a>
     </div>
