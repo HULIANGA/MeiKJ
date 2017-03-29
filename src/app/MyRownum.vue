@@ -20,7 +20,7 @@
         <span class="pull-l">接单发型师：{{item.barberName}}</span>
         <span class="pull-r">手机号：{{item.barberMobile}}</span>
       </p>
-      <div class="order-control" v-if="item.state === 1 || item.state === 2">
+      <div class="order-control" v-if="item.state === 1">
         <div class="control-right">
           <button class="btn btn-default" @click.prevent.stop="cancelOrder(item.id)">取消排号</button>
         </div>
