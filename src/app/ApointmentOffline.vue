@@ -5,7 +5,7 @@
         发型师职位
       </th>
       <th>
-        参考价（洗剪吹）
+        价格
       </th>
       <th>
         排号数
@@ -20,7 +20,7 @@
           {{item.positionName}}
         </td>
         <td>
-          &yen;{{item.blowCutPrice}}
+          洗剪吹&yen;{{item.blowCutPrice}}
         </td>
         <td>
           {{item.waitCount}}
@@ -49,7 +49,7 @@
       </div>
     </template>
     <p class="tips">
-      *参考价为不同发型师提供洗剪吹服务时的参考价格， 您的预约排号完成后，我们会指定发型师为您进行服务，届时您可以与发型师确认服务项目及服务金额。
+      *您的预约排号完成后，发型师将叫号为您服务，届时您可以与发型师确认服务项目及服务金额。
     </p>
   </div>
   <div class="appoint-btn">
