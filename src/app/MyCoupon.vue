@@ -2,8 +2,11 @@
 @import '../assets/css/style.scss'
 </style>
 <template>
+<div class="user-card" v-if="showCard">
+  <img :src="cardImage" alt="">
+  <span>会员ID：{{userId}}</span>
+</div>
 <div class="my-coupon-list">
-  <button class="btn btn-primary btn-exchange" @click.prevent="exchangeCoupon">去兑换</button>
   <p class="del-info"><em>*</em>向左滑动可删除优惠券</p>
   <div class="coupon-item-wrap" v-for="(index,item) in items">
     <div class="behind">
@@ -58,6 +61,9 @@
     </div>
   </modal>
 </div>
+<div class="bot-buttons">
+  <button class="btn btn-primary btn-exchange" @click.prevent="exchangeCoupon">去兑换</button>
+</div>
 <no-result v-show="noresult" :text=""></no-result>
 </template>
 <script>
@@ -74,6 +80,9 @@ export default {
       loading: {
         show: true
       },
+      showCard: false,
+      cardImage: '',
+      userId: localStorage.loginid,
       items: null,
       noresult: false,
       startX: null,
@@ -109,6 +118,16 @@ export default {
         window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
         // window.goPage('login.html?fromUrl=' + encodeURIComponent(window.location.href))
       }, 1000)
+    })
+
+    self.$http.get(window.ctx + '/api/discount/detail', {}).then(function (response) {
+      let res = response.data
+      if (res.code === 0 && res.result) {
+        self.cardImage = window.imageDomain + res.result.picture
+        if (res.result.state === 1) {
+          self.showCard = true
+        }
+      }
     })
     // self.getCouponData(1)
   },
@@ -265,15 +284,36 @@ export default {
 body {
   background-color: #eaeaea;
 }
+.user-card {
+  position: relative;
+  padding: 6px;
+}
+.user-card img {
+
+}
+.user-card span {
+  color: #ffffff;
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+}
+.bot-buttons {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #ffffff;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.bot-buttons .btn-exchange {
+  display: block;
+  font-size: 1.4rem;
+  width: 100%;
+  line-height: 40px;
+}
 .my-coupon-list {
   margin-left: 15px;
   margin-top: 10px;
-}
-.my-coupon-list .btn-exchange {
-  display: block;
-  font-size: 1.4rem;
-  width: 50%;
-  margin: 0 auto 10px;
 }
 .del-info {
   font-size: 1.2rem;
