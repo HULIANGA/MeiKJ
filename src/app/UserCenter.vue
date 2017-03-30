@@ -2,126 +2,140 @@
 @import '../assets/css/style.scss'
 </style>
 <template>
-<div class="user-center">
-  <div class="user-center-hd">
-    <div class="user-center-avatar" v-bind:style="{backgroundImage: 'url('+imageDomain + userInfo.logo+')'}" v-if="userInfo.logo">
-      <input type="file" name="file" @change="avaChange">
+  <div class="user-center">
+    <div class="user-center-hd">
+      <div class="qrcode-link" @click="showQrcodeModal()">
+        <img src="../assets/img/code-small.png" alt="">
+        <span>点击关注微信公众号</span>
+      </div>
+      <div class="user-center-avatar" v-bind:style="{backgroundImage: 'url('+imageDomain + userInfo.logo+')'}" v-if="userInfo.logo">
+        <input type="file" name="file" @change="avaChange">
+      </div>
+      <div class="user-center-avatar" v-else>
+        <input type="file" name="file" @change="avaChange">
+        <img src="../assets/img/center-avatar.png">
+      </div>
+      <p>{{userInfo.nickName}}</p>
+      <p>{{userInfo.mobile}}</p>
+      <button class="btn btn-info" @click.prevent="changePhone">修改手机号</button>
     </div>
-    <div class="user-center-avatar" v-else>
-      <input type="file" name="file" @change="avaChange">
-      <img src="../assets/img/center-avatar.png">
+    <div class="user-center-bd">
+      <!-- <div class="center-item">
+        <a class="center-item-link" @click="goPage(userCenter.orderUrl)">
+          <div class="ct-link-hd">
+            <img src="../assets/img/center-order.png">
+          </div>
+          <div class="ct-link-bd">
+            我的订单
+          </div>
+        </a>
+      </div> -->
+      <div class="center-item">
+        <a class="center-item-link" @click="goPage(userCenter.rownumUrl)">
+          <div class="ct-link-hd">
+            <img src="../assets/img/center-rownum.png">
+          </div>
+          <div class="ct-link-bd">
+            我的排号
+          </div>
+        </a>
+      </div>
+      <div class="center-item">
+        <a class="center-item-link" @click="goPage(userCenter.couponUrl)">
+          <div class="ct-link-hd">
+            <img src="../assets/img/center-coupon.png">
+          </div>
+          <div class="ct-link-bd">
+            我的卡券
+          </div>
+        </a>
+      </div>
+      <div class="center-item">
+        <a class="center-item-link" @click="goPage(userCenter.collectionUrl)">
+          <div class="ct-link-hd">
+            <img src="../assets/img/center-favorite.png">
+          </div>
+          <div class="ct-link-bd">
+            我的收藏
+          </div>
+        </a>
+      </div>
+      <div class="center-item">
+        <a class="center-item-link" @click="goPage(userCenter.personalUrl)">
+          <div class="ct-link-hd">
+            <img src="../assets/img/center.png">
+          </div>
+          <div class="ct-link-bd">
+            个人资料
+          </div>
+        </a>
+      </div>
+      <div class="center-item">
+        <a class="center-item-link" @click="goPage(userCenter.resetUrl)">
+          <div class="ct-link-hd">
+            <img src="../assets/img/center-pwd.png">
+          </div>
+          <div class="ct-link-bd">
+            重置密码
+          </div>
+        </a>
+      </div>
+      <div class="center-item">
+        <a class="center-item-link" @click="goPage(userCenter.salesUrl)">
+          <div class="ct-link-hd">
+            <img src="../assets/img/center-sale.png">
+          </div>
+          <div class="ct-link-bd">
+            售后保障
+          </div>
+        </a>
+      </div>
+      <div class="center-item">
+        <a class="center-item-link" @click="goPage(userCenter.aboutUrl)">
+          <div class="ct-link-hd">
+            <img src="../assets/img/center-about.png">
+          </div>
+          <div class="ct-link-bd">
+            关于我们
+          </div>
+        </a>
+      </div>
     </div>
-    <p>{{userInfo.nickName}}</p>
-    <p>{{userInfo.mobile}}</p>
-    <button class="btn btn-info" @click.prevent="changePhone">修改手机号</button>
-  </div>
-  <div class="user-center-bd">
-    <!-- <div class="center-item">
-      <a class="center-item-link" @click="goPage(userCenter.orderUrl)">
-        <div class="ct-link-hd">
-          <img src="../assets/img/center-order.png">
-        </div>
-        <div class="ct-link-bd">
-          我的订单
-        </div>
-      </a>
-    </div> -->
-    <div class="center-item">
-      <a class="center-item-link" @click="goPage(userCenter.rownumUrl)">
-        <div class="ct-link-hd">
-          <img src="../assets/img/center-rownum.png">
-        </div>
-        <div class="ct-link-bd">
-          我的排号
-        </div>
-      </a>
-    </div>
-    <div class="center-item">
-      <a class="center-item-link" @click="goPage(userCenter.couponUrl)">
-        <div class="ct-link-hd">
-          <img src="../assets/img/center-coupon.png">
-        </div>
-        <div class="ct-link-bd">
-          我的卡券
-        </div>
-      </a>
-    </div>
-    <div class="center-item">
-      <a class="center-item-link" @click="goPage(userCenter.collectionUrl)">
-        <div class="ct-link-hd">
-          <img src="../assets/img/center-favorite.png">
-        </div>
-        <div class="ct-link-bd">
-          我的收藏
-        </div>
-      </a>
-    </div>
-    <div class="center-item">
-      <a class="center-item-link" @click="goPage(userCenter.personalUrl)">
-        <div class="ct-link-hd">
-          <img src="../assets/img/center.png">
-        </div>
-        <div class="ct-link-bd">
-          个人资料
-        </div>
-      </a>
-    </div>
-    <div class="center-item">
-      <a class="center-item-link" @click="goPage(userCenter.resetUrl)">
-        <div class="ct-link-hd">
-          <img src="../assets/img/center-pwd.png">
-        </div>
-        <div class="ct-link-bd">
-          重置密码
-        </div>
-      </a>
-    </div>
-    <div class="center-item">
-      <a class="center-item-link" @click="goPage(userCenter.salesUrl)">
-        <div class="ct-link-hd">
-          <img src="../assets/img/center-sale.png">
-        </div>
-        <div class="ct-link-bd">
-          售后保障
-        </div>
-      </a>
-    </div>
-    <div class="center-item">
-      <a class="center-item-link" @click="goPage(userCenter.aboutUrl)">
-        <div class="ct-link-hd">
-          <img src="../assets/img/center-about.png">
-        </div>
-        <div class="ct-link-bd">
-          关于我们
-        </div>
-      </a>
-    </div>
-  </div>
-  <div class="user-center-ft">
-    <button class="btn btn-logout" v-show="!isweixin" @click.prevent="logout">退出登录</button>
-  </div>
-</div>
-<bottom-menu :active="'usercenter'"></bottom-menu>
-<modal :show.sync="phoneModal" title="修改手机号">
-  <div slot="modal-body" class="modal-body">
-    <div class="input-item">
-      <input class="phone-num" type="tel" maxlength="11" placeholder="请输入手机号" v-model="phoneNum">
-    </div>
-    <div class="input-item input-code">
-      <input class="phone-code" type="tel" maxlength="11" placeholder="请输入验证码" v-model="verifyCode">
-      <button class="btn btn-code" @click.prevent="getVerifyCode" :disabled="disabled">{{disabled ? count : '获取验证码'}}</button>
+    <div class="user-center-ft">
+      <button class="btn btn-logout" v-show="!isweixin" @click.prevent="logout">退出登录</button>
     </div>
   </div>
-  <div class="modal-footer" slot="modal-footer">
-    <button class="btn btn-primary" @click.prevent="confirmPhone">确认</button>
-  </div>
-</modal>
-<dialog :show.sync="dialog.show" :title="dialog.title" :ok-text="dialog.okText" :cancel-text="dialog.cancelText" :callback="dialog.callback"></dialog>
+  <bottom-menu :active="'usercenter'"></bottom-menu>
+  <modal :show.sync="phoneModal" title="修改手机号">
+    <div slot="modal-body" class="modal-body">
+      <div class="input-item">
+        <input class="phone-num" type="tel" maxlength="11" placeholder="请输入手机号" v-model="phoneNum">
+      </div>
+      <div class="input-item input-code">
+        <input class="phone-code" type="tel" maxlength="11" placeholder="请输入验证码" v-model="verifyCode">
+        <button class="btn btn-code" @click.prevent="getVerifyCode" :disabled="disabled">{{disabled ? count : '获取验证码'}}</button>
+      </div>
+    </div>
+    <div class="modal-footer" slot="modal-footer">
+      <button class="btn btn-primary" @click.prevent="confirmPhone">确认</button>
+    </div>
+  </modal>
+  <detail-modal :show.sync="showQrcode">
+    <div slot="detail-modal-header" class="detail-modal-header">
+      <h4 class="detail-modal-title">丽人淘造型</h4>
+    </div>
+    <div slot="detail-modal-body" class="detail-modal-body">
+      <img class="wechat-qrcode" src="../assets/img/wechat-qrcode.png" alt="">
+      <p class="wechat-qrcode-tips">长按关注公众号获取更多信息</p>
+    </div>
+  </detail-modal>
+  <dialog :show.sync="dialog.show" :title="dialog.title" :ok-text="dialog.okText" :cancel-text="dialog.cancelText" :callback="dialog.callback"></dialog>
 </template>
 <script>
   import BottomMenu from '../components/BottomMenu'
   import toast from '../js/toast'
   import Loading from '../components/Loading'
+  import DetailModal from '../components/DetailModal'
   import Modal from '../components/Modal'
   import Dialog from '../components/Dialog'
   import {getCheck} from '../js/utils'
@@ -134,6 +148,7 @@
         loading: {
           show: true
         },
+        showQrcode: false,
         dialog: {
           show: false,
           title: '请到“我的排号”查看排号信息',
@@ -197,6 +212,9 @@
       }
     },
     methods: {
+      showQrcodeModal: function () {
+        this.showQrcode = true
+      },
       goPage: function (url) {
         window.goPage(url)
       },
@@ -324,7 +342,8 @@
       BottomMenu,
       Loading,
       Modal,
-      Dialog
+      Dialog,
+      DetailModal
     }
   }
 </script>
@@ -334,8 +353,30 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
+  .wechat-qrcode {
+    display: block;
+    width: 95%;
+    margin: 10px auto;
+  }
+  .wechat-qrcode-tips {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+  }
   .user-center {
     padding-bottom: 100px;
+  }
+  .qrcode-link {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+  .qrcode-link img {
+    width: 16px;
+    vertical-align: middle;
+  }
+  .qrcode-link span {
+    color: #ffffff;
   }
   .user-center-hd {
     position: relative;
