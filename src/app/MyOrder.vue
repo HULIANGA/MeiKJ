@@ -3,7 +3,7 @@
 </style>
 <template>
   <div class="order-list">
-    <tab-set :active="0" v-on:child-msg="handleLink">
+    <tab-set :active="defaultActive" v-on:child-msg="handleLink">
       <Tab header="待付款">
         <no-result v-if="waitPay && waitPay.length === 0"></no-result>
         <order-item v-else :items="waitPay" v-on:detail-msg="showDetailModal"></order-item>
@@ -71,6 +71,7 @@ import NoResult from '../components/NoResult'
 import toast from '../js/toast'
 import Dialog from '../components/Dialog'
 import autoLogin from '../js/autoLogin'
+import utils from '../js/utils.js'
 
 export default {
   data () {
@@ -85,6 +86,7 @@ export default {
         cancelText: '取消',
         callback: null
       },
+      defaultActive: 0,
       waitPay: null,
       waitService: null,
       orderDone: null,
@@ -102,16 +104,19 @@ export default {
   created () {
     let self = this
     self.loading.show = true
+    if (utils.getUrlParam('active')) {
+      self.defaultActive = parseInt(utils.getUrlParam('active'), 10)
+    }
     this.$http.post(window.ctx + '/api/customer/t/tokenState', {}, {headers: {token: this.token}}).then(function (response) {
       let res = response.data
       if (res.code === 0) {
         self.token = localStorage.getItem('token')
-        self.getOrder(1, 1, 10)
+        self.getOrder(self.defaultActive + 1, 1, 10)
       }else {
         autoLogin.login({
           component: this,
           yCallback: function () {
-            self.getOrder(1, 1, 10)
+            self.getOrder(self.defaultActive + 1, 1, 10)
           },
           nCallback: null
         })

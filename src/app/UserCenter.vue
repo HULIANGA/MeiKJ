@@ -116,12 +116,14 @@
     <button class="btn btn-primary" @click.prevent="confirmPhone">确认</button>
   </div>
 </modal>
+<dialog :show.sync="dialog.show" :title="dialog.title" :ok-text="dialog.okText" :cancel-text="dialog.cancelText" :callback="dialog.callback"></dialog>
 </template>
 <script>
   import BottomMenu from '../components/BottomMenu'
   import toast from '../js/toast'
   import Loading from '../components/Loading'
   import Modal from '../components/Modal'
+  import Dialog from '../components/Dialog'
   import {getCheck} from '../js/utils'
   import autoLogin from '../js/autoLogin'
 
@@ -131,6 +133,13 @@
         userInfo: {},
         loading: {
           show: true
+        },
+        dialog: {
+          show: false,
+          title: '请到“我的排号”查看排号信息',
+          okText: '确定',
+          cancelText: '取消',
+          callback: null
         },
         isweixin: /MicroMessenger/i.test(navigator.userAgent),
         imageDomain: 'http://meimeidou.qiniudn.com/',
@@ -176,6 +185,16 @@
         }, 1000)
       })
       // self.goJumping()
+    },
+    ready () {
+      var self = this
+      if (localStorage.showRownumDialog) {
+        self.dialog.show = true
+        self.dialog.callback = function () {
+          self.goPage(self.userCenter.rownumUrl)
+        }
+        localStorage.removeItem('showRownumDialog')
+      }
     },
     methods: {
       goPage: function (url) {
@@ -304,7 +323,8 @@
     components: {
       BottomMenu,
       Loading,
-      Modal
+      Modal,
+      Dialog
     }
   }
 </script>

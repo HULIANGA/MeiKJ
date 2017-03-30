@@ -150,6 +150,7 @@ export default {
         }, {headers: {token: localStorage.token}, emulateJSON: false}).then(function (response) {
           self.loading.show = false
           if (response.data.code === 0) {
+            localStorage.setItem('showRownumDialog', 'true')
             window.goPage('userCenter.html')
           }else {
             toast(response.data.message)

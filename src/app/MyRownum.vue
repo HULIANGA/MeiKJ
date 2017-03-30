@@ -3,7 +3,7 @@
 </style>
 <template lang="html">
   <div class="my-rownum-list">
-    <div class="order-item" v-for="(index, item) in orderItems">
+    <div class="order-item" v-for="(index, item) in orderItems" @click="goOrder(item.state, item.source)">
       <div class="row-num-detail">
         <p class="text-red" v-if="item.state === 1">排号中</p>
         <p class="text-red" v-if="item.state === 2">接单中</p>
@@ -92,6 +92,15 @@ export default {
     }
   },
   methods: {
+    goOrder (state, source) {
+      if (state === 3) {
+        if (source === 1) {
+          window.goPage('myOrder.html')
+        } else if (source === 2 || source === 3) {
+          window.goPage('myOrder.html?active=1')
+        }
+      }
+    },
     getOrder (state, pageNo, pageSize) {
       let self = this
       if (localStorage.token) {
