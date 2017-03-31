@@ -2,7 +2,7 @@
 @import '../assets/css/style.scss'
 </style>
 <template>
-<div class="user-card" v-if="showCard">
+<div class="user-card" v-if="showCard" @click="goApointment()">
   <img :src="cardImage" alt="">
   <span>会员ID：{{userId}}</span>
 </div>
@@ -245,6 +245,9 @@ export default {
     },
     useCoupon (couponId, applyShop, customerCouponId) {
       window.goPage('apointment.html?couponId=' + couponId + '&customerCouponId=' + customerCouponId)
+    },
+    goApointment () {
+      window.goPage('apointment.html')
     },
     exchangeCoupon () {
       this.exchangeModal = true

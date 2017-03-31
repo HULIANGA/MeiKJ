@@ -9,8 +9,8 @@ var distPath = path.resolve(__dirname, '../dist'); //输出文件目录
 var entryPath = path.resolve(__dirname, '../src/entrys') //入口js目录
 
 // var resourcePath = 'http://172.26.64.12:8080/dist/'; //js和css的引用路径；开发debugger
-var resourcePath = 'http://localhost:8080/dist/'; //js和css的引用路径；开发debugger
-// var resourcePath = '../'; //js和 css的引用路径；生产
+// var resourcePath = 'http://localhost:8080/dist/'; //js和css的引用路径；开发debugger
+var resourcePath = '../'; //js和 css的引用路径；生产
 
 module.exports = {
   debug: true,
