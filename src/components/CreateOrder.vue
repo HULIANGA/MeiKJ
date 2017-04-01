@@ -70,7 +70,7 @@
     <!-- pay  -->
     <div class="order-pay">
       <div class="order-pay-title">付款方式</div>
-      <div class="o-pay-item" v-if="systemType === 'MKJ'">
+      <div class="o-pay-item">
         <div class="o-pay-hd">
           <img src="../assets/img/wechat-pay.png">
         </div>
@@ -81,7 +81,7 @@
           <input type="radio" name="pay" v-model="order.orderSubmit.payType" value='1'>
         </div>
       </div>
-      <div class="o-pay-item" v-if="systemType === 'MKJ'">
+      <div class="o-pay-item">
         <div class="o-pay-hd">
           <img src="../assets/img/alipay.png">
         </div>
@@ -92,7 +92,7 @@
           <input type="radio" name="pay" v-model="order.orderSubmit.payType" value="2">
         </div>
       </div>
-      <div class="o-pay-item" v-if="systemType === 'DY'">
+      <!-- <div class="o-pay-item" v-if="systemType === 'DY'">
         <div class="o-pay-hd">
           <img src="../assets/img/shop-pay.png">
         </div>
@@ -102,7 +102,7 @@
         <div class="o-pay-ft">
           <input type="radio" name="pay" v-model="order.orderSubmit.payType" value="4">
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- remark -->
     <div class="order-remark">
