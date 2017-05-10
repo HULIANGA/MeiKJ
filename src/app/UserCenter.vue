@@ -125,7 +125,8 @@
       <h4 class="detail-modal-title">丽人淘造型</h4>
     </div>
     <div slot="detail-modal-body" class="detail-modal-body">
-      <img class="wechat-qrcode" src="../assets/img/wechat-qrcode.png" alt="">
+      <img v-if="systemType === 'DY'" class="wechat-qrcode" src="../assets/img/wechat-qrcode-dy.png" alt="">
+      <img v-if="systemType === 'MKJ'" class="wechat-qrcode" src="../assets/img/wechat-qrcode.png" alt="">
       <p class="wechat-qrcode-tips">长按关注公众号获取更多信息</p>
     </div>
   </detail-modal>
@@ -148,6 +149,7 @@
         loading: {
           show: true
         },
+        systemType: window.systemType,
         showQrcode: false,
         dialog: {
           show: false,
