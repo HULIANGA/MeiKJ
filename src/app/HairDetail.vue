@@ -26,6 +26,7 @@
 <script>
 import SwiperHair from '../components/SwiperHair'
 import Loading from '../components/Loading'
+import utils from '../js/utils'
 import toast from '../js/toast'
 import autoLogin from '../js/autoLogin'
 
@@ -61,7 +62,7 @@ export default {
     }, function () {
     })
 
-    this.hairId = window.location.search.substr(1).split('=')[1]
+    this.hairId = utils.getUrlParam('id')
     // 发型详情
     this.$http.post(window.ctx + '/api/hairstyle/detail', {hairstyleId: this.hairId}).then((response) => {
       let res = response.data
